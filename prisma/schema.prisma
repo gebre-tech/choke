@@ -1,0 +1,534 @@
+// prisma/schema.prisma
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ==================== ENUMS ====================
+
+enum UserRole {
+  TOURIST
+  ADMIN
+  INVESTOR
+}
+
+enum BookingStatus {
+  PENDING
+  CONFIRMED
+  CANCELLED
+  COMPLETED
+  NO_SHOW
+}
+
+enum PaymentStatus {
+  PENDING
+  CONFIRMED
+  FAILED
+  REFUNDED
+  CANCELLED
+}
+
+enum PaymentMethod {
+  CHAPA
+  TELEBIRR
+  CBE_BIRR
+  BANK_CARD
+  CASH
+}
+
+enum ExperienceType {
+  STARGAZING
+  TREKKING
+  CITY_LIGHTS
+  SUNRISE_SUNSET
+  CULTURAL_TOUR
+  BIRD_WATCHING
+}
+
+enum ProductCategory {
+  HONEY
+  COFFEE
+  CRAFTS
+  SPICES
+  BAMBOO
+  OTHER
+}
+
+enum OrderStatus {
+  PENDING
+  PROCESSING
+  SHIPPED
+  DELIVERED
+  CANCELLED
+}
+
+enum MediaType {
+  IMAGE
+  VIDEO
+  AUDIO
+}
+
+enum MediaScope {
+  GALLERY
+  COTTAGE
+  EXPERIENCE
+  PRODUCT
+}
+
+enum LinkType {
+  WEBSITE
+  BOOKING
+  PURCHASE
+  LOCATION
+  SOCIAL
+  VIDEO
+  OTHER
+}
+
+enum PublicationStatus {
+  PENDING
+  PUBLISHED
+  REJECTED
+}
+
+// ==================== MAIN MODELS ====================
+
+model User {
+  id              String         @id @default(cuid())
+  email           String         @unique
+  password        String         // Hashed
+  firstName       String
+  lastName        String?
+  phoneNumber     String?
+  role            UserRole       @default(TOURIST)
+  profileImage    String?
+  bio             String?
+  
+  // Address
+  country         String?
+  city            String?
+  
+  // Preferences
+  preferredLanguage String?      @default("am")
+  newsletterOptIn  Boolean       @default(false)
+  
+  // Timestamps
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+  lastLoginAt     DateTime?
+  
+  // Relations
+  bookings        Booking[]
+  orders          Order[]
+  reviews         Review[]
+  notifications   Notification[]
+  productSubmissions   Product[]     @relation("ProductSubmissions")
+  experienceSubmissions Experience[] @relation("ExperienceSubmissions")
+  
+  @@map("users")
+}
+
+model Cottage {
+  id              String         @id @default(cuid())
+  name            String
+  description     String
+  pricePerNight   Decimal        @db.Decimal(10, 2)
+  capacity        Int            @default(2)
+  bedrooms        Int            @default(1)
+  beds            Int            @default(1)
+  bathrooms       Int            @default(1)
+  
+  // Features
+  hasTelescope    Boolean        @default(false)
+  hasFireplace    Boolean        @default(false)
+  hasPrivateDeck  Boolean        @default(false)
+  hasKitchenette  Boolean        @default(false)
+  hasHeatedFloors Boolean        @default(false)
+  hasWifi         Boolean        @default(false)
+  
+  // Images
+  imageUrls       String[]       @default([])
+  thumbnailUrl    String?
+  
+  // Availability
+  isAvailable     Boolean        @default(true)
+  totalUnits      Int            @default(1)
+  availableUnits  Int            @default(1)
+  
+  // Location
+  altitude        Int?           // in meters
+  viewDescription String?
+  
+  // Timestamps
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+  
+// Relations
+  bookings        Booking[]
+  experiences     Experience[]
+  media           Media[]
+  links           Link[]
+
+  @@map("cottages")
+}
+
+model Experience {
+  id              String         @id @default(cuid())
+  name            String
+  description     String
+  type            ExperienceType
+  price           Decimal        @db.Decimal(10, 2)
+  duration        Int?           // in minutes
+  capacity        Int            @default(10)
+  
+  // Schedule
+  startTime       String?        // "06:00" format
+  endTime         String?        // "18:00" format
+  
+  // Requirements
+  difficultyLevel String?        // "Easy", "Moderate", "Hard"
+  ageRequirement  Int?           @default(0)
+  includedItems   String[]       @default([])
+  
+  // Availability
+  isActive        Boolean        @default(true)
+  maxBookingsPerDay Int?         @default(5)
+  
+  // Submission / moderation
+  publicationStatus PublicationStatus @default(PUBLISHED)
+  rejectionReason   String?
+  submittedById     String?
+  submittedBy       User?         @relation("ExperienceSubmissions", fields: [submittedById], references: [id], onDelete: SetNull)
+  
+  // Timestamps
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+  
+// Relations
+  cottageId       String?
+  cottage         Cottage?       @relation(fields: [cottageId], references: [id])
+  bookings        Booking[]
+  reviews         Review[]
+  media           Media[]
+  links           Link[]
+
+  @@index([submittedById])
+  @@map("experiences")
+}
+
+model Booking {
+  id              String         @id @default(cuid())
+  
+  // Dates
+  checkIn         DateTime
+  checkOut        DateTime
+  bookingDate     DateTime       @default(now())
+  
+  // Guest Information
+  guestCount      Int            @default(1)
+  specialRequests String?
+  
+  // Payment
+  amount          Decimal        @db.Decimal(10, 2)
+  paymentStatus   PaymentStatus  @default(PENDING)
+  paymentMethod   PaymentMethod? @default(CHAPA)
+  paymentTxRef    String?        @unique
+  paymentVerifiedAt DateTime?
+  paymentData     Json?          // Raw Chapa response
+  paymentWebhookData Json?
+  paymentRefundedAt DateTime?
+  paymentRefundData Json?
+  
+  // Status
+  status          BookingStatus  @default(PENDING)
+  
+  // Timestamps
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+  
+  // Relations
+  userId          String
+  user            User           @relation(fields: [userId], references: [id])
+  cottageId       String
+  cottage         Cottage        @relation(fields: [cottageId], references: [id])
+  experienceId    String?
+  experience      Experience?    @relation(fields: [experienceId], references: [id])
+  
+  // Marketplace items in booking
+  orderId         String?        @unique
+  order           Order?         @relation(fields: [orderId], references: [id], onDelete: SetNull)
+  
+  // Reviews
+  review          Review?
+  
+  @@index([userId])
+  @@index([paymentTxRef])
+  @@map("bookings")
+}
+
+model Product {
+  id              String         @id @default(cuid())
+  name            String
+  description     String
+  price           Decimal        @db.Decimal(10, 2)
+  category        ProductCategory
+  
+  // Inventory
+  stock           Int            @default(0)
+  minimumStock    Int            @default(5)
+  
+  // Origin
+  producerName    String         @default("Taeme Abakidan Community")
+  producerLocation String        @default("Dega Damot, Ethiopia")
+  isOrganic       Boolean        @default(true)
+  
+  // Media
+  imageUrls       String[]       @default([])
+  thumbnailUrl    String?
+  
+  // Details
+  weight          Decimal?       @db.Decimal(8, 2) // in kg
+  harvestDate     DateTime?
+  expiryDate      DateTime?
+  
+  // Status
+  isActive        Boolean        @default(true)
+
+  // Submission / moderation
+  publicationStatus PublicationStatus @default(PUBLISHED)
+  rejectionReason   String?
+  submittedById     String?
+  submittedBy       User?          @relation("ProductSubmissions", fields: [submittedById], references: [id], onDelete: SetNull)
+
+  // Timestamps
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+  
+// Relations
+  orderItems      OrderItem[]
+  media           Media[]
+  links           Link[]
+
+  @@index([submittedById])
+  @@map("products")
+}
+
+model Media {
+  id          String      @id @default(cuid())
+  title       String
+  type        MediaType
+  url         String
+  provider    String?     // NONE | YOUTUBE | VIMEO (for embeds)
+  videoId     String?     // external provider id
+  scope       MediaScope  @default(GALLERY)
+  isActive    Boolean     @default(true)
+  sortOrder   Int         @default(0)
+  mimeType    String?
+  sizeBytes   Int?
+  fileName    String?
+  altText     String?
+  caption     String?
+
+  // Timestamps
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  // Relations — optional attach to a single entity
+  cottageId       String?
+  cottage         Cottage?    @relation(fields: [cottageId], references: [id], onDelete: Cascade)
+  experienceId    String?
+  experience      Experience? @relation(fields: [experienceId], references: [id], onDelete: Cascade)
+  productId       String?
+  product         Product?    @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@index([scope, isActive])
+@@index([cottageId])
+  @@index([experienceId])
+  @@index([productId])
+  @@map("media")
+}
+
+model Link {
+  id          String    @id @default(cuid())
+  type        LinkType
+  title       String
+  url         String
+  description String?
+  openInNewTab Boolean  @default(true)
+  sortOrder   Int       @default(0)
+  isActive    Boolean   @default(true)
+
+  // Timestamps
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  // Relations — optional attach to a single entity
+  cottageId       String?
+  cottage         Cottage?    @relation(fields: [cottageId], references: [id], onDelete: Cascade)
+  experienceId    String?
+  experience      Experience? @relation(fields: [experienceId], references: [id], onDelete: Cascade)
+  productId       String?
+  product         Product?    @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@index([cottageId])
+  @@index([experienceId])
+  @@index([productId])
+  @@map("links")
+}
+
+model Order {
+  id              String         @id @default(cuid())
+  
+  // Customer info
+  userId          String
+  user            User           @relation(fields: [userId], references: [id])
+  
+  // Order details
+  totalAmount     Decimal        @db.Decimal(10, 2)
+  status          OrderStatus    @default(PENDING)
+
+  // Payment
+  paymentStatus   PaymentStatus  @default(PENDING)
+  paymentMethod   PaymentMethod? @default(CHAPA)
+  paymentTxRef    String?        @unique
+  paymentVerifiedAt DateTime?
+  paymentData     Json?
+  paymentWebhookData Json?
+  
+  // Shipping
+  shippingAddress String?
+  shippingCity    String?
+  shippingRegion  String?
+  shippingCountry String?        @default("Ethiopia")
+  trackingNumber  String?
+  
+  // Timestamps
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+  deliveredAt     DateTime?
+  
+  // Relations
+  items           OrderItem[]
+  booking         Booking?
+  
+  @@map("orders")
+}
+
+model OrderItem {
+  id              String         @id @default(cuid())
+  
+  // Relations
+  orderId         String
+  order           Order          @relation(fields: [orderId], references: [id])
+  productId       String
+  product         Product        @relation(fields: [productId], references: [id])
+  
+  // Details
+  quantity        Int            @default(1)
+  priceAtTime     Decimal        @db.Decimal(10, 2) // Price at purchase
+  totalPrice      Decimal        @db.Decimal(10, 2)
+  
+  // Timestamps
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+  
+  @@map("order_items")
+}
+
+model Review {
+  id              String         @id @default(cuid())
+  
+  rating          Int            @default(5) // 1-5
+  comment         String?
+  
+  // Relations
+  userId          String
+  user            User           @relation(fields: [userId], references: [id])
+  
+  bookingId       String?        @unique
+  booking         Booking?       @relation(fields: [bookingId], references: [id])
+  
+  experienceId    String?
+  experience      Experience?    @relation(fields: [experienceId], references: [id])
+  
+  // Timestamps
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+  
+  @@map("reviews")
+}
+
+model Notification {
+  id              String         @id @default(cuid())
+  
+  userId          String
+  user            User           @relation(fields: [userId], references: [id])
+  
+  type            String         // "PAYMENT_SUCCESS", "BOOKING_REMINDER", "PROMOTION", etc.
+  title           String
+  message         String
+  isRead          Boolean        @default(false)
+  
+  // Optional link
+  actionUrl       String?
+  
+  // Timestamps
+  createdAt       DateTime       @default(now())
+  readAt          DateTime?
+  
+  @@index([userId, isRead])
+  @@map("notifications")
+}
+
+// ==================== ADMIN/INVESTOR MODELS ====================
+
+model InvestmentMilestone {
+  id              String         @id @default(cuid())
+  
+  title           String
+  description     String
+  targetAmount    Decimal        @db.Decimal(15, 2)
+  raisedAmount    Decimal        @db.Decimal(15, 2) @default(0)
+  
+  status          String         @default("PLANNED") // PLANNED, IN_PROGRESS, COMPLETED
+  
+  startDate       DateTime?
+  endDate         DateTime?
+  completedAt     DateTime?
+  
+  // Documentation
+  documents       Json?          // Array of document links
+  
+  // Timestamps
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+  
+  @@map("investment_milestones")
+}
+
+model PaymentLog {
+  id              String         @id @default(cuid())
+
+  bookingId       String?
+  orderId         String?
+  txRef           String?
+  status          String
+  error           String?
+  timestamp       DateTime       @default(now())
+  webhookData     Json?
+
+  @@map("payment_logs")
+}
+
+model SiteSetting {
+  key           String    @id
+  value         String    @db.Text
+  updatedAt     DateTime  @updatedAt
+
+  @@map("site_settings")
+}

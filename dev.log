@@ -1,0 +1,112 @@
+
+> choke-panoramic@1.0.0 dev
+> next dev
+
+   ▲ Next.js 15.5.24
+   - Local:        http://localhost:3000
+   - Network:      http://172.29.48.1:3000
+   - Environments: .env.local
+
+ ✓ Starting...
+ ✓ Ready in 7.5s
+ ○ Compiling /api/site ...
+ ✓ Compiled /api/site in 906ms (300 modules)
+ GET /api/site 200 in 1412ms
+ ✓ Compiled /api/auth/login in 493ms (311 modules)
+ POST /api/auth/login 200 in 663ms
+ ✓ Compiled /api/admin/products in 282ms (312 modules)
+ GET /api/admin/products 200 in 396ms
+ ○ Compiling /admin ...
+ ✓ Compiled /admin in 1757ms (706 modules)
+(node:10992) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+ GET /admin 200 in 2590ms
+ ○ Compiling /api/admin/stats ...
+ ✓ Compiled /api/admin/stats in 608ms (731 modules)
+ GET /api/auth/me 200 in 831ms
+ GET /api/site 200 in 847ms
+ GET /api/admin/stats 200 in 1065ms
+ ○ Compiling /admin/cottages ...
+ ✓ Compiled /admin/cottages in 771ms (774 modules)
+ GET /admin/cottages 200 in 970ms
+ ○ Compiling /api/admin/cottages ...
+ ✓ Compiled /api/admin/cottages in 522ms (776 modules)
+ GET /api/admin/cottages 200 in 653ms
+ GET /admin/cottages 200 in 377ms
+ GET /api/admin/cottages 200 in 51ms
+ ○ Compiling /api/admin/media ...
+ ✓ Compiled /api/admin/media in 629ms (781 modules)
+ GET /api/admin/media 200 in 728ms
+ GET /api/admin/links?cottageId= 200 in 740ms
+ GET /api/admin/media 200 in 54ms
+ GET /api/admin/links?cottageId= 200 in 58ms
+ ○ Compiling /admin/experiences ...
+ ✓ Compiled /admin/experiences in 550ms (790 modules)
+ GET /admin/experiences 200 in 664ms
+ ○ Compiling /api/admin/experiences ...
+ ✓ Compiled /api/admin/experiences in 1058ms (792 modules)
+ GET /api/admin/cottages 200 in 1155ms
+ GET /api/admin/experiences 200 in 1159ms
+ GET /api/admin/cottages 200 in 59ms
+ GET /api/admin/experiences 200 in 66ms
+ ○ Compiling /admin/products ...
+ ✓ Compiled /admin/products in 1258ms (803 modules)
+ GET /admin/products 200 in 1421ms
+ ✓ Compiled /api/admin/products in 328ms (505 modules)
+ GET /api/admin/products 200 in 420ms
+ GET /api/admin/products 200 in 42ms
+ GET /api/admin/links?productId= 200 in 60ms
+ GET /api/admin/media 200 in 78ms
+ GET /api/admin/links?productId= 200 in 55ms
+ GET /api/admin/media 200 in 40ms
+ POST /api/admin/products 201 in 262ms
+ GET /api/admin/products 200 in 50ms
+ GET /api/admin/links?productId=prod-honey 200 in 60ms
+ GET /api/admin/media 200 in 67ms
+ GET /api/admin/links?productId=prod-honey 200 in 62ms
+ GET /api/admin/media 200 in 56ms
+ ✓ Compiled in 2.4s (314 modules)
+ ✓ Compiled in 270ms (314 modules)
+ GET /admin/products 200 in 154ms
+ GET /admin/products 200 in 676ms
+ ✓ Compiled in 456ms (314 modules)
+ GET /admin/products 200 in 116ms
+ ✓ Compiled in 351ms (314 modules)
+ GET /admin/products 200 in 112ms
+ ✓ Compiled in 896ms (314 modules)
+ GET /admin/products 200 in 321ms
+ ✓ Compiled in 479ms (314 modules)
+ ✓ Compiled in 435ms (314 modules)
+ ✓ Compiled in 417ms (314 modules)
+ ✓ Compiled in 531ms (314 modules)
+ ✓ Compiled in 215ms (314 modules)
+ ✓ Compiled in 529ms (314 modules)
+ ✓ Compiled in 450ms (314 modules)
+ ✓ Compiled in 395ms (314 modules)
+ ✓ Compiled in 468ms (314 modules)
+ ✓ Compiled in 528ms (314 modules)
+ ✓ Compiled in 555ms (314 modules)
+ ✓ Compiled in 403ms (314 modules)
+ ✓ Compiled in 259ms (314 modules)
+ ✓ Compiled in 351ms (314 modules)
+ ✓ Compiled in 375ms (314 modules)
+ ✓ Compiled in 310ms (314 modules)
+ ✓ Compiled in 206ms (314 modules)
+ ✓ Compiled in 542ms (314 modules)
+ ✓ Compiled in 466ms (314 modules)
+ ✓ Compiled in 364ms (314 modules)
+ ✓ Compiled in 454ms (314 modules)
+ ✓ Compiled in 308ms (314 modules)
+ ✓ Compiled in 451ms (314 modules)
+ ✓ Compiled in 532ms (314 modules)
+ ✓ Compiled in 196ms (314 modules)
+ ✓ Compiled in 639ms (314 modules)
+ ✓ Compiled in 533ms (314 modules)
+ ✓ Compiled in 487ms (314 modules)
+ ✓ Compiled in 474ms (314 modules)
+ ✓ Compiled in 456ms (314 modules)
+ ✓ Compiled in 289ms (314 modules)
+ ✓ Compiled in 408ms (314 modules)
+ ✓ Compiled in 274ms (314 modules)
+ ✓ Compiled in 435ms (314 modules)
+ ✓ Compiled in 364ms (314 modules)
