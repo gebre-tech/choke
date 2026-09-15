@@ -93,14 +93,17 @@ export async function POST(req: NextRequest) {
 
 function pickAttachment(
   body: Record<string, unknown>
-): { error: string } | { scope?: MediaScope; cottageId?: string; experienceId?: string; productId?: string } {
+): { error: string } | { scope?: MediaScope; cottageId?: string; experienceId?: string; productId?: string; pageId?: string; section?: string } {
   const cottageId = typeof body.cottageId === 'string' ? body.cottageId : ''
   const experienceId = typeof body.experienceId === 'string' ? body.experienceId : ''
   const productId = typeof body.productId === 'string' ? body.productId : ''
+  const pageId = typeof body.page === 'string' ? body.page : ''
+  const section = typeof body.section === 'string' ? body.section : ''
   const ids = [cottageId, experienceId, productId].filter(Boolean)
   if (ids.length > 1) return { error: 'Media can be attached to only one item at a time' }
   if (cottageId) return { scope: 'COTTAGE', cottageId }
   if (experienceId) return { scope: 'EXPERIENCE', experienceId }
   if (productId) return { scope: 'PRODUCT', productId }
+  if (pageId) return { scope: 'PAGE_BACKGROUND', pageId, section }
   return {}
 }
