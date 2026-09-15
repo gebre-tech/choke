@@ -101,9 +101,9 @@ function pickAttachment(
   const section = typeof body.section === 'string' ? body.section : ''
   const ids = [cottageId, experienceId, productId].filter(Boolean)
   if (ids.length > 1) return { error: 'Media can be attached to only one item at a time' }
-  if (cottageId) return { scope: 'COTTAGE', cottageId }
-  if (experienceId) return { scope: 'EXPERIENCE', experienceId }
-  if (productId) return { scope: 'PRODUCT', productId }
-  if (pageId) return { scope: 'PAGE_BACKGROUND', pageId, section }
+  if (cottageId) return { scope: 'COTTAGE' as MediaScope, cottageId }
+  if (experienceId) return { scope: 'EXPERIENCE' as MediaScope, experienceId }
+  if (productId) return { scope: 'PRODUCT' as MediaScope, productId }
+  if (pageId) return { scope: 'PAGE_BACKGROUND' as MediaScope, pageId, section }
   return {}
 }
