@@ -15,7 +15,7 @@ const mediaInclude = {
   product: { select: { id: true, name: true } },
 }
 
-const SCOPES = ['GALLERY', 'COTTAGE', 'EXPERIENCE', 'PRODUCT'] as const
+const SCOPES = ['GALLERY', 'COTTAGE', 'EXPERIENCE', 'PRODUCT', 'PAGE_BACKGROUND'] as const
 
 export async function GET(req: NextRequest) {
   const guard = await adminOnly()

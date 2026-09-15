@@ -14,6 +14,7 @@ const links = [
   { href: '/admin/calendar', label: 'Calendar' },
   { href: '/admin/guests', label: 'Guests' },
   { href: '/admin/media', label: 'Media' },
+  { href: '/admin/page-backgrounds', label: 'Page Backgrounds' },
   { href: '/admin/settings', label: 'Settings' },
 ]
 

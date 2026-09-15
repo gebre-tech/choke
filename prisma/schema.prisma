@@ -78,6 +78,7 @@ enum MediaScope {
   COTTAGE
   EXPERIENCE
   PRODUCT
+  PAGE_BACKGROUND
 }
 
 enum LinkType {
@@ -333,6 +334,8 @@ model Media {
   fileName    String?
   altText     String?
   caption     String?
+  page        String?     // Page identifier (home, marketplace, booking)
+  section     String?     // Section identifier (hero, cottages, experiences, etc.)
 
   // Timestamps
   createdAt   DateTime    @default(now())
@@ -347,9 +350,10 @@ model Media {
   product         Product?    @relation(fields: [productId], references: [id], onDelete: Cascade)
 
   @@index([scope, isActive])
-@@index([cottageId])
+  @@index([cottageId])
   @@index([experienceId])
   @@index([productId])
+  @@index([page, section])
   @@map("media")
 }
 

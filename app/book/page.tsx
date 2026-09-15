@@ -1,5 +1,6 @@
 import { prisma } from '@/lib/prisma'
-import BookingForm from '@/components/BookingForm'
+import { SectionBackground } from '@/components/ui/MultimediaBackground'
+import { BookingSteps } from '@/components/BookingStepsClient'
 
 export const dynamic = 'force-dynamic'
 
@@ -54,15 +55,25 @@ export default async function BookPage() {
   }))
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-900 via-emerald-900 to-stone-800 text-white">
-      <div className="container mx-auto px-4 py-12 max-w-3xl">
-        <h1 className="text-4xl font-bold mb-2">Book your stay</h1>
-        <p className="text-stone-300 mb-8">
-          Choose a cottage and dates — you'll pay securely via Chapa (Telebirr, CBE Birr or
-          bank card).
-        </p>
-        <BookingForm cottages={serialized} />
-      </div>
-    </div>
+    <>
+      {/* Hero with Multimedia Background */}
+      <SectionBackground page="booking" section="hero" className="py-16" overlay animation="kenburns" duration={30000}>
+        <div className="container mx-auto px-4 py-16 relative z-10 max-w-3xl">
+          <h1 className="text-4xl md:text-5xl font-bold text-white mb-4 animate-fade-in">Book your stay</h1>
+          <p className="text-white/90 text-lg animate-slide-up" style={{ animationDelay: '200ms' }}>
+            Choose a cottage and dates — you'll pay securely via Chapa (Telebirr, CBE Birr or bank card).
+          </p>
+        </div>
+      </SectionBackground>
+
+      {/* Booking Form Section */}
+      <section className="relative py-16 bg-white">
+        <SectionBackground page="booking" section="form" animation="zoom" duration={20000} overlay={false}>
+          <div className="container mx-auto px-4 py-12 max-w-3xl relative z-10">
+            <BookingSteps cottages={serialized} />
+          </div>
+        </SectionBackground>
+      </section>
+    </>
   )
 }

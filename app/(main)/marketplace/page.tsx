@@ -1,6 +1,7 @@
 import { prisma } from '@/lib/prisma'
 import MarketplaceClient from '@/components/marketplace/MarketplaceClient'
 import type { MarketProduct } from '@/components/marketplace/types'
+import { SectionBackground } from '@/components/ui/MultimediaBackground'
 
 export const dynamic = 'force-dynamic'
 
@@ -107,23 +108,55 @@ export default async function MarketplacePage() {
   const categories = [...new Set(products.map((p) => p.category))]
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-2">Taeme Abakidan Marketplace</h1>
-      <p className="text-gray-600 mb-8">
-        Sustainably produced goods from the Dega Damot community. Every purchase supports
-        the Taeme Abakidan producer cooperative. Click any product for photos, videos and details.
-      </p>
+    <>
+      {/* Hero with Multimedia Background */}
+      <SectionBackground page="marketplace" section="hero" className="py-16" overlay animation="kenburns" duration={30000}>
+        <div className="container mx-auto px-4 relative z-10">
+          <h1 className="text-4xl md:text-5xl font-bold text-white mb-4 animate-fade-in">Taeme Abakidan Marketplace</h1>
+          <p className="text-white/90 text-lg max-w-2xl animate-slide-up" style={{ animationDelay: '200ms' }}>
+            Sustainably produced goods from the Dega Damot community. Every purchase supports
+            the Taeme Abakidan producer cooperative.
+          </p>
+        </div>
+      </SectionBackground>
 
-      <MarketplaceClient
-        products={mapped}
-        categories={categories}
-        experiences={experienceItems}
-        cottages={cottages}
-      />
+      {/* Experiences Section */}
+      <SectionBackground page="marketplace" section="experiences" className="py-16 bg-white" overlay={false}>
+        {experiences.length > 0 && (
+          <div className="container mx-auto px-4">
+            <h2 className="text-3xl font-bold mb-2 animate-fade-in">Experiences & activities</h2>
+            <p className="text-stone-600 mb-8 animate-slide-up" style={{ animationDelay: '100ms' }}>
+              Guided adventures from stargazing to mountain treks — all starting from the lodge.
+            </p>
+            <MarketplaceClient
+              products={mapped}
+              categories={categories}
+              experiences={experienceItems}
+              cottages={cottages}
+            />
+          </div>
+        )}
+      </SectionBackground>
 
-      {mapped.length === 0 && (
-        <p className="text-gray-500">Coming soon — new community products are on their way.</p>
-      )}
-    </div>
+      {/* Products Section */}
+      <SectionBackground page="marketplace" section="products" className="py-16 bg-stone-50" overlay={false}>
+        <div className="container mx-auto px-4">
+          <h2 className="text-3xl font-bold mb-2 animate-fade-in">Community Products</h2>
+          <p className="text-stone-600 mb-8 animate-slide-up" style={{ animationDelay: '100ms' }}>
+            Handcrafted, organic, and locally sourced — direct from the Taeme Abakidan cooperative.
+          </p>
+          <MarketplaceClient
+            products={mapped}
+            categories={categories}
+            experiences={[]}
+            cottages={cottages}
+          />
+
+          {mapped.length === 0 && (
+            <p className="text-gray-500 animate-fade-in">Coming soon — new community products are on their way.</p>
+          )}
+        </div>
+      </SectionBackground>
+    </>
   )
 }

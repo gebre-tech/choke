@@ -1,7 +1,7 @@
 export const MEDIA_TYPES = ['IMAGE', 'VIDEO', 'AUDIO'] as const
 export type MediaType = (typeof MEDIA_TYPES)[number]
 
-export const MEDIA_SCOPES = ['GALLERY', 'COTTAGE', 'EXPERIENCE', 'PRODUCT'] as const
+export const MEDIA_SCOPES = ['GALLERY', 'COTTAGE', 'EXPERIENCE', 'PRODUCT', 'PAGE_BACKGROUND'] as const
 export type MediaScope = (typeof MEDIA_SCOPES)[number]
 
 export const IMAGE_EXTS = new Set(['jpg', 'jpeg', 'png', 'webp', 'gif', 'svg', 'avif'])
@@ -117,6 +117,8 @@ export function mediaLabel(scope: string): string {
       return 'Experience'
     case 'PRODUCT':
       return 'Product'
+    case 'PAGE_BACKGROUND':
+      return 'Page Background'
     default:
       return 'Gallery'
   }
