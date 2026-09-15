@@ -59,7 +59,7 @@ export async function POST(req: NextRequest) {
     )
   }
 
-  const rawScope: MediaScope = typeof body.scope === 'string' ? (body.scope.toUpperCase() as MediaScope) : 'GALLERY' as MediaScope
+  const rawScope = typeof body.scope === 'string' ? (body.scope.toUpperCase() as MediaScope) : 'GALLERY' as MediaScope
   if (!SCOPES.includes(rawScope)) {
     return NextResponse.json({ error: 'scope must be one of: GALLERY, COTTAGE, EXPERIENCE, PRODUCT' }, { status: 400 })
   }
@@ -71,6 +71,8 @@ export async function POST(req: NextRequest) {
 
   const external = classifyExternalUrl(url)
 
+  const effectiveScope = attachment.scope ?? rawScope
+
   const media = await prisma.media.create({
     data: {
       title: typeof body.title === 'string' && body.title.trim() ? body.title.trim() : url.split('/').pop() ?? 'Untitled',
@@ -78,7 +80,7 @@ export async function POST(req: NextRequest) {
       type: type as MediaType,
       provider: external?.provider ?? 'NONE',
       videoId: external?.videoId ?? null,
-      scope: (attachment.scope ?? rawScope) as MediaScope,
+      scope: effectiveScope as MediaScope,
       caption: typeof body.caption === 'string' ? body.caption.trim() : null,
       altText: typeof body.altText === 'string' ? body.altText.trim() : null,
       cottageId: attachment.cottageId ?? null,
