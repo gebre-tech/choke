@@ -4,7 +4,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import toast from 'react-hot-toast'
-import { Loader2 } from 'lucide-react'
+import { Loader2, Mountain, Sparkles } from 'lucide-react'
 
 export default function RegisterPage() {
   const router = useRouter()
@@ -36,8 +36,17 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-900 via-emerald-900 to-stone-800 flex items-center justify-center px-4">
-      <div className="bg-white rounded-3xl p-8 w-full max-w-md shadow-xl">
+    <div className="min-h-screen bg-stone-950 px-4 py-12 sm:px-6">
+      <div className="mx-auto grid w-full max-w-5xl overflow-hidden rounded-[2rem] bg-white shadow-2xl lg:grid-cols-[0.9fr_1.1fr]">
+        <div className="relative hidden min-h-[620px] overflow-hidden bg-emerald-950 p-10 text-white lg:block">
+          <img src="/choke-community.jpg" alt="" className="absolute inset-0 h-full w-full object-cover opacity-45" />
+          <div className="absolute inset-0 bg-gradient-to-t from-emerald-950 via-emerald-950/30 to-transparent" />
+          <div className="relative z-10 flex h-full flex-col justify-between">
+            <Mountain className="h-9 w-9 text-emerald-300" />
+            <div><p className="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.2em] text-emerald-200"><Sparkles className="h-4 w-4" /> Join the community</p><p className="mt-3 text-3xl font-black">More mountain.<br />More meaning.</p></div>
+          </div>
+        </div>
+        <div className="p-8 text-stone-900 sm:p-12">
         <h1 className="text-2xl font-bold mb-1">Create your account</h1>
         <p className="text-stone-500 mb-6">Book cottages, join experiences and shop local goods</p>
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -99,6 +108,7 @@ export default function RegisterPage() {
             Sign in
           </Link>
         </p>
+      </div>
       </div>
     </div>
   )
