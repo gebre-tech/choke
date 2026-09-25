@@ -7,7 +7,7 @@ export default function Home() {
   return (
     <>
       {/* Hero with Multimedia Background */}
-      <SectionBackground page="home" section="hero" className="h-screen flex items-center" overlay animation="kenburns" duration={25000}>
+      <SectionBackground page="home" section="hero" className="h-screen flex items-center" overlay parallax animation="kenburns" duration={25000}>
         <div className="container mx-auto px-4 relative z-10 w-full">
           <div className="grid items-center gap-10 lg:grid-cols-[1.05fr_0.95fr]">
             <div className="max-w-2xl">
@@ -19,8 +19,8 @@ export default function Home() {
                 <span className="mt-2 block text-emerald-300">Stay for the feeling.</span>
               </h1>
               <p className="mt-6 max-w-xl text-lg leading-8 text-stone-200 md:text-xl">
-                Ethiopia&apos;s highest-altitude eco-lodge at 4,070m — a quiet base for mountain air,
-                community stories, and unforgettable horizons.
+                A highland retreat in Ethiopia&apos;s Choke Mountains at 4,070m — a quiet base for
+                mountain air, community stories, and unforgettable horizons.
               </p>
               <div className="mt-8 flex flex-wrap gap-4">
                 <Link href="/book" className="btn-primary inline-flex items-center gap-2 rounded-full px-6 py-3">
