@@ -46,6 +46,120 @@
 }
 
 @layer components {
+  .mountain-scene {
+    position: relative;
+    height: min(520px, 72vw);
+    min-height: 360px;
+    perspective: 1200px;
+  }
+
+  .mountain-scene__halo {
+    position: absolute;
+    inset: 9% 8%;
+    border: 1px solid rgb(167 243 208 / 0.35);
+    border-radius: 42% 58% 55% 45%;
+    box-shadow: 0 0 80px rgb(16 185 129 / 0.2), inset 0 0 70px rgb(16 185 129 / 0.08);
+  }
+
+  .mountain-scene__frame {
+    position: absolute;
+    inset: 11% 10%;
+    transform-style: preserve-3d;
+    border-radius: 2rem;
+    overflow: visible;
+  }
+
+  .mountain-scene__image {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    border: 1px solid rgb(255 255 255 / 0.3);
+    border-radius: 2rem;
+    transform: translateZ(30px);
+    box-shadow: 25px 35px 80px rgb(0 0 0 / 0.35);
+  }
+
+  .mountain-scene__image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    animation: scene-breathe 12s ease-in-out infinite alternate;
+  }
+
+  .mountain-scene__glow {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgb(16 185 129 / 0.2), transparent 45%, rgb(2 6 23 / 0.5));
+  }
+
+  .mountain-scene__ridge {
+    position: absolute;
+    bottom: -5%;
+    width: 120%;
+    height: 32%;
+    left: -10%;
+    clip-path: polygon(0 100%, 20% 35%, 35% 67%, 55% 10%, 72% 58%, 86% 28%, 100% 100%);
+    background: rgb(2 6 23 / 0.72);
+    transform: translateZ(65px);
+  }
+
+  .mountain-scene__ridge--front {
+    bottom: -11%;
+    opacity: 0.85;
+    transform: translateZ(95px) scale(1.08);
+  }
+
+  .mountain-scene__badge {
+    position: absolute;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    border: 1px solid rgb(255 255 255 / 0.2);
+    border-radius: 999px;
+    background: rgb(2 6 23 / 0.66);
+    padding: 0.65rem 0.9rem;
+    color: white;
+    font-size: 0.7rem;
+    font-weight: 700;
+    backdrop-filter: blur(12px);
+    transform: translateZ(120px);
+  }
+
+  .mountain-scene__badge--top { top: 8%; right: -8%; }
+  .mountain-scene__badge--bottom { bottom: 8%; left: -9%; }
+
+  .marketplace-orbit {
+    position: relative;
+    height: 330px;
+    transform-style: preserve-3d;
+    animation: orbit-float 8s ease-in-out infinite;
+  }
+
+  .marketplace-orbit__card {
+    position: absolute;
+    width: 190px;
+    height: 235px;
+    overflow: hidden;
+    border: 1px solid rgb(255 255 255 / 0.35);
+    border-radius: 1.5rem;
+    box-shadow: 0 25px 60px rgb(0 0 0 / 0.35);
+  }
+
+  .marketplace-orbit__card img { width: 100%; height: 100%; object-fit: cover; }
+  .marketplace-orbit__card::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, rgb(2 6 23 / 0.55), transparent 55%); }
+  .marketplace-orbit__card--1 { left: 4%; top: 25px; transform: rotate(-12deg) translateZ(20px); }
+  .marketplace-orbit__card--2 { left: 29%; top: 0; z-index: 2; transform: rotate(2deg) translateZ(70px); }
+  .marketplace-orbit__card--3 { right: 2%; top: 38px; transform: rotate(12deg) translateZ(20px); }
+  .marketplace-orbit__core { position: absolute; left: 50%; bottom: 10px; z-index: 3; display: flex; align-items: center; gap: 0.55rem; transform: translateX(-50%); border: 1px solid rgb(167 243 208 / 0.3); border-radius: 999px; background: rgb(2 6 23 / 0.8); padding: 0.65rem 1rem; color: white; font-size: 0.75rem; font-weight: 700; backdrop-filter: blur(12px); }
+
+  @keyframes scene-breathe { from { transform: scale(1.02); } to { transform: scale(1.1); } }
+  @keyframes orbit-float { 0%, 100% { transform: translateY(0) rotateX(0deg); } 50% { transform: translateY(-10px) rotateX(2deg); } }
+
+  @media (prefers-reduced-motion: reduce) {
+    .mountain-scene__image img, .marketplace-orbit { animation: none; }
+  }
+
   .card {
     background: rgb(var(--color-surface));
     border-radius: var(--radius-xl);
