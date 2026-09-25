@@ -297,6 +297,19 @@ const products = [
   },
 ];
 
+const productMedia = [
+  { id: "media-prod-honey", productId: "prod-honey", title: "Choke mountain honey", url: "/food.jpg", altText: "Local food from the Choke Mountains" },
+  { id: "media-prod-coffee", productId: "prod-coffee", title: "Highland coffee", url: "/coffee.jpg", altText: "Freshly roasted highland coffee" },
+  { id: "media-prod-crafts", productId: "prod-crafts", title: "Handwoven basket", url: "/crafts.jpg", altText: "Handwoven community basket" },
+  { id: "media-prod-spices", productId: "prod-spices", title: "Highland spices", url: "/spices.jpg", altText: "Colorful highland spices" },
+  { id: "media-prod-breakfast", productId: "prod-breakfast-basket", title: "Mountain breakfast", url: "/food.jpg", altText: "A fresh mountain breakfast" },
+  { id: "media-prod-milk", productId: "prod-fresh-milk", title: "Fresh highland milk", url: "/choke-community.jpg", altText: "Highland community farm life" },
+  { id: "media-prod-restaurant", productId: "prod-restaurant-lunch", title: "Community restaurant lunch", url: "/food.jpg", altText: "A local Ethiopian meal" },
+  { id: "media-prod-guest-house", productId: "prod-guest-house-night", title: "Community guest house", url: "/choke-hero.jpg", altText: "A welcoming mountain stay" },
+  { id: "media-prod-mart", productId: "prod-mart-essentials", title: "Mountain mart essentials", url: "/choke-community.jpg", altText: "Everyday goods from the mountain community" },
+  { id: "media-prod-shirt", productId: "prod-choke-shirt", title: "Choke branded polo", url: "/kok.jpg", altText: "Grey Choke branded polo shirt" },
+];
+
 async function main() {
   console.log("Seeding Choke Panoramic data...");
 
@@ -319,13 +332,39 @@ async function main() {
   console.log(`Experiences: ${experiences.length} ready`);
 
   for (const p of products) {
+    const image = productMedia.find((media) => media.productId === p.id);
     await prisma.product.upsert({
       where: { id: p.id },
-      update: p,
-      create: p,
+      update: { ...p, imageUrls: image ? [image.url] : [] },
+      create: { ...p, imageUrls: image ? [image.url] : [] },
     });
   }
   console.log(`Products: ${products.length} ready`);
+
+  for (const media of productMedia) {
+    await prisma.media.upsert({
+      where: { id: media.id },
+      update: {
+        title: media.title,
+        url: media.url,
+        altText: media.altText,
+        productId: media.productId,
+        scope: "PRODUCT",
+        type: "IMAGE",
+        isActive: true,
+        sortOrder: 0,
+      },
+      create: {
+        ...media,
+        scope: "PRODUCT",
+        type: "IMAGE",
+        provider: "NONE",
+        isActive: true,
+        sortOrder: 0,
+      },
+    });
+  }
+  console.log(`Product images: ${productMedia.length} ready`);
 
   const existingAdmin = await prisma.user.findUnique({ where: { email: ADMIN_EMAIL } });
   if (!existingAdmin) {
