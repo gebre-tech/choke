@@ -19,6 +19,13 @@ const LINK_ICONS: Record<string, typeof LinkIcon> = {
 
 type SortKey = 'default' | 'price-asc' | 'price-desc' | 'newest'
 
+const CATEGORY_LABELS: Record<string, string> = {
+  HONEY: 'Honey', COFFEE: 'Coffee', CRAFTS: 'Crafts', SPICES: 'Spices', BAMBOO: 'Bamboo',
+  FOOD: 'Foods', DAIRY: 'Milk & dairy', RESTAURANT: 'Restaurants',
+  GUEST_HOUSE: 'Guest houses', MART: 'Marts & essentials', APPAREL: 'Choke shirts & clothing',
+  OTHER: 'Other',
+}
+
 const SORTS: { key: SortKey; label: string }[] = [
   { key: 'default', label: 'Recommended' },
   { key: 'newest', label: 'Newest first' },
@@ -81,6 +88,21 @@ export default function MarketplaceClient({
 
   return (
     <div>
+      <div className="mb-8 rounded-3xl bg-gradient-to-r from-emerald-950 to-slate-900 p-6 text-white shadow-xl">
+        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-emerald-300">Choke community marketplace</p>
+        <div className="mt-2 flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
+          <div>
+            <h2 className="text-2xl font-bold">Everything you need from the mountain community.</h2>
+            <p className="mt-2 max-w-2xl text-sm leading-6 text-stone-300">
+              Shop local foods, fresh milk, restaurants, guest houses, everyday essentials, and
+              Choke shirts while supporting local producers and hosts.
+            </p>
+          </div>
+          <span className="rounded-full bg-white/10 px-4 py-2 text-xs font-semibold text-emerald-100">
+            {products.length} local listings
+          </span>
+        </div>
+      </div>
       <div className="flex flex-wrap items-center gap-3 mb-6">
         <Link
           href="/sell"
@@ -192,7 +214,7 @@ export default function MarketplaceClient({
                   : 'bg-white border border-stone-200 text-stone-600 hover:bg-stone-50'
               }`}
             >
-              {c}
+              {CATEGORY_LABELS[c] ?? c.replaceAll('_', ' ')}
             </button>
           ))}
           <select

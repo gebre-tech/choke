@@ -15,6 +15,7 @@ export async function POST(req: NextRequest) {
   }
 
   const cottageId = typeof body.cottageId === 'string' ? body.cottageId.trim() : ''
+  const experienceId = typeof body.experienceId === 'string' ? body.experienceId.trim() : ''
   const checkInRaw = typeof body.checkIn === 'string' ? body.checkIn : ''
   const checkOutRaw = typeof body.checkOut === 'string' ? body.checkOut : ''
   const guestCount = typeof body.guestCount === 'number' ? Math.floor(body.guestCount) : 1
@@ -77,6 +78,24 @@ export async function POST(req: NextRequest) {
     )
   }
 
+  let experience: { id: string; name: string; price: number; capacity: number } | null = null
+  if (experienceId) {
+    const record = await prisma.experience.findFirst({
+      where: { id: experienceId, isActive: true, publicationStatus: 'PUBLISHED' },
+      select: { id: true, name: true, price: true, capacity: true },
+    })
+    if (!record) {
+      return NextResponse.json({ error: 'Selected experience is unavailable' }, { status: 409 })
+    }
+    if (guestCount > record.capacity) {
+      return NextResponse.json(
+        { error: `${record.name} allows up to ${record.capacity} guests` },
+        { status: 400 }
+      )
+    }
+    experience = { ...record, price: Number(record.price) }
+  }
+
   const overlapping = await prisma.booking.count({
     where: {
       cottageId,
@@ -93,7 +112,9 @@ export async function POST(req: NextRequest) {
     )
   }
 
-  const amount = Number(cottage.pricePerNight) * nights
+  const amount =
+    Number(cottage.pricePerNight) * nights +
+    (experience ? experience.price * guestCount : 0)
 
   const user = await prisma.user.upsert({
     where: { email },
@@ -117,6 +138,7 @@ export async function POST(req: NextRequest) {
     data: {
       userId: user.id,
       cottageId,
+      experienceId: experience?.id || null,
       checkIn,
       checkOut,
       guestCount,
@@ -131,6 +153,7 @@ export async function POST(req: NextRequest) {
     {
       bookingId: booking.id,
       cottage: cottage.name,
+      experience: experience?.name ?? null,
       nights,
       amount,
       checkIn: checkInRaw,

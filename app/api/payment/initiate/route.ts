@@ -105,7 +105,15 @@ export async function POST(req: Request) {
       entityType: type,
     })
   } catch (error) {
-    console.error('Payment initiation failed', error)
+    if (error && typeof error === 'object' && 'response' in error) {
+      const response = (error as { response?: { status?: number; data?: unknown } }).response
+      console.error('Payment initiation failed', {
+        status: response?.status,
+        providerResponse: response?.data,
+      })
+    } else {
+      console.error('Payment initiation failed', error)
+    }
     return NextResponse.json({ error: 'Payment initiation failed' }, { status: 500 })
   }
 }

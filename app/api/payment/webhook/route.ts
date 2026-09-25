@@ -6,6 +6,15 @@ import { BookingStatus, PaymentStatus } from '@prisma/client'
 
 const SUCCESS_MARKERS = ['success', 'completed', 'complete']
 
+function signaturesMatch(received: string, expected: string) {
+  const receivedBuffer = Buffer.from(received, 'utf8')
+  const expectedBuffer = Buffer.from(expected, 'utf8')
+  return (
+    receivedBuffer.length === expectedBuffer.length &&
+    crypto.timingSafeEqual(receivedBuffer, expectedBuffer)
+  )
+}
+
 export async function POST(req: Request) {
   const rawBody = await req.text()
   const signature =
@@ -22,7 +31,7 @@ export async function POST(req: Request) {
   }
 
   const expected = crypto.createHmac('sha256', secret).update(rawBody).digest('hex')
-  if (signature !== expected) {
+  if (!signaturesMatch(signature, expected)) {
     return NextResponse.json({ error: 'Invalid signature' }, { status: 401 })
   }
 
@@ -58,6 +67,22 @@ export async function POST(req: Request) {
       if (!entity) {
         console.error(`Webhook for unknown tx_ref: ${txRef}`)
         return NextResponse.json({ error: 'Payment not found' }, { status: 404 })
+      }
+
+      const receivedAmount = Number(data.amount)
+      const expectedAmount =
+        entity.kind === 'booking'
+          ? Number(entity.record.amount)
+          : Number(entity.record.totalAmount)
+      if (
+        !Number.isFinite(receivedAmount) ||
+        !Number.isFinite(expectedAmount) ||
+        Math.abs(receivedAmount - expectedAmount) > 0.01
+      ) {
+        console.error(
+          `Webhook amount mismatch for tx ${txRef}: expected ${expectedAmount}, received ${receivedAmount}`
+        )
+        return NextResponse.json({ error: 'Payment amount mismatch' }, { status: 400 })
       }
 
       if (entity.kind === 'booking') {

@@ -1,12 +1,12 @@
 import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
+import { Plus_Jakarta_Sans } from 'next/font/google'
 import './globals.css'
 import Providers from './providers'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import { getSiteSettings } from '@/lib/site'
 
-const inter = Inter({ subsets: ['latin'] })
+const font = Plus_Jakarta_Sans({ subsets: ['latin'], weight: ['400', '500', '600', '700', '800'] })
 
 export const dynamic = 'force-dynamic'
 
@@ -23,7 +23,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={font.className}>
         <Providers>
           <Header settings={settings} />
           <main id="main-content" className="min-h-screen pt-16" tabIndex={-1}>{children}</main>

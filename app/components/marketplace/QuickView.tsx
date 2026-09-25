@@ -7,6 +7,11 @@ import { coverImage, toCartProduct } from './types'
 import { MediaThumb, MediaPlayer } from '@/components/media/MediaViewer'
 import { ChevronLeft, ChevronRight, Leaf, Loader2, X, ExternalLink, Video, Globe, MapPin, ShoppingCart, MessageSquare, Link as LinkIcon } from 'lucide-react'
 
+const CATEGORY_LABELS: Record<string, string> = {
+  FOOD: 'Food', DAIRY: 'Milk & dairy', RESTAURANT: 'Restaurant', GUEST_HOUSE: 'Guest house',
+  MART: 'Mart', APPAREL: 'Choke apparel',
+}
+
 const LINK_ICONS: Record<string, typeof LinkIcon> = {
   WEBSITE: Globe,
   BOOKING: MapPin,
@@ -135,6 +140,8 @@ export default function QuickView({
             </div>
 
             <div className="text-xs text-stone-500">
+              <span className="font-semibold text-emerald-700">{CATEGORY_LABELS[product.category] ?? product.category}</span>
+              {' · '}
               {product.producerName} · {product.producerLocation}
               {product.weight ? ` · ${product.weight} kg` : ''}
             </div>

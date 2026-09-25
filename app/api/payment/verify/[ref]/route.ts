@@ -25,13 +25,16 @@ export async function GET(
 
     let paymentStatus: PaymentStatus = isPaid ? PaymentStatus.CONFIRMED : PaymentStatus.FAILED
     const paidAmount = Number(data.amount)
-    if (
-      isPaid &&
-      Number.isFinite(paidAmount) &&
-      Math.abs(paidAmount - paymentAmount(entity)) > 0.01
-    ) {
-      console.error(`Amount mismatch for tx ${ref}: expected ${paymentAmount(entity)}, received ${paidAmount}`)
-      paymentStatus = PaymentStatus.FAILED
+    if (isPaid) {
+      if (
+        !Number.isFinite(paidAmount) ||
+        Math.abs(paidAmount - paymentAmount(entity)) > 0.01
+      ) {
+        console.error(
+          `Amount mismatch for tx ${ref}: expected ${paymentAmount(entity)}, received ${paidAmount}`
+        )
+        paymentStatus = PaymentStatus.FAILED
+      }
     }
 
     if (entity.kind === 'booking') {

@@ -38,6 +38,17 @@ type CottageOption = {
   }[]
 }
 
+type ExperienceOption = {
+  id: string
+  name: string
+  description: string
+  type: string
+  price: number
+  duration: number | null
+  capacity: number
+  imageUrl?: string
+}
+
 type Submitting = 'idle' | 'creating' | 'paying'
 
 interface FormErrors {
@@ -50,7 +61,13 @@ interface FormErrors {
   phone?: string
 }
 
-export default function BookingForm({ cottages }: { cottages: CottageOption[] }) {
+export default function BookingForm({
+  cottages,
+  experience,
+}: {
+  cottages: CottageOption[]
+  experience?: ExperienceOption
+}) {
   const [cottageId, setCottageId] = useState(cottages[0]?.id ?? '')
   const [checkIn, setCheckIn] = useState('')
   const [checkOut, setCheckOut] = useState('')
@@ -72,7 +89,9 @@ export default function BookingForm({ cottages }: { cottages: CottageOption[] })
     return Math.round((b.getTime() - a.getTime()) / 86400000)
   })()
 
-  const estimate = selected && nights > 0 ? selected.pricePerNight * nights : null
+  const estimate = selected && nights > 0
+    ? selected.pricePerNight * nights + (experience ? experience.price * guestCount : 0)
+    : null
 
   const today = new Date().toISOString().split('T')[0]
 
@@ -160,6 +179,7 @@ export default function BookingForm({ cottages }: { cottages: CottageOption[] })
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           cottageId,
+          experienceId: experience?.id,
           checkIn,
           checkOut,
           guestCount,

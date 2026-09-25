@@ -54,7 +54,10 @@ type Product = {
   }[]
 }
 
-const CATEGORIES = ['HONEY', 'COFFEE', 'CRAFTS', 'SPICES', 'BAMBOO']
+const CATEGORIES = [
+  'HONEY', 'COFFEE', 'CRAFTS', 'SPICES', 'BAMBOO',
+  'FOOD', 'DAIRY', 'RESTAURANT', 'GUEST_HOUSE', 'MART', 'APPAREL', 'OTHER',
+]
 
 const emptyProduct: Product = {
   id: '',
@@ -64,8 +67,8 @@ const emptyProduct: Product = {
   category: 'HONEY',
   stock: 0,
   minimumStock: 5,
-  producerName: 'Taeme Abakidan Community',
-  producerLocation: 'Dega Damot, Ethiopia',
+  producerName: 'Choke Mountains Community',
+  producerLocation: 'West Gojam Zone, Amhara Region, Ethiopia',
   isOrganic: true,
   weight: null,
   isActive: true,

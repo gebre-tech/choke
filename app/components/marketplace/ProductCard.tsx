@@ -6,6 +6,11 @@ import { Leaf, PlayCircle, Globe, MapPin, Video, MessageSquare, ShoppingCart, Li
 import { Button } from '@/components/ui/design-system/Button'
 import { generateId } from '@/lib/a11y'
 
+const CATEGORY_LABELS: Record<string, string> = {
+  FOOD: 'Food', DAIRY: 'Milk & dairy', RESTAURANT: 'Restaurant', GUEST_HOUSE: 'Guest house',
+  MART: 'Mart', APPAREL: 'Choke apparel',
+}
+
 const LINK_ICONS: Record<string, typeof LinkIcon> = {
   WEBSITE: Globe,
   BOOKING: MapPin,
@@ -91,7 +96,8 @@ export default function ProductCard({
           <p className="text-emerald-600 font-bold whitespace-nowrap" aria-label={`Price: ${product.price.toLocaleString()} ETB`}>ETB {product.price.toLocaleString()}</p>
         </div>
         <p className="text-xs text-stone-500 mt-0.5 line-clamp-1">
-          {product.producerName} · {product.producerLocation}
+          <span className="font-medium text-emerald-700">{CATEGORY_LABELS[product.category] ?? product.category}</span>
+          {' · '}{product.producerName} · {product.producerLocation}
           {product.weight ? ` · ${product.weight} kg` : ''}
         </p>
         {product.links && product.links.length > 0 && (

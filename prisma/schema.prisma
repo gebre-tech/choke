@@ -56,6 +56,12 @@ enum ProductCategory {
   CRAFTS
   SPICES
   BAMBOO
+  FOOD
+  DAIRY
+  RESTAURANT
+  GUEST_HOUSE
+  MART
+  APPAREL
   OTHER
 }
 
@@ -284,8 +290,8 @@ model Product {
   minimumStock    Int            @default(5)
   
   // Origin
-  producerName    String         @default("Taeme Abakidan Community")
-  producerLocation String        @default("Dega Damot, Ethiopia")
+  producerName    String         @default("Choke Mountains Community")
+  producerLocation String        @default("West Gojam Zone, Amhara Region, Ethiopia")
   isOrganic       Boolean        @default(true)
   
   // Media

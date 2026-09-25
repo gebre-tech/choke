@@ -216,8 +216,8 @@ function ProductForm({
     price: '',
     category: 'HONEY',
     stock: '10',
-    producerName: 'Taeme Abakidan Community',
-    producerLocation: 'Dega Damot, Ethiopia',
+    producerName: 'Choke Mountains Community',
+    producerLocation: 'West Gojam Zone, Amhara Region, Ethiopia',
     isOrganic: true,
     weight: '',
   })

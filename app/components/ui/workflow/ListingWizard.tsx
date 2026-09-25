@@ -172,12 +172,12 @@ const getDetailsFields = (type: ListingType, data: ListingData, setData: (data: 
         />
         <InputComponent
           label="Producer Name"
-          value={data.producerName || 'Taeme Abakidan Community'}
+          value={data.producerName || 'Choke Mountains Community'}
           onChange={(e) => setData({ producerName: e.target.value })}
         />
         <InputComponent
           label="Producer Location"
-          value={data.producerLocation || 'Dega Damot, Ethiopia'}
+          value={data.producerLocation || 'West Gojam Zone, Amhara Region, Ethiopia'}
           onChange={(e) => setData({ producerLocation: e.target.value })}
         />
         <CheckboxComponent

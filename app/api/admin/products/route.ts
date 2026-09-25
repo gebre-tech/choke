@@ -82,9 +82,9 @@ export async function POST(req: NextRequest) {
       stock,
       minimumStock: Math.max(0, Number(body.minimumStock) || 5),
       producerName:
-        typeof body.producerName === 'string' ? body.producerName.trim() : 'Taeme Abakidan Community',
+        typeof body.producerName === 'string' ? body.producerName.trim() : 'Choke Mountains Community',
       producerLocation:
-        typeof body.producerLocation === 'string' ? body.producerLocation.trim() : 'Dega Damot, Ethiopia',
+        typeof body.producerLocation === 'string' ? body.producerLocation.trim() : 'West Gojam Zone, Amhara Region, Ethiopia',
       isOrganic: body.isOrganic !== false,
       weight: body.weight ? Number(body.weight) : null,
       isActive: body.isActive !== false,
