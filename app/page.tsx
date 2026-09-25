@@ -8,6 +8,13 @@ export default function Home() {
     <>
       {/* Hero with Multimedia Background */}
       <SectionBackground page="home" section="hero" className="h-screen flex items-center" overlay parallax animation="kenburns" duration={25000}>
+        <div className="homepage-ambient" aria-hidden="true">
+          <div className="homepage-ambient__moon" />
+          <div className="homepage-ambient__grid" />
+          <span className="homepage-ambient__particle homepage-ambient__particle--one" />
+          <span className="homepage-ambient__particle homepage-ambient__particle--two" />
+          <span className="homepage-ambient__particle homepage-ambient__particle--three" />
+        </div>
         <div className="container mx-auto px-4 relative z-10 w-full">
           <div className="grid items-center gap-10 lg:grid-cols-[1.05fr_0.95fr]">
             <div className="max-w-2xl">
