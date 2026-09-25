@@ -5,7 +5,7 @@ import Link from 'next/link'
 import type { MarketProduct, MarketLink } from './types'
 import ProductCard from './ProductCard'
 import QuickView from './QuickView'
-import { Search, X, PlusCircle, Mountain, CalendarDays, Globe, MapPin, Video, MessageSquare, Link as LinkIcon } from 'lucide-react'
+import { Search, X, PlusCircle, Mountain, CalendarDays, Globe, MapPin, Video, MessageSquare, Link as LinkIcon, SlidersHorizontal, ShoppingBag, Leaf } from 'lucide-react'
 
 const LINK_ICONS: Record<string, typeof LinkIcon> = {
   WEBSITE: Globe,
@@ -57,6 +57,9 @@ export default function MarketplaceClient({
   const [q, setQ] = useState('')
   const [cat, setCat] = useState('all')
   const [sort, setSort] = useState<SortKey>('default')
+  const [maxPrice, setMaxPrice] = useState('')
+  const [organicOnly, setOrganicOnly] = useState(false)
+  const [filtersOpen, setFiltersOpen] = useState(false)
   const [open, setOpen] = useState<MarketProduct | null>(null)
 
   const filtered = useMemo(() => {
@@ -64,6 +67,8 @@ export default function MarketplaceClient({
     let list = products.filter(
       (p) =>
         (cat === 'all' || p.category === cat) &&
+        (!maxPrice || p.price <= Number(maxPrice)) &&
+        (!organicOnly || p.isOrganic) &&
         (!term ||
           [p.name, p.description, p.producerName, p.producerLocation, p.category]
             .filter(Boolean)
@@ -81,7 +86,16 @@ export default function MarketplaceClient({
         break
     }
     return list
-  }, [products, q, cat, sort])
+  }, [products, q, cat, sort, maxPrice, organicOnly])
+
+  const hasFilters = Boolean(q || cat !== 'all' || maxPrice || organicOnly)
+  const clearFilters = () => {
+    setQ('')
+    setCat('all')
+    setSort('default')
+    setMaxPrice('')
+    setOrganicOnly(false)
+  }
 
   const coverImage = (assets: { type: string; url: string }[]) =>
     assets.find((m) => m.type === 'IMAGE')?.url
@@ -174,14 +188,15 @@ export default function MarketplaceClient({
         </section>
       )}
 
-      <div className="flex flex-col lg:flex-row lg:items-center gap-3 mb-6">
-        <div className="relative flex-1 max-w-sm">
+      <div className="mb-6 rounded-2xl border border-stone-200 bg-white p-3 shadow-sm">
+        <div className="flex flex-col gap-3 lg:flex-row lg:items-center">
+        <div className="relative flex-1">
           <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-stone-400" />
           <input
             value={q}
             onChange={(e) => setQ(e.target.value)}
-            placeholder="Search harvest honey, coffee, crafts…"
-            className="w-full border border-stone-300 rounded-full pl-9 pr-9 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
+            placeholder="Search products, hosts, foods, clothing…"
+            className="w-full rounded-xl border border-stone-200 bg-stone-50 py-3 pl-9 pr-9 text-sm focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/20"
           />
           {q && (
             <button
@@ -194,6 +209,13 @@ export default function MarketplaceClient({
         </div>
 
         <div className="flex flex-wrap items-center gap-2">
+          <button
+            type="button"
+            onClick={() => setFiltersOpen((value) => !value)}
+            className={`inline-flex items-center gap-2 rounded-xl border px-3 py-2 text-xs font-semibold ${filtersOpen || hasFilters ? 'border-emerald-500 bg-emerald-50 text-emerald-700' : 'border-stone-200 text-stone-600'}`}
+          >
+            <SlidersHorizontal className="h-4 w-4" /> Filters
+          </button>
           <button
             onClick={() => setCat('all')}
             className={`px-3.5 py-1.5 rounded-full text-xs font-semibold transition-colors ${
@@ -229,12 +251,41 @@ export default function MarketplaceClient({
             ))}
           </select>
         </div>
+        </div>
+        {filtersOpen && (
+          <div className="mt-3 flex flex-wrap items-end gap-3 border-t border-stone-100 pt-3">
+            <label className="text-xs font-semibold text-stone-600">
+              Maximum price
+              <input
+                type="number"
+                min="0"
+                value={maxPrice}
+                onChange={(event) => setMaxPrice(event.target.value)}
+                placeholder="Any price"
+                className="mt-1 block w-36 rounded-lg border border-stone-200 px-3 py-2 text-sm font-normal focus:border-emerald-500 focus:outline-none"
+              />
+            </label>
+            <label className="inline-flex items-center gap-2 rounded-lg border border-stone-200 px-3 py-2 text-xs font-semibold text-stone-600">
+              <input type="checkbox" checked={organicOnly} onChange={(event) => setOrganicOnly(event.target.checked)} className="h-4 w-4 accent-emerald-600" />
+              <Leaf className="h-4 w-4 text-emerald-600" /> Organic only
+            </label>
+            {hasFilters && (
+              <button type="button" onClick={clearFilters} className="text-xs font-semibold text-red-600 hover:underline">
+                Clear all filters
+              </button>
+            )}
+          </div>
+        )}
       </div>
 
-      <p className="text-xs text-stone-500 mb-4">
+      <div className="mb-4 flex items-center justify-between gap-3">
+      <p className="flex items-center gap-2 text-sm text-stone-500">
+        <ShoppingBag className="h-4 w-4" />
         {filtered.length} product{filtered.length === 1 ? '' : 's'}
         {q && <> matching “{q}”</>}
       </p>
+      {hasFilters && <button type="button" onClick={clearFilters} className="text-xs font-semibold text-emerald-700 hover:underline">Reset view</button>}
+      </div>
 
       {filtered.length === 0 ? (
         <p className="text-gray-500 py-12 text-center">

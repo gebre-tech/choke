@@ -120,35 +120,18 @@ export default async function MarketplacePage() {
         </div>
       </SectionBackground>
 
-      {/* Experiences Section */}
-      <SectionBackground page="marketplace" section="experiences" className="py-16 bg-white" overlay={false}>
-        {experiences.length > 0 && (
-          <div className="container mx-auto px-4">
-            <h2 className="text-3xl font-bold mb-2 animate-fade-in">Experiences & activities</h2>
-            <p className="text-stone-600 mb-8 animate-slide-up" style={{ animationDelay: '100ms' }}>
-              Guided adventures from stargazing to mountain treks — all starting from the lodge.
-            </p>
-            <MarketplaceClient
-              products={mapped}
-              categories={categories}
-              experiences={experienceItems}
-              cottages={cottages}
-            />
-          </div>
-        )}
-      </SectionBackground>
-
-      {/* Products Section */}
-      <SectionBackground page="marketplace" section="products" className="py-16 bg-stone-50" overlay={false}>
+      <SectionBackground page="marketplace" section="products" className="py-12 bg-stone-50" overlay={false}>
         <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold mb-2 animate-fade-in">Community Products</h2>
-          <p className="text-stone-600 mb-8 animate-slide-up" style={{ animationDelay: '100ms' }}>
-            Handcrafted, organic, and locally sourced — direct from the Taeme Abakidan cooperative.
-          </p>
+          <div className="mb-8">
+            <h2 className="text-3xl font-bold mb-2 animate-fade-in">Browse the community collection</h2>
+            <p className="text-stone-600 animate-slide-up" style={{ animationDelay: '100ms' }}>
+              Filter by category, price, or organic products. Open any listing for details and add it to your cart.
+            </p>
+          </div>
           <MarketplaceClient
             products={mapped}
             categories={categories}
-            experiences={[]}
+            experiences={experienceItems}
             cottages={cottages}
           />
 
