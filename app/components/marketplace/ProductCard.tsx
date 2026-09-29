@@ -35,13 +35,6 @@ export default function ProductCard({
   const hasVideo = product.media.some((m) => m.type === 'VIDEO')
   const low = product.stock <= product.minimumStock
 
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault()
-      onOpen()
-    }
-  }
-
   return (
     <article
       id={cardId}
@@ -129,16 +122,17 @@ export default function ProductCard({
         )}
       </div>
 
-      <button
+      <Button
+        type="button"
         onClick={onOpen}
-        onKeyDown={handleKeyDown}
-        className="mt-auto w-full"
+        variant="outline"
+        size="md"
+        fullWidth
+        className="mt-auto"
         aria-label={`View details for ${product.name}`}
       >
-        <Button variant="outline" size="md" fullWidth>
-          View product
-        </Button>
-      </button>
+        View product
+      </Button>
     </article>
   )
 }

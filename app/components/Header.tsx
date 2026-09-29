@@ -105,6 +105,7 @@ export default function Header({ settings }: { settings?: HeaderSettings }) {
                     ? 'text-white/80 hover:text-white hover:bg-white/10'
                     : 'text-stone-600 hover:text-emerald-600 hover:bg-stone-50'
                 }`}
+                aria-current={pathname === link.href ? 'page' : undefined}
               >
                 {link.label}
               </Link>
@@ -167,7 +168,7 @@ export default function Header({ settings }: { settings?: HeaderSettings }) {
             >
               <ShoppingBag className="w-5 h-5" aria-hidden="true" />
               {total > 0 && (
-                <span className="absolute -top-0.5 -right-0.5 bg-emerald-500 text-white text-[10px] font-bold w-4.5 h-4.5 w-5 h-5 rounded-full flex items-center justify-center" aria-hidden="true">
+                <span className="absolute -top-0.5 -right-0.5 flex h-5 w-5 items-center justify-center rounded-full bg-emerald-500 text-[10px] font-bold text-white" aria-hidden="true">
                   {total}
                 </span>
               )}
@@ -176,12 +177,14 @@ export default function Header({ settings }: { settings?: HeaderSettings }) {
             {/* Mobile Menu Toggle */}
             <button
               onClick={() => setMobileOpen(!mobileOpen)}
+              aria-expanded={mobileOpen}
+              aria-controls="mobile-navigation"
               className={`md:hidden p-2.5 rounded-full transition-all ${
                 isTransparent && !mobileOpen
                   ? 'text-white/80 hover:text-white hover:bg-white/10'
                   : 'text-stone-600 hover:bg-stone-100'
               }`}
-              aria-label="Toggle navigation"
+              aria-label={mobileOpen ? 'Close navigation menu' : 'Open navigation menu'}
             >
               {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
@@ -189,14 +192,14 @@ export default function Header({ settings }: { settings?: HeaderSettings }) {
         </div>
 
         {/* Mobile Menu */}
-        {mobileOpen && (
-          <div className="md:hidden bg-white border-t border-stone-100 shadow-xl">
+        <nav id="mobile-navigation" aria-label="Mobile navigation" hidden={!mobileOpen} className="md:hidden bg-white border-t border-stone-100 shadow-xl">
             <div className="container mx-auto px-4 py-4 space-y-1">
               {navLinks.map((link) => (
                 <Link
                   key={link.href}
                   href={link.href}
                   onClick={() => setMobileOpen(false)}
+                  aria-current={pathname === link.href ? 'page' : undefined}
                   className={`block px-4 py-3 rounded-xl text-sm font-medium transition-all ${
                     pathname === link.href
                       ? 'bg-emerald-50 text-emerald-700'
@@ -228,8 +231,7 @@ export default function Header({ settings }: { settings?: HeaderSettings }) {
                 )}
               </div>
             </div>
-          </div>
-        )}
+        </nav>
       </header>
       <CartDrawer open={cartOpen} onClose={() => setCartOpen(false)} />
     </>
