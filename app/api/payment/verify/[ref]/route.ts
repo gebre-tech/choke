@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { findPaymentEntityByRef, paymentAmount } from '@/lib/payment-entities'
 import { chapa } from '@/lib/chapa'
-import { PaymentStatus } from '@prisma/client'
+import { BookingStatus, PaymentStatus } from '@prisma/client'
 
 export async function GET(
   req: Request,
@@ -21,9 +21,15 @@ export async function GET(
     const response = await chapa.get(`/transaction/verify/${ref}`)
     const data = response.data?.data ?? {}
 
-    const isPaid = data.status === 'success' || data.charge_status === 'success'
+    const providerStatus = String(data.status ?? data.charge_status ?? '').toLowerCase()
+    const isPaid = providerStatus === 'success' || providerStatus === 'completed'
+    const isFailed = ['failed', 'cancelled', 'canceled', 'expired'].includes(providerStatus)
 
-    let paymentStatus: PaymentStatus = isPaid ? PaymentStatus.CONFIRMED : PaymentStatus.FAILED
+    let paymentStatus: PaymentStatus = isPaid
+      ? PaymentStatus.CONFIRMED
+      : isFailed
+        ? PaymentStatus.FAILED
+        : PaymentStatus.PENDING
     const paidAmount = Number(data.amount)
     if (isPaid) {
       if (
@@ -41,16 +47,21 @@ export async function GET(
       await prisma.booking.update({
         where: { id: entity.record.id },
         data: {
-          paymentStatus,
+          paymentStatus: entity.record.paymentStatus === PaymentStatus.CONFIRMED
+            ? PaymentStatus.CONFIRMED
+            : paymentStatus,
           paymentVerifiedAt: isPaid ? new Date() : null,
           paymentData: data,
+          ...(isPaid ? { status: BookingStatus.CONFIRMED } : {}),
         },
       })
     } else {
       await prisma.order.update({
         where: { id: entity.record.id },
         data: {
-          paymentStatus,
+          paymentStatus: entity.record.paymentStatus === PaymentStatus.CONFIRMED
+            ? PaymentStatus.CONFIRMED
+            : paymentStatus,
           paymentVerifiedAt: isPaid ? new Date() : null,
           paymentData: data,
         },
