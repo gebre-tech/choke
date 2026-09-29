@@ -69,7 +69,7 @@ export async function POST(req: Request) {
 
     const txRef = `CHOKE-${Date.now()}-${entity.id.slice(-6)}`
     const configuredAppUrl =
-      process.env.APP_URL || process.env.NEXTAUTH_URL || process.env.RENDER_EXTERNAL_URL
+      process.env.APP_URL || process.env.RENDER_EXTERNAL_URL || process.env.NEXTAUTH_URL
     const appUrl = (configuredAppUrl || (
       process.env.NODE_ENV === 'production'
         ? 'https://choke.onrender.com'
