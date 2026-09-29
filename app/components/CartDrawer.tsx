@@ -10,6 +10,18 @@ import { generateId } from '@/lib/a11y'
 
 type Stage = 'idle' | 'creating' | 'paying'
 
+function isChapaEmail(value: string) {
+  const email = value.trim().toLowerCase()
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return false
+  const domain = email.split('@')[1]
+  const reservedDomains = [
+    'example.com', 'example.net', 'example.org', 'localhost',
+  ]
+  const reservedSuffixes = ['.test', '.invalid', '.localhost', '.local']
+  return !reservedDomains.some((reserved) => domain === reserved || domain.endsWith(`.${reserved}`)) &&
+    !reservedSuffixes.some((suffix) => domain.endsWith(suffix))
+}
+
 export default function CartDrawer({ open, onClose }: { open: boolean; onClose: () => void }) {
   const { items, removeItem, updateQuantity, clearCart } = useCartStore()
   const [email, setEmail] = useState('')
@@ -31,8 +43,8 @@ export default function CartDrawer({ open, onClose }: { open: boolean; onClose: 
   }
 
   const validateEmail = (value: string) => {
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
-      setEmailError('Enter a valid email')
+    if (!isChapaEmail(value)) {
+      setEmailError('Chapa cannot use this demo email. Enter another email for the test payment.')
       return false
     }
     setEmailError('')
@@ -40,7 +52,7 @@ export default function CartDrawer({ open, onClose }: { open: boolean; onClose: 
   }
 
   const handleCheckout = async () => {
-    const checkoutEmail = accountEmail || email
+    const checkoutEmail = accountEmail && isChapaEmail(accountEmail) ? accountEmail : email
     if (!validateEmail(checkoutEmail)) return
 
     setStage('creating')
@@ -176,7 +188,7 @@ export default function CartDrawer({ open, onClose }: { open: boolean; onClose: 
 
             <div className="mt-4 pt-4 border-t space-y-3">
               <p className="text-xl font-bold" aria-live="polite">Total: ETB {total.toFixed(2)}</p>
-              {authChecked && !accountEmail && (
+              {authChecked && (!accountEmail || !isChapaEmail(accountEmail)) && (
                 <Input
                   id={emailId}
                   type="email"
