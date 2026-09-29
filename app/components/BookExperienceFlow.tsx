@@ -51,7 +51,7 @@ export default function BookExperienceFlow({
   return (
     <div className="rounded-3xl bg-white p-5 shadow-2xl sm:p-7">
       <div className="mb-6">
-        <p className="text-sm font-semibold uppercase tracking-[0.18em] text-emerald-600">Step 1 of 2</p>
+        <p className="text-sm font-semibold uppercase tracking-[0.18em] text-emerald-800">Step 1 of 2</p>
         <h2 className="mt-2 text-2xl font-bold text-slate-900">Choose an experience or activity</h2>
         <p className="mt-2 text-sm leading-6 text-stone-500">
           Pick something to add to your stay. You can also continue with the cottage only.
@@ -85,7 +85,7 @@ export default function BookExperienceFlow({
                 )}
               </div>
               <div className="p-4">
-                <p className="text-xs font-semibold uppercase tracking-wider text-emerald-600">{item.type.replaceAll('_', ' ')}</p>
+                <p className="text-xs font-semibold uppercase tracking-wider text-emerald-700">{item.type.replaceAll('_', ' ')}</p>
                 <h3 className="mt-1 font-bold text-slate-900">{item.name}</h3>
                 <p className="mt-2 line-clamp-2 text-sm leading-5 text-stone-500">{item.description}</p>
                 <div className="mt-3 flex flex-wrap gap-3 text-xs text-stone-500">
@@ -111,7 +111,7 @@ export default function BookExperienceFlow({
           type="button"
           disabled={!selected}
           onClick={() => setStarted(true)}
-          className="inline-flex items-center justify-center gap-2 rounded-xl bg-emerald-600 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-emerald-600/20 transition hover:bg-emerald-700 disabled:cursor-not-allowed disabled:opacity-40"
+          className="inline-flex items-center justify-center gap-2 rounded-xl bg-emerald-700 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-emerald-900/20 transition hover:bg-emerald-800 disabled:cursor-not-allowed disabled:opacity-50"
         >
           Continue with selected activity <ArrowRight className="h-4 w-4" aria-hidden="true" />
         </button>

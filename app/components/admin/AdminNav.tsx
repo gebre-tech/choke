@@ -30,7 +30,7 @@ export default function AdminNav() {
             key={l.href}
             href={l.href}
             className={`px-3 py-1.5 rounded-full text-sm transition-colors ${
-              active ? 'bg-emerald-600 text-white' : 'text-stone-300 hover:bg-white/10'
+              active ? 'bg-emerald-700 text-white' : 'text-stone-300 hover:bg-white/10'
             }`}
           >
             {l.label}

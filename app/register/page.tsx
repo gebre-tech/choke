@@ -91,12 +91,12 @@ export default function RegisterPage() {
               minLength={8}
               className="w-full border border-stone-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-emerald-500"
             />
-            <p className="text-xs text-stone-400 mt-1">At least 8 characters</p>
+            <p className="text-xs text-stone-500 mt-1">At least 8 characters</p>
           </div>
           <button
             type="submit"
             disabled={busy}
-            className="w-full bg-emerald-600 hover:bg-emerald-500 disabled:opacity-60 text-white font-semibold py-3 rounded-full flex items-center justify-center gap-2 transition-colors"
+            className="w-full bg-emerald-700 hover:bg-emerald-800 disabled:opacity-60 text-white font-semibold py-3 rounded-full flex items-center justify-center gap-2 transition-colors"
           >
             {busy && <Loader2 className="w-4 h-4 animate-spin" />}
             Create account

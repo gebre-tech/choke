@@ -195,7 +195,7 @@ export default function PageBackgroundManager() {
                 }}
                 className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
                   selectedPage === page.id
-                    ? 'bg-emerald-600 text-white'
+                    ? 'bg-emerald-700 text-white'
                     : 'bg-stone-100 text-stone-600 hover:bg-stone-200'
                 }`}
               >
@@ -355,7 +355,7 @@ export default function PageBackgroundManager() {
                       <label className="block text-xs font-medium text-stone-600 mb-1">Title</label>
                       <input name="title" type="text" required className={inputCls} placeholder="Background title" />
                     </div>
-                    <button type="submit" className="w-full text-xs px-2 py-1 rounded-lg bg-emerald-600 text-white hover:bg-emerald-500">Add Link</button>
+                    <button type="submit" className="w-full text-xs px-2 py-1 rounded-lg bg-emerald-700 text-white hover:bg-emerald-800">Add Link</button>
                   </div>
                 </form>
               </div>
@@ -378,7 +378,7 @@ export default function PageBackgroundManager() {
                           type="button"
                           onClick={() => patch(m, { page: selectedPage, section: selectedSection })}
                           disabled={busy}
-                          className="w-full text-xs px-2 py-1 rounded-lg bg-emerald-600 text-white hover:bg-emerald-500 disabled:opacity-50"
+                          className="w-full text-xs px-2 py-1 rounded-lg bg-emerald-700 text-white hover:bg-emerald-800 disabled:opacity-50"
                         >
                           Attach to this section
                         </button>
@@ -417,7 +417,7 @@ export default function PageBackgroundManager() {
               <textarea {...{ className: inputCls, name: 'caption', defaultValue: editing.caption || '', rows: 2, placeholder: 'Optional caption displayed with the media' }} />
             </Field>
             <div className="flex gap-3 pt-2">
-              <div className="flex-1"><button type="submit" disabled={busy} className="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-semibold py-2 px-4 rounded-xl disabled:opacity-50">{busy ? 'Saving…' : 'Save'}</button></div>
+              <div className="flex-1"><button type="submit" disabled={busy} className="w-full bg-emerald-700 hover:bg-emerald-800 text-white font-semibold py-2 px-4 rounded-xl disabled:opacity-50">{busy ? 'Saving…' : 'Save'}</button></div>
               <button type="button" onClick={() => setEditing(null)} className="px-6 py-2.5 rounded-xl border border-stone-300 text-stone-600">Cancel</button>
             </div>
           </form>

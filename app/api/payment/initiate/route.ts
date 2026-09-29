@@ -68,7 +68,13 @@ export async function POST(req: Request) {
     }
 
     const txRef = `CHOKE-${Date.now()}-${entity.id.slice(-6)}`
-    const appUrl = process.env.APP_URL || process.env.NEXTAUTH_URL || 'http://localhost:3000'
+    const configuredAppUrl =
+      process.env.APP_URL || process.env.RENDER_EXTERNAL_URL || process.env.NEXTAUTH_URL
+    const appUrl = (configuredAppUrl || (
+      process.env.NODE_ENV === 'production'
+        ? 'https://choke.onrender.com'
+        : 'http://localhost:3000'
+    )).replace(/\/+$/, '')
 
     const response = await chapa.post('/transaction/initialize', {
       amount: amount.toFixed(2),
@@ -111,9 +117,18 @@ export async function POST(req: Request) {
         status: response?.status,
         providerResponse: response?.data,
       })
+      const providerMessage =
+        response?.data && typeof response.data === 'object' &&
+        'message' in response.data && typeof response.data.message === 'string'
+          ? response.data.message
+          : null
+      return NextResponse.json(
+        { error: providerMessage || 'Chapa could not initialize this payment' },
+        { status: 502 }
+      )
     } else {
       console.error('Payment initiation failed', error)
     }
-    return NextResponse.json({ error: 'Payment initiation failed' }, { status: 500 })
+    return NextResponse.json({ error: 'Payment initialization is unavailable' }, { status: 500 })
   }
 }

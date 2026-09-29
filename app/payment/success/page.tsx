@@ -79,7 +79,7 @@ export default function PaymentSuccessPage({
         )}
 
         <div className="flex gap-3 justify-center mt-6">
-          <Link href="/" className="bg-emerald-600 hover:bg-emerald-500 text-white px-6 py-2.5 rounded-full transition-colors">
+          <Link href="/" className="bg-emerald-700 hover:bg-emerald-800 text-white px-6 py-2.5 rounded-full transition-colors">
             Back to home
           </Link>
           <Link href="/marketplace" className="text-emerald-700 hover:underline py-2.5">

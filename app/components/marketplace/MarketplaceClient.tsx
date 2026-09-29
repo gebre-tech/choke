@@ -88,7 +88,7 @@ export default function MarketplaceClient({
     return list
   }, [products, q, cat, sort, maxPrice, organicOnly])
 
-  const hasFilters = Boolean(q || cat !== 'all' || maxPrice || organicOnly)
+  const hasFilters = Boolean(q || cat !== 'all' || maxPrice || organicOnly || sort !== 'default')
   const clearFilters = () => {
     setQ('')
     setCat('all')
@@ -120,7 +120,7 @@ export default function MarketplaceClient({
       <div className="flex flex-wrap items-center gap-3 mb-6">
         <Link
           href="/sell"
-          className="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-2 rounded-full text-sm font-semibold"
+          className="inline-flex items-center gap-2 bg-emerald-700 hover:bg-emerald-800 text-white px-4 py-2 rounded-full text-sm font-semibold"
         >
           <PlusCircle className="w-4 h-4" /> Sell from the community
         </Link>
@@ -151,7 +151,7 @@ export default function MarketplaceClient({
                   </div>
                   <div className="flex items-center justify-between gap-2">
                     <h3 className="font-semibold line-clamp-1">{e.name}</h3>
-                    <p className="text-emerald-600 font-bold whitespace-nowrap">ETB {e.price.toLocaleString()}</p>
+                    <p className="text-emerald-700 font-bold whitespace-nowrap">ETB {e.price.toLocaleString()}</p>
                   </div>
                   <p className="text-xs text-stone-500 uppercase tracking-wide">{e.type.replace('_', ' ')}</p>
                   <p className="text-sm text-gray-600 line-clamp-2">{e.description}</p>
@@ -177,7 +177,7 @@ export default function MarketplaceClient({
                   )}
                   <Link
                     href="/book"
-                    className="mt-auto flex items-center justify-center gap-2 bg-emerald-50 hover:bg-emerald-600 hover:text-white text-emerald-700 text-sm font-semibold py-2 rounded-full border border-emerald-200 hover:border-emerald-600 transition-colors"
+                    className="mt-auto flex items-center justify-center gap-2 bg-emerald-50 hover:bg-emerald-700 hover:text-white text-emerald-800 text-sm font-semibold py-2 rounded-full border border-emerald-200 hover:border-emerald-700 transition-colors"
                   >
                     <CalendarDays className="w-4 h-4" /> Book a stay
                   </Link>
@@ -196,11 +196,14 @@ export default function MarketplaceClient({
             value={q}
             onChange={(e) => setQ(e.target.value)}
             placeholder="Search products, hosts, foods, clothing…"
-            className="w-full rounded-xl border border-stone-200 bg-stone-50 py-3 pl-9 pr-9 text-sm focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/20"
+            aria-label="Search marketplace listings"
+            className="w-full rounded-xl border border-stone-200 bg-stone-50 py-3 pl-9 pr-9 text-sm placeholder:text-stone-500 focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/20"
           />
           {q && (
             <button
+              type="button"
               onClick={() => setQ('')}
+              aria-label="Clear search"
               className="absolute right-3 top-1/2 -translate-y-1/2 text-stone-400 hover:text-stone-700"
             >
               <X className="w-4 h-4" />
@@ -212,15 +215,18 @@ export default function MarketplaceClient({
           <button
             type="button"
             onClick={() => setFiltersOpen((value) => !value)}
+            aria-expanded={filtersOpen}
             className={`inline-flex items-center gap-2 rounded-xl border px-3 py-2 text-xs font-semibold ${filtersOpen || hasFilters ? 'border-emerald-500 bg-emerald-50 text-emerald-700' : 'border-stone-200 text-stone-600'}`}
           >
             <SlidersHorizontal className="h-4 w-4" /> Filters
           </button>
           <button
+            type="button"
             onClick={() => setCat('all')}
+            aria-pressed={cat === 'all'}
             className={`px-3.5 py-1.5 rounded-full text-xs font-semibold transition-colors ${
               cat === 'all'
-                ? 'bg-emerald-600 text-white'
+                ? 'bg-emerald-700 text-white'
                 : 'bg-white border border-stone-200 text-stone-600 hover:bg-stone-50'
             }`}
           >
@@ -228,11 +234,13 @@ export default function MarketplaceClient({
           </button>
           {categories.map((c) => (
             <button
+              type="button"
               key={c}
               onClick={() => setCat(c)}
+              aria-pressed={cat === c}
               className={`px-3.5 py-1.5 rounded-full text-xs font-semibold transition-colors ${
                 cat === c
-                  ? 'bg-emerald-600 text-white'
+                  ? 'bg-emerald-700 text-white'
                   : 'bg-white border border-stone-200 text-stone-600 hover:bg-stone-50'
               }`}
             >
@@ -262,7 +270,7 @@ export default function MarketplaceClient({
                 value={maxPrice}
                 onChange={(event) => setMaxPrice(event.target.value)}
                 placeholder="Any price"
-                className="mt-1 block w-36 rounded-lg border border-stone-200 px-3 py-2 text-sm font-normal focus:border-emerald-500 focus:outline-none"
+                className="mt-1 block w-36 rounded-lg border border-stone-200 px-3 py-2 text-sm font-normal placeholder:text-stone-500 focus:border-emerald-500 focus:outline-none"
               />
             </label>
             <label className="inline-flex items-center gap-2 rounded-lg border border-stone-200 px-3 py-2 text-xs font-semibold text-stone-600">
@@ -279,7 +287,7 @@ export default function MarketplaceClient({
       </div>
 
       <div className="mb-4 flex items-center justify-between gap-3">
-      <p className="flex items-center gap-2 text-sm text-stone-500">
+      <p className="flex items-center gap-2 text-sm text-stone-500" aria-live="polite">
         <ShoppingBag className="h-4 w-4" />
         {filtered.length} product{filtered.length === 1 ? '' : 's'}
         {q && <> matching “{q}”</>}
@@ -288,7 +296,7 @@ export default function MarketplaceClient({
       </div>
 
       {filtered.length === 0 ? (
-        <p className="text-gray-500 py-12 text-center">
+        <p className="rounded-2xl border border-dashed border-stone-300 bg-white px-5 py-12 text-center text-stone-600" role="status">
           Nothing matches your search yet — try a different category or keyword.
         </p>
       ) : (

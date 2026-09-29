@@ -42,7 +42,7 @@ export interface StepContentProps {
 }
 
 const stepStatusStyles = {
-  active: 'bg-emerald-600 text-white border-emerald-600',
+  active: 'bg-emerald-700 text-white border-emerald-700',
   completed: 'bg-emerald-100 text-emerald-700 border-emerald-300',
   pending: 'bg-stone-100 text-stone-400 border-stone-200',
   error: 'bg-red-50 text-red-600 border-red-200',

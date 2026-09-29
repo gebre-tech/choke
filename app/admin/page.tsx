@@ -75,7 +75,7 @@ export default function AdminDashboardPage() {
       </div>
 
       <div className="flex flex-wrap gap-3 text-sm">
-        <Link href="/admin/calendar" className="flex items-center gap-2 bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-2 rounded-full font-semibold">
+        <Link href="/admin/calendar" className="flex items-center gap-2 bg-emerald-700 hover:bg-emerald-800 text-white px-4 py-2 rounded-full font-semibold">
           <CalendarDays className="w-4 h-4" /> Booking calendar
         </Link>
         <Link href="/admin/guests" className="flex items-center gap-2 bg-white border border-stone-200 hover:bg-stone-50 px-4 py-2 rounded-full font-semibold">

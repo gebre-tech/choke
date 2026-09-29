@@ -82,7 +82,7 @@ function PreviewTab() {
                   href={`/${page.id === 'home' ? '' : page.id}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex-1 text-center text-sm px-3 py-2 rounded-lg bg-emerald-600 text-white hover:bg-emerald-500"
+                  className="flex-1 text-center text-sm px-3 py-2 rounded-lg bg-emerald-700 text-white hover:bg-emerald-800"
                 >
                   <Eye className="w-4 h-4 mx-auto" /> View Live
                 </a>

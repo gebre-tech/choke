@@ -73,13 +73,13 @@ export default function LoginForm() {
           <button
             type="submit"
             disabled={busy}
-            className="w-full bg-emerald-600 hover:bg-emerald-500 disabled:opacity-60 text-white font-semibold py-3 rounded-full flex items-center justify-center gap-2 transition-colors"
+            className="w-full bg-emerald-700 hover:bg-emerald-800 disabled:opacity-60 text-white font-semibold py-3 rounded-full flex items-center justify-center gap-2 transition-colors"
           >
             {busy && <Loader2 className="w-4 h-4 animate-spin" />}
             Sign in
           </button>
         </form>
-        <p className="mt-5 flex items-center justify-center gap-2 text-xs text-stone-400"><ShieldCheck className="h-4 w-4 text-emerald-600" /> Your account and checkout are protected</p>
+        <p className="mt-5 flex items-center justify-center gap-2 text-xs text-stone-500"><ShieldCheck className="h-4 w-4 text-emerald-700" /> Your account and checkout are protected</p>
         <p className="text-sm text-stone-500 mt-4 text-center">
           New here?{' '}
           <Link href="/register" className="text-emerald-700 hover:underline font-semibold">

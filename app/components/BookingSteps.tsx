@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useCallback, useId } from 'react'
+import { useState, useCallback, useId, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import toast from 'react-hot-toast'
 import { Loader2, Calendar, Users, Mail, Phone, MessageSquare, ArrowRight, ArrowLeft, Check, Star, Home, Flame } from 'lucide-react'
@@ -70,10 +70,36 @@ export function BookingSteps({ cottages }: { cottages: CottageOption[] }) {
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [phone, setPhone] = useState('')
+  const [accountProfile, setAccountProfile] = useState<{ name: string; email: string } | null>(null)
+  const [accountLoading, setAccountLoading] = useState(true)
   const [specialRequests, setSpecialRequests] = useState('')
   const [submitting, setSubmitting] = useState<Submitting>('idle')
   const [errors, setErrors] = useState<FormErrors>({})
   const [touched, setTouched] = useState<Record<string, boolean>>({})
+
+  useEffect(() => {
+    let active = true
+    fetch('/api/auth/me')
+      .then((res) => res.json())
+      .then((data) => {
+        if (!active || !data.authenticated || typeof data.user?.email !== 'string') return
+        const profile = {
+          name: typeof data.user.firstName === 'string' && data.user.firstName.trim()
+            ? data.user.firstName.trim()
+            : data.user.email.split('@')[0],
+          email: data.user.email,
+        }
+        setAccountProfile(profile)
+        setName(profile.name)
+        setEmail(profile.email)
+        setCurrentStep((step) => step === 'details' ? 'review' : step)
+      })
+      .catch(() => {})
+      .finally(() => { if (active) setAccountLoading(false) })
+    return () => { active = false }
+  }, [])
+
+  const visibleSteps = accountProfile ? STEPS.filter((step) => step.id !== 'details') : STEPS
 
   const selected = cottages.find((c) => c.id === cottageId)
 
@@ -137,6 +163,7 @@ export function BookingSteps({ cottages }: { cottages: CottageOption[] }) {
         else if (selected && guestCount > selected.capacity) { newErrors.guestCount = `This cottage sleeps up to ${selected.capacity} guests`; hasError = true }
         break
       case 'details':
+        if (accountProfile) break
         if (!name.trim()) { newErrors.name = 'Full name is required'; hasError = true }
         if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { newErrors.email = 'Enter a valid email'; hasError = true }
         if (phone && !/^[\d\s\-\+\(\)]{7,}$/.test(phone)) { newErrors.phone = 'Enter a valid phone number'; hasError = true }
@@ -145,7 +172,7 @@ export function BookingSteps({ cottages }: { cottages: CottageOption[] }) {
 
     setErrors(newErrors)
     return !hasError
-  }, [cottageId, checkIn, checkOut, guestCount, name, email, phone, selected])
+  }, [cottageId, checkIn, checkOut, guestCount, name, email, phone, selected, accountProfile])
 
   const handleBlur = (field: keyof FormErrors, value: string | number) => {
     setTouched((prev) => ({ ...prev, [field]: true }))
@@ -170,29 +197,29 @@ export function BookingSteps({ cottages }: { cottages: CottageOption[] }) {
 
   const goNext = () => {
     if (!validateStep(currentStep)) return
-    const currentIndex = STEPS.findIndex(s => s.id === currentStep)
-    if (currentIndex < STEPS.length - 1) {
+    const currentIndex = visibleSteps.findIndex(s => s.id === currentStep)
+    if (currentIndex < visibleSteps.length - 1) {
       setDirection('forward')
-      setCurrentStep(STEPS[currentIndex + 1].id)
+      setCurrentStep(visibleSteps[currentIndex + 1].id)
     }
   }
 
   const goBack = () => {
-    const currentIndex = STEPS.findIndex(s => s.id === currentStep)
+    const currentIndex = visibleSteps.findIndex(s => s.id === currentStep)
     if (currentIndex > 0) {
       setDirection('backward')
-      setCurrentStep(STEPS[currentIndex - 1].id)
+      setCurrentStep(visibleSteps[currentIndex - 1].id)
     }
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
-    if (!validateStep('details') || !validateStep('guests') || !validateStep('dates') || !validateStep('cottage')) return
+    if ((!accountProfile && !validateStep('details')) || !validateStep('guests') || !validateStep('dates') || !validateStep('cottage')) return
 
     setSubmitting('creating')
     try {
-      const bookingRes = await fetch('/api/bookings', {
+      const checkoutRes = await fetch('/api/booking/checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -206,29 +233,13 @@ export function BookingSteps({ cottages }: { cottages: CottageOption[] }) {
           specialRequests: specialRequests || undefined,
         }),
       })
-      const booking = await bookingRes.json()
-      if (!bookingRes.ok) return toast.error(booking.error || 'Could not create booking')
-
       setSubmitting('paying')
-      const payRes = await fetch('/api/payment/initiate', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          entityType: 'booking',
-          entityId: booking.bookingId,
-          email,
-          name,
-          phoneNumber: phone || undefined,
-        }),
-      })
-      const pay = await payRes.json()
-      if (!payRes.ok) return toast.error(pay.error || 'Could not start payment')
+      const checkout = await checkoutRes.json()
+      if (!checkoutRes.ok) return toast.error(checkout.error || 'Could not start booking payment')
 
-      if (pay.checkout_url) {
+      if (checkout.checkout_url) {
         toast.success('Redirecting to secure payment…')
-        window.location.href = pay.checkout_url
-      } else {
-        toast.success(`Booking created (ref ${booking.bookingId}). Complete your payment.`)
+        window.location.href = checkout.checkout_url
       }
     } catch {
       toast.error('Something went wrong — please try again')
@@ -286,10 +297,10 @@ export function BookingSteps({ cottages }: { cottages: CottageOption[] }) {
                     )}
                   </div>
                   <h3 className="font-bold text-lg">{c.name}</h3>
-                  <p className="text-emerald-600 font-semibold">ETB {c.pricePerNight.toLocaleString()}/night</p>
+                  <p className="text-emerald-700 font-semibold">ETB {c.pricePerNight.toLocaleString()}/night</p>
                   <p className="text-sm text-stone-500 mt-1">Sleeps {c.capacity}</p>
                   {cottageId === c.id && (
-                    <div className="absolute top-3 right-3 bg-emerald-500 text-white w-6 h-6 rounded-full flex items-center justify-center">
+                    <div className="absolute top-3 right-3 bg-emerald-700 text-white w-6 h-6 rounded-full flex items-center justify-center">
                       <Check className="w-4 h-4" />
                     </div>
                   )}
@@ -423,6 +434,11 @@ export function BookingSteps({ cottages }: { cottages: CottageOption[] }) {
           <div className="space-y-6">
             <h2 className="text-2xl font-bold mb-2">Review Your Booking</h2>
             <p className="text-stone-500 mb-6">Please verify all details before confirming</p>
+            {accountProfile && (
+              <p className="rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-900">
+                Booking as {accountProfile.name}. We’ll send the confirmation and use this account email for payment: {accountProfile.email}.
+              </p>
+            )}
             <div className="bg-stone-50 rounded-2xl p-6 space-y-4">
               <div className="flex items-start gap-4">
                 <div className="aspect-video w-32 h-32 flex-shrink-0 rounded-xl overflow-hidden bg-stone-100">
@@ -436,7 +452,7 @@ export function BookingSteps({ cottages }: { cottages: CottageOption[] }) {
                 </div>
                 <div>
                   <h3 className="font-bold text-lg">{selected?.name}</h3>
-                  <p className="text-emerald-600 font-semibold">ETB {selected?.pricePerNight.toLocaleString()}/night</p>
+                  <p className="text-emerald-700 font-semibold">ETB {selected?.pricePerNight.toLocaleString()}/night</p>
                 </div>
               </div>
               <div className="grid sm:grid-cols-2 gap-4 text-sm">
@@ -470,34 +486,34 @@ export function BookingSteps({ cottages }: { cottages: CottageOption[] }) {
       {/* Step Indicator */}
       <div className="bg-gradient-to-r from-emerald-600 to-teal-700 px-6 py-4">
         <div className="flex items-center justify-between">
-          {STEPS.map((step, index) => (
+          {visibleSteps.map((step, index) => (
             <div key={step.id} className="flex items-center">
               <motion.div
                 key={step.id}
                 layoutId={`step-${step.id}`}
                 className={`flex items-center justify-center w-10 h-10 rounded-full font-semibold transition-all ${
-                  STEPS.findIndex(s => s.id === currentStep) >= index
-                    ? 'bg-white text-emerald-600'
+                  visibleSteps.findIndex(s => s.id === currentStep) >= index
+                    ? 'bg-white text-emerald-700'
                     : 'bg-white/20 text-white/60'
                 }`}
                 initial={false}
                 transition={{ type: 'spring', stiffness: 300, damping: 30 }}
               >
-                {STEPS.findIndex(s => s.id === currentStep) > index ? (
+                {visibleSteps.findIndex(s => s.id === currentStep) > index ? (
                   <Check className="w-5 h-5" />
                 ) : (
                   step.icon
                 )}
               </motion.div>
-              {index < STEPS.length - 1 && (
+              {index < visibleSteps.length - 1 && (
                 <motion.div
                   className={`h-0.5 w-16 transition-all ${
-                    STEPS.findIndex(s => s.id === currentStep) > index
+                    visibleSteps.findIndex(s => s.id === currentStep) > index
                       ? 'bg-white'
                       : 'bg-white/20'
                   }`}
                   initial={false}
-                  animate={{ scaleX: STEPS.findIndex(s => s.id === currentStep) > index ? 1 : 0 }}
+                  animate={{ scaleX: visibleSteps.findIndex(s => s.id === currentStep) > index ? 1 : 0 }}
                   transition={{ duration: 0.3, delay: 0.1 }}
                   style={{ transformOrigin: 'left' }}
                 />
@@ -525,16 +541,16 @@ export function BookingSteps({ cottages }: { cottages: CottageOption[] }) {
       {/* Navigation */}
       <div className="px-6 py-4 border-t border-stone-100 bg-stone-50 flex items-center justify-between">
         <div className="flex items-center gap-2 text-sm text-stone-500">
-          Step {STEPS.findIndex(s => s.id === currentStep) + 1} of {STEPS.length}
+          Step {visibleSteps.findIndex(s => s.id === currentStep) + 1} of {visibleSteps.length}
         </div>
         <div className="flex items-center gap-3">
-          {currentStep !== 'cottage' && (
+          {visibleSteps.findIndex(s => s.id === currentStep) > 0 && (
             <Button
               variant="secondary"
               onClick={goBack}
               icon={<ArrowLeft className="w-4 h-4" />}
               iconPosition="left"
-              disabled={submitting !== 'idle'}
+              disabled={submitting !== 'idle' || accountLoading}
             >
               Back
             </Button>
@@ -550,7 +566,7 @@ export function BookingSteps({ cottages }: { cottages: CottageOption[] }) {
             >
               {submitting === 'creating' && 'Checking availability…'}
               {submitting === 'paying' && 'Redirecting to payment…'}
-              {submitting === 'idle' && 'Book & Pay'}
+              {submitting === 'idle' && (accountProfile ? 'Confirm booking & pay' : 'Book & Pay')}
             </Button>
           ) : (
             <Button
@@ -558,7 +574,7 @@ export function BookingSteps({ cottages }: { cottages: CottageOption[] }) {
               variant="primary"
               icon={<ArrowRight className="w-4 h-4" />}
               iconPosition="right"
-              disabled={!validateStep(currentStep) || submitting !== 'idle'}
+              disabled={!validateStep(currentStep) || submitting !== 'idle' || accountLoading}
             >
               Continue
             </Button>

@@ -10,9 +10,23 @@ import { generateId } from '@/lib/a11y'
 
 type Stage = 'idle' | 'creating' | 'paying'
 
+function isChapaEmail(value: string) {
+  const email = value.trim().toLowerCase()
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return false
+  const domain = email.split('@')[1]
+  const reservedDomains = [
+    'example.com', 'example.net', 'example.org', 'localhost',
+  ]
+  const reservedSuffixes = ['.test', '.invalid', '.localhost', '.local']
+  return !reservedDomains.some((reserved) => domain === reserved || domain.endsWith(`.${reserved}`)) &&
+    !reservedSuffixes.some((suffix) => domain.endsWith(suffix))
+}
+
 export default function CartDrawer({ open, onClose }: { open: boolean; onClose: () => void }) {
   const { items, removeItem, updateQuantity, clearCart } = useCartStore()
   const [email, setEmail] = useState('')
+  const [accountEmail, setAccountEmail] = useState<string | null>(null)
+  const [authChecked, setAuthChecked] = useState(false)
   const [stage, setStage] = useState<Stage>('idle')
   const [emailError, setEmailError] = useState('')
   const total = items.reduce((sum, i) => sum + i.price * i.quantity, 0)
@@ -29,8 +43,8 @@ export default function CartDrawer({ open, onClose }: { open: boolean; onClose: 
   }
 
   const validateEmail = (value: string) => {
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
-      setEmailError('Enter a valid email')
+    if (!isChapaEmail(value)) {
+      setEmailError('Chapa cannot use this demo email. Enter another email for the test payment.')
       return false
     }
     setEmailError('')
@@ -38,50 +52,49 @@ export default function CartDrawer({ open, onClose }: { open: boolean; onClose: 
   }
 
   const handleCheckout = async () => {
-    if (!validateEmail(email)) return
+    const checkoutEmail = accountEmail && isChapaEmail(accountEmail) ? accountEmail : email
+    if (!validateEmail(checkoutEmail)) return
 
     setStage('creating')
     try {
-      const orderRes = await fetch('/api/orders', {
+      const checkoutRes = await fetch('/api/cart/checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          email,
+          email: checkoutEmail,
           items: items.map((i) => ({ productId: i.productId || i.id, quantity: i.quantity })),
         }),
       })
-      const order = await orderRes.json()
-      if (!orderRes.ok) return toast.error(order.error || 'Could not create your order')
-
       setStage('paying')
-      const payRes = await fetch('/api/payment/initiate', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          entityType: 'order',
-          entityId: order.orderId,
-          email,
-        }),
-      })
-      const pay = await payRes.json()
-      if (!payRes.ok) return toast.error(pay.error || 'Could not start payment')
+      const checkout = await checkoutRes.json()
+      if (!checkoutRes.ok) return toast.error(checkout.error || 'Could not start checkout')
 
-      if (pay.checkout_url) {
-        clearCart()
-        onClose()
-        toast.success('Redirecting to secure payment…')
-        window.location.href = pay.checkout_url
-      } else {
-        clearCart()
-        onClose()
-        toast.success(`Order created (ref ${order.orderId}). Complete your payment.`)
-      }
+      clearCart()
+      onClose()
+      toast.success('Redirecting to secure payment…')
+      window.location.href = checkout.checkout_url
     } catch {
       toast.error('Something went wrong — please try again')
     } finally {
       setStage('idle')
     }
   }
+
+  useEffect(() => {
+    let active = true
+    fetch('/api/auth/me')
+      .then((res) => res.json())
+      .then((data) => {
+        if (active && data.authenticated && typeof data.user?.email === 'string') {
+          setAccountEmail(data.user.email)
+        }
+      })
+      .catch(() => {})
+      .finally(() => {
+        if (active) setAuthChecked(true)
+      })
+    return () => { active = false }
+  }, [])
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'Escape') {
@@ -175,21 +188,23 @@ export default function CartDrawer({ open, onClose }: { open: boolean; onClose: 
 
             <div className="mt-4 pt-4 border-t space-y-3">
               <p className="text-xl font-bold" aria-live="polite">Total: ETB {total.toFixed(2)}</p>
-              <Input
-                id={emailId}
-                type="email"
-                label="Email for payment receipt"
-                value={email}
-                onChange={(e) => { setEmail(e.target.value); setEmailError('') }}
-                onBlur={(e) => validateEmail(e.target.value)}
-                placeholder="you@example.com"
-                required
-                error={emailError}
-                leadingIcon={<Mail className="w-4 h-4" aria-hidden="true" />}
-              />
+              {authChecked && (!accountEmail || !isChapaEmail(accountEmail)) && (
+                <Input
+                  id={emailId}
+                  type="email"
+                  label="Email for payment receipt"
+                  value={email}
+                  onChange={(e) => { setEmail(e.target.value); setEmailError('') }}
+                  onBlur={(e) => validateEmail(e.target.value)}
+                  placeholder="you@example.com"
+                  required
+                  error={emailError}
+                  leadingIcon={<Mail className="w-4 h-4" aria-hidden="true" />}
+                />
+              )}
               <Button
                 onClick={handleCheckout}
-                disabled={stage !== 'idle'}
+                disabled={stage !== 'idle' || !authChecked}
                 className="w-full mt-3"
                 size="lg"
                 loading={stage !== 'idle'}

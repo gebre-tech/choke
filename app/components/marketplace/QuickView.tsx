@@ -118,7 +118,7 @@ export default function QuickView({
 
           <div className="flex flex-col gap-3">
             <div className="flex items-center justify-between">
-              <p className="text-2xl font-bold text-emerald-600">
+              <p className="text-2xl font-bold text-emerald-700">
                 ETB {product.price.toLocaleString()}
               </p>
               <div className="flex items-center gap-2 text-xs">
@@ -175,7 +175,7 @@ export default function QuickView({
             )}
 
             {media.filter((m) => m.type === 'VIDEO').length > 0 && (
-              <p className="text-xs text-stone-400">
+              <p className="text-xs text-stone-500">
                 Includes a video so you can see exactly what you&apos;re buying.
               </p>
             )}
@@ -209,15 +209,15 @@ export default function QuickView({
                     cap <= 0
                       ? 'bg-stone-200 text-stone-400 cursor-not-allowed'
                       : added
-                        ? 'bg-emerald-600 text-white'
-                        : 'bg-emerald-600 hover:bg-emerald-500 text-white'
+                        ? 'bg-emerald-700 text-white'
+                        : 'bg-emerald-700 hover:bg-emerald-800 text-white'
                   }`}
                 >
                   {cap <= 0 ? 'Sold out' : added ? '✓ Added to cart' : 'Add to cart'}
                 </button>
               </div>
               {remaining > 0 && inCartQty > 0 && (
-                <p className="text-xs text-stone-400">You can add {remaining} more.</p>
+                <p className="text-xs text-stone-500">You can add {remaining} more.</p>
               )}
             </div>
           </div>

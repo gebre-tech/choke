@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useId } from 'react'
+import { useState, useId, useEffect } from 'react'
 import toast from 'react-hot-toast'
 import { Loader2, Calendar, Users, Mail, Phone, MessageSquare, Star, Home, Flame, User } from 'lucide-react'
 import { Button } from '@/components/ui/design-system/Button'
@@ -75,12 +75,35 @@ export default function BookingForm({
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [phone, setPhone] = useState('')
+  const [accountProfile, setAccountProfile] = useState<{ name: string; email: string } | null>(null)
+  const [accountLoading, setAccountLoading] = useState(true)
   const [specialRequests, setSpecialRequests] = useState('')
   const [submitting, setSubmitting] = useState<Submitting>('idle')
   const [errors, setErrors] = useState<FormErrors>({})
   const [touched, setTouched] = useState<Record<string, boolean>>({})
 
   const selected = cottages.find((c) => c.id === cottageId)
+
+  useEffect(() => {
+    let active = true
+    fetch('/api/auth/me')
+      .then((res) => res.json())
+      .then((data) => {
+        if (!active || !data.authenticated || typeof data.user?.email !== 'string') return
+        const profile = {
+          name: typeof data.user.firstName === 'string' && data.user.firstName.trim()
+            ? data.user.firstName.trim()
+            : data.user.email.split('@')[0],
+          email: data.user.email,
+        }
+        setAccountProfile(profile)
+        setName(profile.name)
+        setEmail(profile.email)
+      })
+      .catch(() => {})
+      .finally(() => { if (active) setAccountLoading(false) })
+    return () => { active = false }
+  }, [])
 
   const nights = (() => {
     if (!checkIn || !checkOut) return 0
@@ -158,8 +181,8 @@ export default function BookingForm({
     else if (checkOut <= checkIn) { newErrors.checkOut = 'Check-out must be after check-in'; hasError = true }
     if (guestCount < 1) { newErrors.guestCount = 'At least 1 guest required'; hasError = true }
     else if (selected && guestCount > selected.capacity) { newErrors.guestCount = `This cottage sleeps up to ${selected.capacity} guests`; hasError = true }
-    if (!name.trim()) { newErrors.name = 'Full name is required'; hasError = true }
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { newErrors.email = 'Enter a valid email'; hasError = true }
+    if (!accountProfile && !name.trim()) { newErrors.name = 'Full name is required'; hasError = true }
+    if (!accountProfile && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { newErrors.email = 'Enter a valid email'; hasError = true }
     if (phone && !/^[\d\s\-\+\(\)]{7,}$/.test(phone)) { newErrors.phone = 'Enter a valid phone number'; hasError = true }
 
     setErrors(newErrors)
@@ -174,7 +197,7 @@ export default function BookingForm({
 
     setSubmitting('creating')
     try {
-      const bookingRes = await fetch('/api/bookings', {
+      const checkoutRes = await fetch('/api/booking/checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -189,29 +212,13 @@ export default function BookingForm({
           specialRequests: specialRequests || undefined,
         }),
       })
-      const booking = await bookingRes.json()
-      if (!bookingRes.ok) return toast.error(booking.error || 'Could not create booking')
-
       setSubmitting('paying')
-      const payRes = await fetch('/api/payment/initiate', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          entityType: 'booking',
-          entityId: booking.bookingId,
-          email,
-          name,
-          phoneNumber: phone || undefined,
-        }),
-      })
-      const pay = await payRes.json()
-      if (!payRes.ok) return toast.error(pay.error || 'Could not start payment')
+      const checkout = await checkoutRes.json()
+      if (!checkoutRes.ok) return toast.error(checkout.error || 'Could not start booking payment')
 
-      if (pay.checkout_url) {
+      if (checkout.checkout_url) {
         toast.success('Redirecting to secure payment…')
-        window.location.href = pay.checkout_url
-      } else {
-        toast.success(`Booking created (ref ${booking.bookingId}). Complete your payment.`)
+        window.location.href = checkout.checkout_url
       }
     } catch {
       toast.error('Something went wrong — please try again')
@@ -313,6 +320,14 @@ export default function BookingForm({
         )}
       </div>
 
+      {accountProfile ? (
+        <div className="rounded-2xl border border-emerald-200 bg-emerald-50 p-4">
+          <p className="font-semibold text-emerald-900">Booking as {accountProfile.name}</p>
+          <p className="text-sm text-emerald-800 mt-1">Confirmation and payment details will use {accountProfile.email}.</p>
+        </div>
+      ) : accountLoading ? (
+        <div className="rounded-2xl border border-stone-200 bg-stone-50 p-4 text-sm text-stone-500">Checking your account…</div>
+      ) : null}
       <div className="grid sm:grid-cols-2 gap-4">
         <div>
           <Input
@@ -363,6 +378,7 @@ export default function BookingForm({
         />
       </div>
 
+      {!accountProfile && !accountLoading && <>
       <div className="grid sm:grid-cols-2 gap-4">
         <div>
           <Input
@@ -406,8 +422,9 @@ export default function BookingForm({
           leadingIcon={<Mail className="w-4 h-4" aria-hidden="true" />}
         />
       </div>
+      </>}
 
-      <div>
+      {!accountProfile && <div>
         <Textarea
           id={specialRequestsId}
           label="Special requests (optional)"
@@ -416,7 +433,7 @@ export default function BookingForm({
           rows={2}
           placeholder="Dietary requirements, accessibility needs, etc."
         />
-      </div>
+      </div>}
 
       <div className="flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-stone-200 pt-4">
         <p className="text-lg" aria-live="polite">
@@ -426,7 +443,7 @@ export default function BookingForm({
               <span className="text-stone-500 text-sm">for {nights} night{nights > 1 ? 's' : ''}</span>
             </>
           ) : (
-            <span className="text-stone-400">Select dates to see the total</span>
+            <span className="text-stone-500">Select dates to see the total</span>
           )}
         </p>
         <Button
@@ -436,11 +453,11 @@ export default function BookingForm({
           loading={submitting !== 'idle'}
           icon={submitting !== 'idle' ? <Loader2 className="w-4 h-4 animate-spin" /> : undefined}
           iconPosition="left"
-          disabled={submitting !== 'idle'}
+          disabled={submitting !== 'idle' || accountLoading}
         >
           {submitting === 'creating' && 'Checking availability…'}
           {submitting === 'paying' && 'Redirecting to payment…'}
-          {submitting === 'idle' && 'Book & Pay'}
+          {submitting === 'idle' && (accountProfile ? 'Confirm booking & pay' : 'Book & Pay')}
         </Button>
       </div>
     </form>
