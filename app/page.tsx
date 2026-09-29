@@ -83,7 +83,7 @@ export default async function Home() {
                 <span className="mt-2 block text-emerald-300">Stay for the feeling.</span>
               </h1>
               <p className="mt-6 max-w-xl text-base leading-7 text-stone-200 sm:text-lg sm:leading-8">
-                A highland retreat in Ethiopia&apos;s Choke Mountains at 4,070 m — a quiet base for mountain air,
+                A highland retreat in Ethiopia&apos;s Choke Mountains — a quiet base for mountain air,
                 community stories, and unforgettable horizons.
               </p>
               <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:gap-4">
@@ -112,9 +112,9 @@ export default async function Home() {
       <section id="discover" className="scroll-mt-20 bg-stone-950 py-5 text-white sm:py-7">
         <div className="container mx-auto grid gap-3 px-4 sm:grid-cols-3 sm:gap-4">
           {[
-            { value: '4,070 m', label: 'highland altitude', icon: Mountain },
-            { value: String(cottages.length), label: 'stays available to explore', icon: Bed },
-            { value: String(experiences.length), label: 'local experiences', icon: Star },
+            { value: String(cottages.length), label: 'featured stays', icon: Bed },
+            { value: String(experiences.length), label: 'featured experiences', icon: Star },
+            { value: String(products.length), label: 'featured local products', icon: Leaf },
           ].map(({ value, label, icon: Icon }) => (
             <div key={label} className="flex items-center gap-4 rounded-2xl border border-white/10 bg-white/[0.06] p-4 backdrop-blur sm:p-5">
               <span className="rounded-xl bg-emerald-400/10 p-3 text-emerald-300"><Icon className="h-5 w-5" aria-hidden="true" /></span>
@@ -155,7 +155,7 @@ export default async function Home() {
                     <p className="mt-2 min-h-10 text-sm leading-5 text-stone-600 line-clamp-2">{cottage.description}</p>
                     <div className="mt-4 flex items-end justify-between gap-3">
                       <p><span className="text-lg font-bold text-emerald-700">ETB {Number(cottage.pricePerNight).toLocaleString()}</span><span className="text-xs text-stone-500"> / night</span></p>
-                      <Link href="/book" className="inline-flex min-h-10 items-center gap-1 rounded-full bg-emerald-50 px-4 text-xs font-bold text-emerald-800 transition group-hover:bg-emerald-600 group-hover:text-white">
+                      <Link href="/book" className="inline-flex min-h-10 items-center gap-1 rounded-full bg-emerald-50 px-4 text-xs font-bold text-emerald-800 transition group-hover:bg-emerald-700 group-hover:text-white">
                         Choose <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
                       </Link>
                     </div>
@@ -180,7 +180,7 @@ export default async function Home() {
               <p className="text-xs font-bold uppercase tracking-[0.2em] text-emerald-400">Make the mountain yours</p>
               <h2 id="experiences-heading" className="mt-2 text-3xl font-bold sm:text-4xl">Local experiences</h2>
             </div>
-            <Link href="/marketplace" className="inline-flex items-center gap-1 text-sm font-semibold text-emerald-300 hover:text-white">Explore all <ArrowUpRight className="h-4 w-4" aria-hidden="true" /></Link>
+            <Link href="/book" className="inline-flex items-center gap-1 text-sm font-semibold text-emerald-300 hover:text-white">Add to your stay <ArrowUpRight className="h-4 w-4" aria-hidden="true" /></Link>
           </div>
           {experiences.length ? (
             <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-4">

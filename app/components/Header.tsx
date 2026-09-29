@@ -125,7 +125,7 @@ export default function Header({ settings }: { settings?: HeaderSettings }) {
                   className={`text-sm px-3 py-1.5 rounded-full transition-all ${
                     isTransparent
                       ? 'text-white/60 hover:text-white hover:bg-white/10'
-                      : 'text-stone-400 hover:text-red-600 hover:bg-red-50'
+                      : 'text-stone-600 hover:text-red-700 hover:bg-red-50'
                   }`}
                 >
                   Log out
@@ -147,8 +147,8 @@ export default function Header({ settings }: { settings?: HeaderSettings }) {
                   href="/register"
                   className={`px-4 py-2 rounded-full font-semibold transition-all ${
                     isTransparent
-                      ? 'bg-emerald-500 text-white hover:bg-emerald-400'
-                      : 'bg-emerald-600 text-white hover:bg-emerald-500'
+                      ? 'bg-emerald-700 text-white hover:bg-emerald-800'
+                      : 'bg-emerald-700 text-white hover:bg-emerald-800'
                   } shadow-sm`}
                 >
                   Join
@@ -168,7 +168,7 @@ export default function Header({ settings }: { settings?: HeaderSettings }) {
             >
               <ShoppingBag className="w-5 h-5" aria-hidden="true" />
               {total > 0 && (
-                <span className="absolute -top-0.5 -right-0.5 flex h-5 w-5 items-center justify-center rounded-full bg-emerald-500 text-[10px] font-bold text-white" aria-hidden="true">
+                <span className="absolute -top-0.5 -right-0.5 flex h-5 w-5 items-center justify-center rounded-full bg-emerald-700 text-[10px] font-bold text-white" aria-hidden="true">
                   {total}
                 </span>
               )}
@@ -224,7 +224,7 @@ export default function Header({ settings }: { settings?: HeaderSettings }) {
                     <Link href="/login" onClick={() => setMobileOpen(false)} className="flex-1 text-center py-2.5 border border-stone-200 rounded-xl text-sm font-medium text-stone-600">
                       Sign in
                     </Link>
-                    <Link href="/register" onClick={() => setMobileOpen(false)} className="flex-1 text-center py-2.5 bg-emerald-600 rounded-xl text-sm font-semibold text-white">
+                    <Link href="/register" onClick={() => setMobileOpen(false)} className="flex-1 text-center py-2.5 bg-emerald-700 rounded-xl text-sm font-semibold text-white hover:bg-emerald-800">
                       Join
                     </Link>
                   </>

@@ -120,7 +120,7 @@ export default function MarketplaceClient({
       <div className="flex flex-wrap items-center gap-3 mb-6">
         <Link
           href="/sell"
-          className="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-2 rounded-full text-sm font-semibold"
+          className="inline-flex items-center gap-2 bg-emerald-700 hover:bg-emerald-800 text-white px-4 py-2 rounded-full text-sm font-semibold"
         >
           <PlusCircle className="w-4 h-4" /> Sell from the community
         </Link>
@@ -151,7 +151,7 @@ export default function MarketplaceClient({
                   </div>
                   <div className="flex items-center justify-between gap-2">
                     <h3 className="font-semibold line-clamp-1">{e.name}</h3>
-                    <p className="text-emerald-600 font-bold whitespace-nowrap">ETB {e.price.toLocaleString()}</p>
+                    <p className="text-emerald-700 font-bold whitespace-nowrap">ETB {e.price.toLocaleString()}</p>
                   </div>
                   <p className="text-xs text-stone-500 uppercase tracking-wide">{e.type.replace('_', ' ')}</p>
                   <p className="text-sm text-gray-600 line-clamp-2">{e.description}</p>
@@ -177,7 +177,7 @@ export default function MarketplaceClient({
                   )}
                   <Link
                     href="/book"
-                    className="mt-auto flex items-center justify-center gap-2 bg-emerald-50 hover:bg-emerald-600 hover:text-white text-emerald-700 text-sm font-semibold py-2 rounded-full border border-emerald-200 hover:border-emerald-600 transition-colors"
+                    className="mt-auto flex items-center justify-center gap-2 bg-emerald-50 hover:bg-emerald-700 hover:text-white text-emerald-800 text-sm font-semibold py-2 rounded-full border border-emerald-200 hover:border-emerald-700 transition-colors"
                   >
                     <CalendarDays className="w-4 h-4" /> Book a stay
                   </Link>
@@ -197,7 +197,7 @@ export default function MarketplaceClient({
             onChange={(e) => setQ(e.target.value)}
             placeholder="Search products, hosts, foods, clothing…"
             aria-label="Search marketplace listings"
-            className="w-full rounded-xl border border-stone-200 bg-stone-50 py-3 pl-9 pr-9 text-sm focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/20"
+            className="w-full rounded-xl border border-stone-200 bg-stone-50 py-3 pl-9 pr-9 text-sm placeholder:text-stone-500 focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/20"
           />
           {q && (
             <button
@@ -226,7 +226,7 @@ export default function MarketplaceClient({
             aria-pressed={cat === 'all'}
             className={`px-3.5 py-1.5 rounded-full text-xs font-semibold transition-colors ${
               cat === 'all'
-                ? 'bg-emerald-600 text-white'
+                ? 'bg-emerald-700 text-white'
                 : 'bg-white border border-stone-200 text-stone-600 hover:bg-stone-50'
             }`}
           >
@@ -240,7 +240,7 @@ export default function MarketplaceClient({
               aria-pressed={cat === c}
               className={`px-3.5 py-1.5 rounded-full text-xs font-semibold transition-colors ${
                 cat === c
-                  ? 'bg-emerald-600 text-white'
+                  ? 'bg-emerald-700 text-white'
                   : 'bg-white border border-stone-200 text-stone-600 hover:bg-stone-50'
               }`}
             >
@@ -270,7 +270,7 @@ export default function MarketplaceClient({
                 value={maxPrice}
                 onChange={(event) => setMaxPrice(event.target.value)}
                 placeholder="Any price"
-                className="mt-1 block w-36 rounded-lg border border-stone-200 px-3 py-2 text-sm font-normal focus:border-emerald-500 focus:outline-none"
+                className="mt-1 block w-36 rounded-lg border border-stone-200 px-3 py-2 text-sm font-normal placeholder:text-stone-500 focus:border-emerald-500 focus:outline-none"
               />
             </label>
             <label className="inline-flex items-center gap-2 rounded-lg border border-stone-200 px-3 py-2 text-xs font-semibold text-stone-600">

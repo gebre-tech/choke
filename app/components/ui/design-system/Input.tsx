@@ -40,7 +40,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
             className={`
               w-full
               bg-white border rounded-xl
-              px-3.5 py-2.5 text-sm text-stone-900 placeholder:text-stone-400
+              px-3.5 py-2.5 text-sm text-stone-900 placeholder:text-stone-500
               transition-all duration-200 ease-out
               focus:outline-none focus:ring-2 focus:ring-offset-0
               disabled:bg-stone-50 disabled:text-stone-500 disabled:cursor-not-allowed
@@ -110,7 +110,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
           style={maxRows ? { maxHeight: `calc(${maxRows} * 1.5rem + 0.75rem)` } : undefined}
           className={`
             w-full bg-white border rounded-xl
-            px-3.5 py-2.5 text-sm text-stone-900 placeholder:text-stone-400
+            px-3.5 py-2.5 text-sm text-stone-900 placeholder:text-stone-500
             transition-all duration-200 ease-out resize-y
             focus:outline-none focus:ring-2 focus:ring-offset-0
             disabled:bg-stone-50 disabled:text-stone-500 disabled:cursor-not-allowed

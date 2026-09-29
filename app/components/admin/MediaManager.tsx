@@ -296,7 +296,7 @@ export default function MediaManager({
                         type="button"
                         onClick={() => attach(m)}
                         disabled={busy}
-                        className="w-full text-xs px-2 py-1 rounded-lg bg-emerald-600 text-white hover:bg-emerald-500 disabled:opacity-50"
+                        className="w-full text-xs px-2 py-1 rounded-lg bg-emerald-700 text-white hover:bg-emerald-800 disabled:opacity-50"
                       >
                         Attach
                       </button>
@@ -327,7 +327,7 @@ export default function MediaManager({
               <textarea {...{ className: inputCls, name: 'caption', defaultValue: editing.caption || '', rows: 2, placeholder: 'Optional caption displayed with the media' }} />
             </Field>
             <div className="flex gap-3 pt-2">
-              <div className="flex-1"><button type="submit" disabled={busy} className="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-semibold py-2 px-4 rounded-xl disabled:opacity-50">{busy ? 'Saving…' : 'Save'}</button></div>
+              <div className="flex-1"><button type="submit" disabled={busy} className="w-full bg-emerald-700 hover:bg-emerald-800 text-white font-semibold py-2 px-4 rounded-xl disabled:opacity-50">{busy ? 'Saving…' : 'Save'}</button></div>
               <button type="button" onClick={() => setEditing(null)} className="px-6 py-2.5 rounded-xl border border-stone-300 text-stone-600">Cancel</button>
             </div>
           </form>

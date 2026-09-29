@@ -111,7 +111,7 @@ export default function SellersClient({ cottages }: { cottages: { id: string; na
           You&apos;ll be able to submit products and experiences with photos and videos. An admin
           reviews each listing before it goes live.
         </p>
-        <Link href="/login" className="inline-block bg-emerald-600 hover:bg-emerald-500 text-white px-6 py-2.5 rounded-full font-semibold">
+        <Link href="/login" className="inline-block bg-emerald-700 hover:bg-emerald-800 text-white px-6 py-2.5 rounded-full font-semibold">
           Sign in
         </Link>
       </div>
@@ -126,7 +126,7 @@ export default function SellersClient({ cottages }: { cottages: { id: string; na
             key={t}
             onClick={() => setTab(t)}
             className={`px-5 py-2 rounded-full text-sm font-semibold transition-colors ${
-              tab === t ? 'bg-emerald-600 text-white' : 'bg-white border border-stone-200 text-stone-600 hover:bg-stone-50'
+              tab === t ? 'bg-emerald-700 text-white' : 'bg-white border border-stone-200 text-stone-600 hover:bg-stone-50'
             }`}
           >
             {t === 'PRODUCT' ? 'Sell a product' : 'Offer an experience'}
@@ -179,7 +179,7 @@ function MediaLinks({
             placeholder="https://image.jpg or youtube.com/watch?v=…"
           />
           {r.url.trim() && (
-            <span className={`text-[11px] shrink-0 ${r.ok ? 'text-emerald-600' : 'text-red-600'}`}>
+            <span className={`text-[11px] shrink-0 ${r.ok ? 'text-emerald-700' : 'text-red-700'}`}>
               {r.hint}
             </span>
           )}
@@ -300,7 +300,7 @@ function ProductForm({
         <textarea className={inputCls} rows={2} value={f.description} onChange={(e) => set('description', e.target.value)} />
       </Field>
       <MediaLinks rows={media} onChange={setMedia} />
-      <button type="submit" disabled={busy} className="w-full sm:w-auto bg-emerald-600 hover:bg-emerald-500 disabled:opacity-60 text-white font-semibold py-2.5 px-8 rounded-full flex items-center justify-center gap-2">
+      <button type="submit" disabled={busy} className="w-full sm:w-auto bg-emerald-700 hover:bg-emerald-800 disabled:opacity-60 text-white font-semibold py-2.5 px-8 rounded-full flex items-center justify-center gap-2">
         {busy && <Loader2 className="w-4 h-4 animate-spin" />}
         Submit for review
       </button>
@@ -407,7 +407,7 @@ function ExperienceForm({
         <textarea className={inputCls} rows={2} value={f.description} onChange={(e) => set('description', e.target.value)} />
       </Field>
       <MediaLinks rows={media} onChange={setMedia} />
-      <button type="submit" disabled={busy} className="w-full sm:w-auto bg-emerald-600 hover:bg-emerald-500 disabled:opacity-60 text-white font-semibold py-2.5 px-8 rounded-full flex items-center justify-center gap-2">
+      <button type="submit" disabled={busy} className="w-full sm:w-auto bg-emerald-700 hover:bg-emerald-800 disabled:opacity-60 text-white font-semibold py-2.5 px-8 rounded-full flex items-center justify-center gap-2">
         {busy && <Loader2 className="w-4 h-4 animate-spin" />}
         Submit for review
       </button>

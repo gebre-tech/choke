@@ -128,7 +128,7 @@ export default function AdminSettingsPage() {
             <button
               onClick={() => fileRef.current?.click()}
               disabled={uploading}
-              className="flex items-center gap-2 bg-emerald-600 hover:bg-emerald-500 disabled:opacity-60 text-white px-4 py-2 rounded-full text-sm font-semibold"
+              className="flex items-center gap-2 bg-emerald-700 hover:bg-emerald-800 disabled:opacity-60 text-white px-4 py-2 rounded-full text-sm font-semibold"
             >
               {uploading ? <Loader2 className="w-4 h-4 animate-spin" /> : <ImagePlus className="w-4 h-4" />}
               {f.logoUrl ? 'Replace logo' : 'Upload logo'}

@@ -123,7 +123,7 @@ export default async function MarketplacePage() {
                 Every purchase keeps value close to home.
               </p>
               <div className="mt-7 flex flex-wrap gap-3">
-                <a href="#products" className="inline-flex items-center gap-2 rounded-full bg-emerald-500 px-5 py-3 text-sm font-bold text-white hover:bg-emerald-400">Browse the collection <ArrowDown className="h-4 w-4" /></a>
+                <a href="#products" className="inline-flex items-center gap-2 rounded-full bg-emerald-700 px-5 py-3 text-sm font-bold text-white hover:bg-emerald-800">Browse the collection <ArrowDown className="h-4 w-4" /></a>
                 <Link href="/sell" className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-5 py-3 text-sm font-bold text-white hover:bg-white/20">Share your product <ArrowUpRight className="h-4 w-4" /></Link>
               </div>
             </div>

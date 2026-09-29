@@ -443,7 +443,7 @@ export default function BookingForm({
               <span className="text-stone-500 text-sm">for {nights} night{nights > 1 ? 's' : ''}</span>
             </>
           ) : (
-            <span className="text-stone-400">Select dates to see the total</span>
+            <span className="text-stone-500">Select dates to see the total</span>
           )}
         </p>
         <Button

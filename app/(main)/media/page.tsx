@@ -35,7 +35,7 @@ export default async function MediaPage() {
             <p className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-xs font-bold uppercase tracking-[0.2em] text-emerald-200 backdrop-blur"><Camera className="h-4 w-4" /> Field notes from Choke</p>
             <h1 className="mt-6 text-5xl font-black tracking-tight sm:text-7xl">See the mountain<br /><span className="text-emerald-300">in motion.</span></h1>
             <p className="mt-6 max-w-xl text-lg leading-8 text-stone-200">Photos, films, and field recordings from the lodge—the night sky, the falcons, the community, and the highland trails.</p>
-            <a href="#gallery" className="mt-8 inline-flex items-center gap-2 rounded-full bg-emerald-500 px-5 py-3 text-sm font-bold hover:bg-emerald-400">Explore the gallery <ArrowDown className="h-4 w-4" /></a>
+            <a href="#gallery" className="mt-8 inline-flex items-center gap-2 rounded-full bg-emerald-700 px-5 py-3 text-sm font-bold text-white hover:bg-emerald-800">Explore the gallery <ArrowDown className="h-4 w-4" /></a>
           </div>
         </div>
       </section>

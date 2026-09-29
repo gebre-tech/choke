@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { Mountain, Mail, Phone, MapPin, ArrowUpRight, Heart } from 'lucide-react'
+import { Mountain, Mail, Phone, MapPin, Heart } from 'lucide-react'
 
 type FooterSettings = { siteName?: string; contactEmail?: string; contactPhone?: string; tagline?: string }
 
@@ -10,15 +10,6 @@ export default function Footer({ settings }: { settings?: FooterSettings }) {
     <footer className="bg-stone-950 text-stone-400">
       {/* Main Footer */}
       <div className="container mx-auto px-4 py-16">
-        <div className="mb-14 overflow-hidden rounded-3xl border border-emerald-400/20 bg-gradient-to-br from-emerald-950 to-stone-900 p-6 sm:p-8">
-          <div className="flex flex-col justify-between gap-5 sm:flex-row sm:items-center">
-            <div>
-              <p className="text-xs font-bold uppercase tracking-[0.2em] text-emerald-300">Keep exploring</p>
-              <h2 className="mt-2 text-2xl font-black text-white sm:text-3xl">Your next mountain morning is closer than you think.</h2>
-            </div>
-            <Link href="/book" className="inline-flex shrink-0 items-center justify-center gap-2 rounded-full bg-emerald-500 px-5 py-3 text-sm font-bold text-white hover:bg-emerald-400">Plan a stay <ArrowUpRight className="h-4 w-4" /></Link>
-          </div>
-        </div>
         <div className="grid gap-12 md:grid-cols-4">
           
           {/* Brand Column */}
@@ -70,7 +61,7 @@ export default function Footer({ settings }: { settings?: FooterSettings }) {
               </li>
               <li className="flex items-center gap-3">
                 <MapPin className="w-4 h-4 text-emerald-400 shrink-0" />
-                <span className="text-stone-500">300 km from Addis Ababa<br />via Debre Markos (4WD)</span>
+                <span className="text-stone-300">300 km from Addis Ababa<br />via Debre Markos (4WD)</span>
               </li>
               {settings?.contactEmail && (
                 <li className="flex items-center gap-3">
@@ -95,7 +86,7 @@ export default function Footer({ settings }: { settings?: FooterSettings }) {
 
       {/* Bottom Bar */}
       <div className="border-t border-white/5">
-        <div className="container mx-auto px-4 py-5 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-stone-600">
+        <div className="container mx-auto px-4 py-5 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-stone-400">
           <span>© {new Date().getFullYear()} {name}. All rights reserved.</span>
           <span className="flex items-center gap-1.5">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />

@@ -87,7 +87,7 @@ const ToastItem = ({ toast, onRemove }: { toast: Toast; onRemove: (id: string) =
   if (!visible) return null
 
   const typeStyles = {
-    success: 'bg-emerald-600 text-white border-emerald-600',
+    success: 'bg-emerald-700 text-white border-emerald-700',
     error: 'bg-red-600 text-white border-red-600',
     warning: 'bg-amber-600 text-white border-amber-600',
     info: 'bg-blue-600 text-white border-blue-600',

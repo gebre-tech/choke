@@ -162,7 +162,7 @@ export const ConfirmModal = ({
 }: ConfirmModalProps) => {
   const variantStyles = {
     danger: 'bg-red-600 hover:bg-red-700 focus:ring-red-500',
-    primary: 'bg-emerald-600 hover:bg-emerald-700 focus:ring-emerald-500',
+    primary: 'bg-emerald-700 hover:bg-emerald-800 focus:ring-emerald-700',
     warning: 'bg-amber-600 hover:bg-amber-700 focus:ring-amber-500',
   }
 

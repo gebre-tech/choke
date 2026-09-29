@@ -297,10 +297,10 @@ export function BookingSteps({ cottages }: { cottages: CottageOption[] }) {
                     )}
                   </div>
                   <h3 className="font-bold text-lg">{c.name}</h3>
-                  <p className="text-emerald-600 font-semibold">ETB {c.pricePerNight.toLocaleString()}/night</p>
+                  <p className="text-emerald-700 font-semibold">ETB {c.pricePerNight.toLocaleString()}/night</p>
                   <p className="text-sm text-stone-500 mt-1">Sleeps {c.capacity}</p>
                   {cottageId === c.id && (
-                    <div className="absolute top-3 right-3 bg-emerald-500 text-white w-6 h-6 rounded-full flex items-center justify-center">
+                    <div className="absolute top-3 right-3 bg-emerald-700 text-white w-6 h-6 rounded-full flex items-center justify-center">
                       <Check className="w-4 h-4" />
                     </div>
                   )}
@@ -452,7 +452,7 @@ export function BookingSteps({ cottages }: { cottages: CottageOption[] }) {
                 </div>
                 <div>
                   <h3 className="font-bold text-lg">{selected?.name}</h3>
-                  <p className="text-emerald-600 font-semibold">ETB {selected?.pricePerNight.toLocaleString()}/night</p>
+                  <p className="text-emerald-700 font-semibold">ETB {selected?.pricePerNight.toLocaleString()}/night</p>
                 </div>
               </div>
               <div className="grid sm:grid-cols-2 gap-4 text-sm">
@@ -493,7 +493,7 @@ export function BookingSteps({ cottages }: { cottages: CottageOption[] }) {
                 layoutId={`step-${step.id}`}
                 className={`flex items-center justify-center w-10 h-10 rounded-full font-semibold transition-all ${
                   visibleSteps.findIndex(s => s.id === currentStep) >= index
-                    ? 'bg-white text-emerald-600'
+                    ? 'bg-white text-emerald-700'
                     : 'bg-white/20 text-white/60'
                 }`}
                 initial={false}
