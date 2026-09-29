@@ -4,6 +4,8 @@ import { findPaymentEntityByRef, paymentAmount } from '@/lib/payment-entities'
 import { chapa } from '@/lib/chapa'
 import { BookingStatus, PaymentStatus } from '@prisma/client'
 
+const DEFAULT_RENDER_API_URL = 'https://choke.onrender.com'
+
 export async function GET(
   req: Request,
   ctx: { params: Promise<{ ref: string }> }
@@ -13,6 +15,19 @@ export async function GET(
 
     if (!ref || typeof ref !== 'string') {
       return NextResponse.json({ error: 'Transaction reference is required' }, { status: 400 })
+    }
+
+    // The local frontend creates orders on Render, so its return page must ask
+    // Render to verify and update that same order. On Render itself, use the
+    // local database and Chapa client as usual.
+    if (!process.env.RENDER_EXTERNAL_URL) {
+      const apiUrl = (process.env.RENDER_API_URL || DEFAULT_RENDER_API_URL).replace(/\/+$/, '')
+      const remoteResponse = await fetch(
+        `${apiUrl}/api/payment/verify/${encodeURIComponent(ref)}`,
+        { cache: 'no-store', signal: AbortSignal.timeout(30_000) }
+      )
+      const remoteData = await remoteResponse.json().catch(() => ({}))
+      return NextResponse.json(remoteData, { status: remoteResponse.status })
     }
 
     const entity = await findPaymentEntityByRef(ref)
