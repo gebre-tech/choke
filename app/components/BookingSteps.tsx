@@ -192,7 +192,7 @@ export function BookingSteps({ cottages }: { cottages: CottageOption[] }) {
 
     setSubmitting('creating')
     try {
-      const bookingRes = await fetch('/api/bookings', {
+      const checkoutRes = await fetch('/api/booking/checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -206,29 +206,13 @@ export function BookingSteps({ cottages }: { cottages: CottageOption[] }) {
           specialRequests: specialRequests || undefined,
         }),
       })
-      const booking = await bookingRes.json()
-      if (!bookingRes.ok) return toast.error(booking.error || 'Could not create booking')
-
       setSubmitting('paying')
-      const payRes = await fetch('/api/payment/initiate', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          entityType: 'booking',
-          entityId: booking.bookingId,
-          email,
-          name,
-          phoneNumber: phone || undefined,
-        }),
-      })
-      const pay = await payRes.json()
-      if (!payRes.ok) return toast.error(pay.error || 'Could not start payment')
+      const checkout = await checkoutRes.json()
+      if (!checkoutRes.ok) return toast.error(checkout.error || 'Could not start booking payment')
 
-      if (pay.checkout_url) {
+      if (checkout.checkout_url) {
         toast.success('Redirecting to secure payment…')
-        window.location.href = pay.checkout_url
-      } else {
-        toast.success(`Booking created (ref ${booking.bookingId}). Complete your payment.`)
+        window.location.href = checkout.checkout_url
       }
     } catch {
       toast.error('Something went wrong — please try again')
