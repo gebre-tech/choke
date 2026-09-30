@@ -198,7 +198,7 @@ export const MediaUploader = ({
           <p className="text-lg font-medium text-stone-900">
             {dragActive ? 'Drop files here…' : 'Drag & drop media files, or click to browse'}
           </p>
-          <p className="text-sm text-stone-500 mt-1">
+          <p className="text-sm text-stone-600 mt-1">
             Supports images, videos, audio. Max {maxFiles} files, 50MB each.
           </p>
           {media.length >= maxFiles && (
@@ -211,7 +211,7 @@ export const MediaUploader = ({
         <div className="mt-6">
           <div className="flex items-center justify-between mb-4">
             <h3 className="font-semibold text-stone-900">Media ({media.length}/{maxFiles})</h3>
-            <div className="flex items-center gap-2 text-sm text-stone-500">
+            <div className="flex items-center gap-2 text-sm text-stone-600">
               {media.filter(m => m.type === 'IMAGE').length} images,{' '}
               {media.filter(m => m.type === 'VIDEO').length} videos
             </div>
@@ -296,7 +296,7 @@ const MediaItemCard = ({
     if (item.type === 'AUDIO') {
       return (
         <div className="aspect-video bg-stone-100 rounded-lg flex items-center justify-center">
-          <Music className="w-12 h-12 text-stone-400" />
+          <Music className="w-12 h-12 text-stone-500" />
         </div>
       )
     }
@@ -388,12 +388,12 @@ const MediaItemCard = ({
 
         <div className="absolute bottom-2 left-2 right-2 flex items-center justify-between px-2">
           <span className="text-xs text-white/80 truncate max-w-[60%]">{item.title}</span>
-          <span className="text-[10px] text-white/60 capitalize">{item.type.toLowerCase()}</span>
+          <span className="text-[10px] text-white/85 capitalize">{item.type.toLowerCase()}</span>
         </div>
       </div>
       <div className="p-2 border-t border-stone-100">
-        <p className="text-xs text-stone-500 truncate">{item.caption || 'No caption'}</p>
-        <p className="text-[10px] text-stone-400">Position: {item.sortOrder + 1}</p>
+        <p className="text-xs text-stone-600 truncate">{item.caption || 'No caption'}</p>
+        <p className="text-[10px] text-stone-500">Position: {item.sortOrder + 1}</p>
       </div>
     </motion.div>
   )

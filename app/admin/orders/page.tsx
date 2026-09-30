@@ -63,7 +63,7 @@ export default function AdminOrdersPage() {
       </div>
 
       {loading && (
-        <p className="flex items-center gap-2 text-stone-500">
+        <p className="flex items-center gap-2 text-stone-600">
           <Loader2 className="w-5 h-5 animate-spin" /> Loading…
         </p>
       )}
@@ -72,7 +72,7 @@ export default function AdminOrdersPage() {
       {data && (
         <div className="bg-white rounded-2xl shadow overflow-x-auto">
           <table className="w-full text-sm min-w-[880px]">
-            <thead className="bg-stone-50 text-left text-stone-500">
+            <thead className="bg-stone-50 text-left text-stone-600">
               <tr>
                 <th className="px-4 py-2">Customer</th>
                 <th className="px-4 py-2">Items</th>
@@ -90,9 +90,9 @@ export default function AdminOrdersPage() {
                     <div className="font-medium">
                       {o.user.firstName} {o.user.lastName ?? ''}
                     </div>
-                    <div className="text-xs text-stone-500">{o.user.email}</div>
+                    <div className="text-xs text-stone-600">{o.user.email}</div>
                     {o.shippingCity && (
-                      <div className="text-xs text-stone-500">{o.shippingCity}{o.shippingRegion ? `, ${o.shippingRegion}` : ''}</div>
+                      <div className="text-xs text-stone-600">{o.shippingCity}{o.shippingRegion ? `, ${o.shippingRegion}` : ''}</div>
                     )}
                   </td>
                   <td className="px-4 py-2">
@@ -100,11 +100,11 @@ export default function AdminOrdersPage() {
                       {o.items.map((it) => (
                         <li key={it.id}>
                           {it.productName} × {it.quantity}
-                          <span className="text-stone-400"> — ETB {it.totalPrice.toLocaleString()}</span>
+                          <span className="text-stone-500"> — ETB {it.totalPrice.toLocaleString()}</span>
                         </li>
                       ))}
                     </ul>
-                    {o.paymentTxRef && <div className="text-[10px] text-stone-400 mt-1">{o.paymentTxRef}</div>}
+                    {o.paymentTxRef && <div className="text-[10px] text-stone-500 mt-1">{o.paymentTxRef}</div>}
                   </td>
                   <td className="px-4 py-2 font-semibold">ETB {o.totalAmount.toLocaleString()}</td>
                   <td className="px-4 py-2"><Badge value={o.status} /></td>
@@ -138,7 +138,7 @@ export default function AdminOrdersPage() {
               ))}
               {orders.length === 0 && (
                 <tr>
-                  <td colSpan={7} className="px-4 py-6 text-center text-stone-400">
+                  <td colSpan={7} className="px-4 py-6 text-center text-stone-500">
                     No orders found.
                   </td>
                 </tr>

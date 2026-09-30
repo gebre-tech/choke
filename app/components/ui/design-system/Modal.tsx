@@ -110,7 +110,7 @@ export const Modal = ({
                     </h2>
                   )}
                   {description && (
-                    <p id={descId} className="mt-1 text-sm text-stone-500">
+                    <p id={descId} className="mt-1 text-sm text-stone-600">
                       {description}
                     </p>
                   )}
@@ -119,7 +119,7 @@ export const Modal = ({
                   <button
                     onClick={onClose}
                     type="button"
-                    className="flex-shrink-0 p-1.5 rounded-lg text-stone-400 hover:text-stone-600 hover:bg-stone-100 transition-colors"
+                    className="flex-shrink-0 p-1.5 rounded-lg text-stone-500 hover:text-stone-600 hover:bg-stone-100 transition-colors"
                     aria-label="Close modal"
                   >
                     <X className="w-5 h-5" />

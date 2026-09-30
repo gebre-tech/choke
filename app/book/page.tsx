@@ -3,6 +3,7 @@ import BookExperienceFlow from '@/components/BookExperienceFlow'
 import Image from 'next/image'
 import Link from 'next/link'
 import { ArrowRight, CheckCircle2, ShieldCheck, Sparkles, Telescope, Trees } from 'lucide-react'
+import { artworkFor, COTTAGE_ARTWORK, EXPERIENCE_ARTWORK } from '@/lib/listing-artwork'
 
 export const dynamic = 'force-dynamic'
 
@@ -63,8 +64,20 @@ export default async function BookPage() {
     hasPrivateDeck: c.hasPrivateDeck,
     hasFireplace: c.hasFireplace,
     availableUnits: c.availableUnits,
-    imageUrl: c.media.find((m) => m.type === 'IMAGE')?.url ?? undefined,
-    media: c.media,
+    imageUrl: c.media.find((m) => m.type === 'IMAGE')?.url ?? artworkFor(c.name, COTTAGE_ARTWORK),
+    media: c.media.some((m) => m.type === 'IMAGE') || !artworkFor(c.name, COTTAGE_ARTWORK)
+      ? c.media
+      : [{
+          id: `artwork-${c.id}`,
+          title: c.name,
+          type: 'IMAGE',
+          url: artworkFor(c.name, COTTAGE_ARTWORK)!,
+          provider: 'LOCAL',
+          videoId: null,
+          caption: null,
+          altText: `${c.name} highland cottage illustration`,
+          sortOrder: 0,
+        }, ...c.media],
     links: c.links,
   }))
 
@@ -76,7 +89,7 @@ export default async function BookPage() {
     price: Number(experience.price),
     duration: experience.duration,
     capacity: experience.capacity,
-    imageUrl: experience.media[0]?.url,
+    imageUrl: experience.media[0]?.url ?? artworkFor(experience.name, EXPERIENCE_ARTWORK),
   }))
 
   return (
@@ -173,7 +186,7 @@ export default async function BookPage() {
             ) : (
               <div className="rounded-3xl bg-white p-8 text-center shadow-xl">
                 <h2 className="text-xl font-bold">No cottages are available right now</h2>
-                <p className="mt-2 text-stone-500">Please check back soon or contact the lodge for availability.</p>
+                <p className="mt-2 text-stone-600">Please check back soon or contact the lodge for availability.</p>
               </div>
             )}
           </div>

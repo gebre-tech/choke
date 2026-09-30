@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/design-system/Button'
 import { Input } from '@/components/ui/design-system/Input'
 import { FocusTrap } from '@/components/ui/design-system/FocusTrap'
 import { generateId } from '@/lib/a11y'
+import { useAuth } from '@/components/AuthProvider'
 
 type Stage = 'idle' | 'creating' | 'paying'
 
@@ -24,12 +25,13 @@ function isChapaEmail(value: string) {
 
 export default function CartDrawer({ open, onClose }: { open: boolean; onClose: () => void }) {
   const { items, removeItem, updateQuantity, clearCart } = useCartStore()
+  const { user: account, isLoading: authLoading } = useAuth()
   const [email, setEmail] = useState('')
-  const [accountEmail, setAccountEmail] = useState<string | null>(null)
-  const [authChecked, setAuthChecked] = useState(false)
   const [stage, setStage] = useState<Stage>('idle')
   const [emailError, setEmailError] = useState('')
   const total = items.reduce((sum, i) => sum + i.price * i.quantity, 0)
+  const accountEmail = account?.email ?? null
+  const authChecked = !authLoading
   const drawerRef = useRef<HTMLDivElement>(null)
   const previousActiveElement = useRef<HTMLElement | null>(null)
   const emailId = generateId('cart-email')
@@ -79,22 +81,6 @@ export default function CartDrawer({ open, onClose }: { open: boolean; onClose: 
       setStage('idle')
     }
   }
-
-  useEffect(() => {
-    let active = true
-    fetch('/api/auth/me')
-      .then((res) => res.json())
-      .then((data) => {
-        if (active && data.authenticated && typeof data.user?.email === 'string') {
-          setAccountEmail(data.user.email)
-        }
-      })
-      .catch(() => {})
-      .finally(() => {
-        if (active) setAuthChecked(true)
-      })
-    return () => { active = false }
-  }, [])
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'Escape') {
@@ -146,7 +132,7 @@ export default function CartDrawer({ open, onClose }: { open: boolean; onClose: 
         </div>
 
         {items.length === 0 ? (
-          <p className="text-stone-500 text-center py-8" aria-live="polite">Your cart is empty</p>
+          <p className="text-stone-600 text-center py-8" aria-live="polite">Your cart is empty</p>
         ) : (
           <>
             <ul className="space-y-3" role="list" aria-label="Cart items">

@@ -91,7 +91,7 @@ export default function AdminSettingsPage() {
 
   if (loading) {
     return (
-      <p className="flex items-center gap-2 text-stone-500">
+      <p className="flex items-center gap-2 text-stone-600">
         <Loader2 className="w-5 h-5 animate-spin" /> Loading…
       </p>
     )
@@ -103,7 +103,7 @@ export default function AdminSettingsPage() {
     <div className="space-y-8">
       <div>
         <h2 className="text-2xl font-bold mb-1">Branding & Settings</h2>
-        <p className="text-stone-500 text-sm">
+        <p className="text-stone-600 text-sm">
           The logo, name and contact details appear across the public site instantly.
         </p>
       </div>
@@ -120,7 +120,7 @@ export default function AdminSettingsPage() {
               // eslint-disable-next-line @next/next/no-img-element
               <img src={f.logoUrl} alt="Site logo" className="max-h-full max-w-full object-contain p-2" />
             ) : (
-              <span className="text-xs text-stone-400">No logo — using default</span>
+              <span className="text-xs text-stone-500">No logo — using default</span>
             )}
           </div>
           <div className="flex flex-col gap-3">

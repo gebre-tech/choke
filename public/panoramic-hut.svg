@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 720" fill="none">
+  <defs>
+    <linearGradient id="sky" x1="480" y1="0" x2="480" y2="720" gradientUnits="userSpaceOnUse"><stop stop-color="#9BD7DB"/><stop offset=".58" stop-color="#EBCB9E"/><stop offset="1" stop-color="#F3E5C8"/></linearGradient>
+    <linearGradient id="mountain" x1="463" y1="183" x2="469" y2="625" gradientUnits="userSpaceOnUse"><stop stop-color="#527A72"/><stop offset="1" stop-color="#173C3A"/></linearGradient>
+    <linearGradient id="wall" x1="473" y1="345" x2="473" y2="635" gradientUnits="userSpaceOnUse"><stop stop-color="#D5B88A"/><stop offset="1" stop-color="#8C6847"/></linearGradient>
+    <linearGradient id="roof" x1="474" y1="250" x2="474" y2="383" gradientUnits="userSpaceOnUse"><stop stop-color="#583D2F"/><stop offset="1" stop-color="#292B28"/></linearGradient>
+  </defs>
+  <path fill="url(#sky)" d="M0 0h960v720H0z"/>
+  <circle cx="746" cy="148" r="56" fill="#FFF0C1" opacity=".88"/>
+  <path d="m0 395 120-119 91 91 124-171 107 130 112-103 129 153 93-104 184 153v295H0V395Z" fill="#789B8A" opacity=".75"/>
+  <path d="m0 478 141-104 93 81 139-138 112 121 124-91 139 95 93-87 119 106v259H0V478Z" fill="url(#mountain)"/>
+  <path d="M0 570c132-50 221-45 346-4 146 48 243 23 370-23 94-34 165-30 244 1v176H0V570Z" fill="#3D6858"/>
+  <path d="M0 655c128-71 232-65 343-17 138 59 250 35 370-20 91-42 167-43 247-12v114H0V655Z" fill="#254C42"/>
+  <path d="m346 397 130-137 138 137-25 13H370l-24-13Z" fill="url(#roof)"/>
+  <path d="m370 399 107-110 110 110v214H370V399Z" fill="url(#wall)"/>
+  <path d="M356 396h246v21H356z" fill="#463B30"/>
+  <path d="M458 446h45v56h-45z" fill="#253B37"/>
+  <path d="M428 443h20v26h-20zM516 443h20v26h-20z" fill="#F4D899"/>
+  <path d="M438 449h2v15h-2zM526 449h2v15h-2z" fill="#493E31"/>
+  <path d="m391 420 20-31 20 31v20h-40zM510 420l20-31 20 31v20h-40z" fill="#A77B4A"/>
+  <path d="M0 625c147-30 246-18 340 15m620-43c-97-21-163-9-240 13" stroke="#A7C49B" stroke-width="7" stroke-linecap="round" opacity=".66"/>
+  <path d="M96 580v-75m0 24-25-18m25 37 28-23m-28 45-20-14m675-21v-91m0 34-25-20m25 45 27-26m-27 48-20-15" stroke="#234B3E" stroke-width="10" stroke-linecap="round"/>
+  <path d="M87 521c-25-4-32-24-13-35 3-24 31-30 43-10 23 0 26 25 8 35" fill="#5C8062"/>
+  <path d="M761 463c-25-4-32-24-13-35 3-24 31-30 43-10 23 0 26 25 8 35" fill="#5C8062"/>
+</svg>

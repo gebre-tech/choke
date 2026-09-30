@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 
 import { useState, type ReactNode } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
@@ -189,8 +189,8 @@ export const LinkManager = ({
       {links.length === 0 ? (
         <div className="text-center py-8 border-2 border-dashed border-stone-200 rounded-xl">
           <Link2 className="w-12 h-12 text-stone-300 mx-auto mb-3" />
-          <p className="text-stone-500">No links added yet</p>
-          <p className="text-sm text-stone-400 mt-1">Add booking pages, websites, social media, etc.</p>
+          <p className="text-stone-600">No links added yet</p>
+          <p className="text-sm text-stone-500 mt-1">Add booking pages, websites, social media, etc.</p>
           <Button variant="secondary" size="sm" className="mt-3" onClick={handleAddClick} icon={<Plus className="w-4 h-4" />}>
             Add Your First Link
           </Button>
@@ -208,7 +208,7 @@ export const LinkManager = ({
               <div className="flex items-center gap-2">
                 <button
                   onMouseDown={e => e.preventDefault()}
-                  className="text-stone-300 hover:text-stone-500 cursor-grab active:cursor-grabbing self-start pt-1"
+                  className="text-stone-300 hover:text-stone-600 cursor-grab active:cursor-grabbing self-start pt-1"
                   title="Drag to reorder"
                 >
                   <GripVertical className="w-4 h-4" />
@@ -218,12 +218,12 @@ export const LinkManager = ({
                     <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-medium bg-emerald-100 text-emerald-700">
                       {LINK_TYPES.find(t => t.value === link.type)?.label ?? link.type}
                     </span>
-                    {!link.openInNewTab && <span className="text-[10px] text-stone-400">(same tab)</span>}
+                    {!link.openInNewTab && <span className="text-[10px] text-stone-500">(same tab)</span>}
                   </div>
                   <p className="font-medium line-clamp-1">{link.title}</p>
-                  <p className="text-xs text-stone-500 truncate">{link.url}</p>
-                  {link.description && <p className="text-xs text-stone-400 line-clamp-2">{link.description}</p>}
-                  <div className="flex items-center gap-2 text-[11px] text-stone-400">
+                  <p className="text-xs text-stone-600 truncate">{link.url}</p>
+                  {link.description && <p className="text-xs text-stone-500 line-clamp-2">{link.description}</p>}
+                  <div className="flex items-center gap-2 text-[11px] text-stone-500">
                     <label className="flex items-center gap-1">
                       <input type="checkbox" checked={link.openInNewTab} disabled className="w-3 h-3" />
                       Open in new tab
@@ -231,8 +231,8 @@ export const LinkManager = ({
                   </div>
                 </div>
                 <div className="flex items-center gap-1">
-                  <button type="button" onClick={() => handleEditClick(link)} className="text-stone-400 hover:text-emerald-600 p-1" title="Edit"><Edit2 className="w-4 h-4" /></button>
-                  <button type="button" onClick={() => removeLink(link.id)} className="text-stone-400 hover:text-red-600 p-1" title="Delete"><Trash2 className="w-4 h-4" /></button>
+                  <button type="button" onClick={() => handleEditClick(link)} className="text-stone-500 hover:text-emerald-600 p-1" title="Edit"><Edit2 className="w-4 h-4" /></button>
+                  <button type="button" onClick={() => removeLink(link.id)} className="text-stone-500 hover:text-red-600 p-1" title="Delete"><Trash2 className="w-4 h-4" /></button>
                 </div>
               </div>
             </motion.div>
@@ -258,7 +258,7 @@ export const LinkManager = ({
             >
               <div className="flex justify-between items-center mb-4">
                 <h3 className="text-lg font-semibold">{editingId ? 'Edit Link' : 'Add Link'}</h3>
-                <button onClick={() => setModalOpen(false)} className="p-1 text-stone-400 hover:text-stone-600 rounded-lg hover:bg-stone-100" aria-label="Close modal">
+                <button onClick={() => setModalOpen(false)} className="p-1 text-stone-500 hover:text-stone-600 rounded-lg hover:bg-stone-100" aria-label="Close modal">
                   <svg className="w-5 h-5" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" /></svg>
                 </button>
               </div>

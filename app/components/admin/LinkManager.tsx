@@ -59,7 +59,7 @@ export default function LinkManager({
   if (!entityId) {
     return (
       <div className="border-t border-stone-200 pt-4">
-        <p className="text-xs text-stone-400">
+        <p className="text-xs text-stone-500">
           Save this item first, then you can add external links.
         </p>
       </div>
@@ -147,8 +147,8 @@ export default function LinkManager({
       </div>
 
       {error && <Err message={error} />}
-      {loading && <p className="text-xs text-stone-400 flex items-center gap-1"><Loader2 className="w-3 h-3 animate-spin" /> Loading…</p>}
-      {links.length === 0 && !loading && <p className="text-xs text-stone-400">No links added yet.</p>}
+      {loading && <p className="text-xs text-stone-500 flex items-center gap-1"><Loader2 className="w-3 h-3 animate-spin" /> Loading…</p>}
+      {links.length === 0 && !loading && <p className="text-xs text-stone-500">No links added yet.</p>}
 
       <div className="space-y-2">
         {links.map((link, i) => (
@@ -157,7 +157,7 @@ export default function LinkManager({
               <button
                 type="button"
                 onMouseDown={() => { /* prevent drag on button */ }}
-                className="text-stone-300 hover:text-stone-500 cursor-grab active:cursor-grabbing self-start pt-1"
+                className="text-stone-300 hover:text-stone-600 cursor-grab active:cursor-grabbing self-start pt-1"
                 title="Drag to reorder"
               >
                 <GripVertical className="w-4 h-4" />
@@ -167,12 +167,12 @@ export default function LinkManager({
                   <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-medium bg-emerald-100 text-emerald-700">
                     {LINK_TYPE_LABELS[link.type] ?? link.type}
                   </span>
-                  {!link.isActive && <span className="text-[10px] text-stone-400">(inactive)</span>}
+                  {!link.isActive && <span className="text-[10px] text-stone-500">(inactive)</span>}
                 </div>
                 <p className="font-medium line-clamp-1">{link.title}</p>
-                <p className="text-sm text-stone-500 truncate">{link.url}</p>
-                {link.description && <p className="text-xs text-stone-400 line-clamp-2">{link.description}</p>}
-                <div className="flex items-center gap-3 text-[11px] text-stone-400">
+                <p className="text-sm text-stone-600 truncate">{link.url}</p>
+                {link.description && <p className="text-xs text-stone-500 line-clamp-2">{link.description}</p>}
+                <div className="flex items-center gap-3 text-[11px] text-stone-500">
                   <label className="flex items-center gap-1">
                     <input type="checkbox" checked={link.openInNewTab} disabled className="w-3 h-3" />
                     Open in new tab
@@ -180,8 +180,8 @@ export default function LinkManager({
                 </div>
               </div>
               <div className="flex items-center gap-1">
-                <button type="button" onClick={() => openEdit(link)} className="text-stone-400 hover:text-emerald-600 p-1" title="Edit"><Edit2 className="w-4 h-4" /></button>
-                <button type="button" onClick={() => remove(link.id)} className="text-stone-400 hover:text-red-600 p-1" title="Delete"><Trash2 className="w-4 h-4" /></button>
+                <button type="button" onClick={() => openEdit(link)} className="text-stone-500 hover:text-emerald-600 p-1" title="Edit"><Edit2 className="w-4 h-4" /></button>
+                <button type="button" onClick={() => remove(link.id)} className="text-stone-500 hover:text-red-600 p-1" title="Delete"><Trash2 className="w-4 h-4" /></button>
               </div>
             </div>
           </div>

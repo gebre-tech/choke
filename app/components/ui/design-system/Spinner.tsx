@@ -20,7 +20,7 @@ const sizeStyles = {
 
 const colorStyles = {
   primary: 'text-emerald-600',
-  secondary: 'text-stone-500',
+  secondary: 'text-stone-600',
   white: 'text-white',
   current: 'text-current',
 }

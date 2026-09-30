@@ -65,7 +65,7 @@ export default function AdminBookingsPage() {
       </div>
 
       {loading && (
-        <p className="flex items-center gap-2 text-stone-500">
+        <p className="flex items-center gap-2 text-stone-600">
           <Loader2 className="w-5 h-5 animate-spin" /> Loading…
         </p>
       )}
@@ -74,7 +74,7 @@ export default function AdminBookingsPage() {
       {data && (
         <div className="bg-white rounded-2xl shadow overflow-x-auto">
           <table className="w-full text-sm min-w-[880px]">
-            <thead className="bg-stone-50 text-left text-stone-500">
+            <thead className="bg-stone-50 text-left text-stone-600">
               <tr>
                 <th className="px-4 py-2">Guest</th>
                 <th className="px-4 py-2">Cottage</th>
@@ -93,8 +93,8 @@ export default function AdminBookingsPage() {
                     <div className="font-medium">
                       {b.user.firstName} {b.user.lastName ?? ''}
                     </div>
-                    <div className="text-xs text-stone-500">{b.user.email}</div>
-                    {b.user.phoneNumber && <div className="text-xs text-stone-500">{b.user.phoneNumber}</div>}
+                    <div className="text-xs text-stone-600">{b.user.email}</div>
+                    {b.user.phoneNumber && <div className="text-xs text-stone-600">{b.user.phoneNumber}</div>}
                   </td>
                   <td className="px-4 py-2">{b.cottage.name}</td>
                   <td className="px-4 py-2 text-xs">
@@ -102,7 +102,7 @@ export default function AdminBookingsPage() {
                   </td>
                   <td className="px-4 py-2">{b.guestCount}</td>
                   <td className="px-4 py-2">ETB {b.amount.toLocaleString()}
-                    {b.paymentTxRef && <div className="text-[10px] text-stone-400">{b.paymentTxRef}</div>}
+                    {b.paymentTxRef && <div className="text-[10px] text-stone-500">{b.paymentTxRef}</div>}
                   </td>
                   <td className="px-4 py-2">
                     <Badge value={b.status} />
@@ -138,7 +138,7 @@ export default function AdminBookingsPage() {
               ))}
               {bookings.length === 0 && (
                 <tr>
-                  <td colSpan={8} className="px-4 py-6 text-center text-stone-400">
+                  <td colSpan={8} className="px-4 py-6 text-center text-stone-500">
                     No bookings found.
                   </td>
                 </tr>

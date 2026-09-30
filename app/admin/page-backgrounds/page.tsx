@@ -19,7 +19,7 @@ export default function AdminPageBackgroundsPage() {
     <div className="space-y-6">
       <div>
         <h2 className="text-2xl font-bold mb-1">Page Backgrounds</h2>
-        <p className="text-stone-500 text-sm">
+        <p className="text-stone-600 text-sm">
           Manage multimedia backgrounds (images, videos, external links) for each page section.
         </p>
       </div>
@@ -63,7 +63,7 @@ function PreviewTab() {
       <h3 className="text-lg font-bold flex items-center gap-2">
         <Eye className="w-5 h-5 text-emerald-600" /> Live Preview
       </h3>
-      <p className="text-stone-500">
+      <p className="text-stone-600">
         Click any page to preview how backgrounds will appear on the live site.
       </p>
       <div className="grid md:grid-cols-3 gap-4">
@@ -74,7 +74,7 @@ function PreviewTab() {
             </div>
             <div className="p-4">
               <h4 className="font-bold text-lg">{page.label}</h4>
-              <p className="text-sm text-stone-500 mt-1">
+              <p className="text-sm text-stone-600 mt-1">
                 Sections: {page.sections.map(s => s.charAt(0).toUpperCase() + s.slice(1)).join(', ')}
               </p>
               <div className="mt-3 flex gap-2">

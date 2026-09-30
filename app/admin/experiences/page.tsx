@@ -254,8 +254,8 @@ export default function AdminExperiencesPage() {
         </div>
         <div className="min-w-0">
           <p className="font-medium truncate">{e.name}</p>
-          {e.cottage && <p className="text-xs text-stone-400">at {e.cottage.name}</p>}
-          {e.submittedBy && <p className="text-[10px] text-stone-400">submitted by {e.submittedBy?.email}</p>}
+          {e.cottage && <p className="text-xs text-stone-500">at {e.cottage.name}</p>}
+          {e.submittedBy && <p className="text-[10px] text-stone-500">submitted by {e.submittedBy?.email}</p>}
         </div>
       </div>
     )},
@@ -263,7 +263,7 @@ export default function AdminExperiencesPage() {
     { key: 'price', header: 'Price', className: 'w-28', render: (e: Experience) => <span className="font-medium">ETB {e.price.toLocaleString()}</span> },
     { key: 'duration', header: 'Duration', className: 'w-24', render: (e: Experience) => <span className="text-stone-600">{e.duration ? `${e.duration} min` : '—'}</span> },
     { key: 'when', header: 'Schedule', className: 'w-40', render: (e: Experience) => (
-      <span className="text-xs text-stone-500">
+      <span className="text-xs text-stone-600">
         {e.startTime && e.endTime ? `${e.startTime}–${e.endTime}` : '—'}
         {e.difficultyLevel ? ` · {e.difficultyLevel}` : ''}
       </span>

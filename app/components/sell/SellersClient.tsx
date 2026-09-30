@@ -6,8 +6,7 @@ import toast from 'react-hot-toast'
 import { useAsyncData, Field, inputCls, Badge } from '@/components/admin/ui'
 import { classifyPublicMediaUrl, type PublicMediaUrl } from '@/lib/media-shared'
 import { Loader2, Plus, X, Trash2, Pencil, LogIn } from 'lucide-react'
-
-type SessionUser = { id: string; email: string; role: string; firstName: string }
+import { useAuth, type AuthUser } from '@/components/AuthProvider'
 
 type MediaLight = {
   id: string
@@ -71,8 +70,8 @@ async function api<T = unknown>(path: string, options: { method?: string; body?:
 type MediaRow = { url: string; hint: string; ok: boolean }
 
 export default function SellersClient({ cottages }: { cottages: { id: string; name: string }[] }) {
-  const [session, setSession] = useState<SessionUser | null>(null)
-  const [checked, setChecked] = useState(false)
+  const { user: session, isLoading: authLoading } = useAuth()
+  const checked = !authLoading
   const [tab, setTab] = useState<'PRODUCT' | 'EXPERIENCE'>('PRODUCT')
 
   const listings = useAsyncData<{ products: ProductItem[]; experiences: ExperienceItem[] }>(() =>
@@ -84,19 +83,9 @@ export default function SellersClient({ cottages }: { cottages: { id: string; na
 
   const loadListings = useCallback(() => listings.refresh(), [listings])
 
-  useEffect(() => {
-    fetch('/api/auth/me')
-      .then((r) => r.json())
-      .then((d) => {
-        if (d?.authenticated) setSession(d.user)
-      })
-      .catch(() => {})
-      .finally(() => setChecked(true))
-  }, [])
-
   if (!checked) {
     return (
-      <p className="flex items-center gap-2 text-stone-500">
+      <p className="flex items-center gap-2 text-stone-600">
         <Loader2 className="w-5 h-5 animate-spin" /> Checking…
       </p>
     )
@@ -107,7 +96,7 @@ export default function SellersClient({ cottages }: { cottages: { id: string; na
       <div className="bg-white rounded-2xl shadow p-8 text-center">
         <LogIn className="w-12 h-12 text-emerald-600 mx-auto mb-3" />
         <h2 className="text-xl font-bold mb-2">Sign in to start selling</h2>
-        <p className="text-stone-500 mb-4 text-sm">
+        <p className="text-stone-600 mb-4 text-sm">
           You&apos;ll be able to submit products and experiences with photos and videos. An admin
           reviews each listing before it goes live.
         </p>
@@ -166,7 +155,7 @@ function MediaLinks({
   }
   return (
     <div className="space-y-2">
-      <p className="text-xs text-stone-500">
+      <p className="text-xs text-stone-600">
         Add photos with https image links (jpg/png/webp/gif) and videos with YouTube/Vimeo links.
         Link and file upload management is available to admins.
       </p>
@@ -184,7 +173,7 @@ function MediaLinks({
             </span>
           )}
           {rows.length > 1 && (
-            <button type="button" onClick={() => onChange(rows.filter((_, j) => j !== i))} className="text-stone-400 hover:text-red-600 shrink-0">
+            <button type="button" onClick={() => onChange(rows.filter((_, j) => j !== i))} className="text-stone-500 hover:text-red-600 shrink-0">
               <X className="w-4 h-4" />
             </button>
           )}
@@ -421,7 +410,7 @@ function MyListings({
   onEdited,
   defaultTab,
 }: {
-  session: SessionUser
+  session: AuthUser
   data: { data: { products: ProductItem[]; experiences: ExperienceItem[] } | null; loading: boolean }
   onEdited: () => void
   defaultTab: 'PRODUCT' | 'EXPERIENCE'
@@ -472,11 +461,11 @@ function MyListings({
     <section className="bg-white rounded-2xl shadow p-6">
       <h2 className="text-lg font-bold mb-4">My listings</h2>
       {data.loading && (
-        <p className="flex items-center gap-2 text-stone-500 text-sm">
+        <p className="flex items-center gap-2 text-stone-600 text-sm">
           <Loader2 className="w-4 h-4 animate-spin" /> Loading…
         </p>
       )}
-      {!data.loading && all.length === 0 && <p className="text-sm text-stone-400">You haven&apos;t submitted anything yet.</p>}
+      {!data.loading && all.length === 0 && <p className="text-sm text-stone-500">You haven&apos;t submitted anything yet.</p>}
       <div className="space-y-2">
         {!data.loading &&
           all.map((l) => (
@@ -491,7 +480,7 @@ function MyListings({
               </div>
               <div className="min-w-0 flex-1">
                 <p className="font-medium line-clamp-1">{l.name}</p>
-                <p className="text-xs text-stone-500">
+                <p className="text-xs text-stone-600">
                   {l.kind === 'products' ? 'Product' : 'Experience'} · {l.category} · ETB {l.price.toLocaleString()}
                 </p>
               </div>

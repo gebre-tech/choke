@@ -167,7 +167,7 @@ export default function PageBackgroundManager() {
 
   if (loading) {
     return (
-      <p className="text-xs text-stone-400 flex items-center gap-1">
+      <p className="text-xs text-stone-500 flex items-center gap-1">
         <Loader2 className="w-3 h-3 animate-spin" /> Loading…
       </p>
     )
@@ -177,7 +177,7 @@ export default function PageBackgroundManager() {
     <div className="space-y-6">
       <div className="flex flex-wrap items-center gap-4">
         <h2 className="text-xl font-bold">Page Backgrounds</h2>
-        <p className="text-sm text-stone-500">Manage multimedia backgrounds for each page section</p>
+        <p className="text-sm text-stone-600">Manage multimedia backgrounds for each page section</p>
       </div>
 
       {error && <Err message={error} />}
@@ -233,7 +233,7 @@ export default function PageBackgroundManager() {
         </div>
 
         {filtered.length === 0 && (
-          <p className="text-xs text-stone-400">
+          <p className="text-xs text-stone-500">
             No backgrounds for this section — add images, videos or external links.
           </p>
         )}
@@ -251,7 +251,7 @@ export default function PageBackgroundManager() {
                     <span className="text-[9px] font-bold bg-amber-400 text-amber-900 px-1.5 py-0.5 rounded-full">Primary</span>
                   )}
                 </div>
-                <p className="text-[10px] text-stone-400 flex items-center gap-1">
+                <p className="text-[10px] text-stone-500 flex items-center gap-1">
                   <Badge value={m.type} />
                   {m.provider && <span className="text-[9px] px-1 py-0.5 bg-stone-100 rounded">{m.provider}</span>}
                 </p>
@@ -361,7 +361,7 @@ export default function PageBackgroundManager() {
               </div>
 
               {all.filter(m => m.page !== selectedPage || m.section !== selectedSection).length === 0 ? (
-                <p className="text-sm text-stone-400 col-span-2">
+                <p className="text-sm text-stone-500 col-span-2">
                   No other media in the library — upload files above or add links.
                 </p>
               ) : (
@@ -373,7 +373,7 @@ export default function PageBackgroundManager() {
                       </div>
                       <div className="p-2 space-y-1">
                         <p className="text-xs font-semibold line-clamp-1">{m.title}</p>
-                        <p className="text-[10px] text-stone-400">Page: {m.page} · Section: {m.section || '—'}</p>
+                        <p className="text-[10px] text-stone-500">Page: {m.page} · Section: {m.section || '—'}</p>
                         <button
                           type="button"
                           onClick={() => patch(m, { page: selectedPage, section: selectedSection })}

@@ -43,7 +43,7 @@ export default function MediaManager({
   if (!entityId) {
     return (
       <div className="border-t border-stone-200 pt-4">
-        <p className="text-xs text-stone-400">
+        <p className="text-xs text-stone-500">
           Save this item first, then you can add photos, videos and audio from the media library.
         </p>
       </div>
@@ -185,13 +185,13 @@ export default function MediaManager({
       {error && <Err message={error} />}
 
       {loading && (
-        <p className="text-xs text-stone-400 flex items-center gap-1">
+        <p className="text-xs text-stone-500 flex items-center gap-1">
           <Loader2 className="w-3 h-3 animate-spin" /> Loading…
         </p>
       )}
 
       {attached.length === 0 && !loading && (
-        <p className="text-xs text-stone-400">
+        <p className="text-xs text-stone-500">
           No media attached yet — add photos, videos or audio from the library.
         </p>
       )}
@@ -279,7 +279,7 @@ export default function MediaManager({
             </label>
 
             {available.length === 0 ? (
-              <p className="text-sm text-stone-400">
+              <p className="text-sm text-stone-500">
                 No other media in the library — upload files above or add links from the Media page.
               </p>
             ) : (
@@ -291,7 +291,7 @@ export default function MediaManager({
                     </div>
                     <div className="p-2 space-y-1">
                       <p className="text-xs font-semibold line-clamp-1">{m.title}</p>
-                      <p className="text-[10px] text-stone-400">{mediaLabel(m.scope)}</p>
+                      <p className="text-[10px] text-stone-500">{mediaLabel(m.scope)}</p>
                       <button
                         type="button"
                         onClick={() => attach(m)}
@@ -306,7 +306,7 @@ export default function MediaManager({
               </div>
             )}
 
-            <p className="text-[11px] text-stone-400 flex items-center gap-1">
+            <p className="text-[11px] text-stone-500 flex items-center gap-1">
               <ImageIcon className="w-3 h-3" /> You can edit titles, captions and attachments anytime in Admin → Media.
             </p>
           </div>

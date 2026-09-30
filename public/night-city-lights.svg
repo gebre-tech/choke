@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 600" fill="none">
+  <defs>
+    <linearGradient id="sky" x1="480" y1="0" x2="480" y2="600" gradientUnits="userSpaceOnUse"><stop stop-color="#101A3C"/><stop offset=".65" stop-color="#39496B"/><stop offset="1" stop-color="#C77F69"/></linearGradient>
+    <radialGradient id="haze" cx="0" cy="0" r="1" gradientTransform="matrix(0 177 -380 0 521 359)" gradientUnits="userSpaceOnUse"><stop stop-color="#F2B478" stop-opacity=".42"/><stop offset="1" stop-color="#F2B478" stop-opacity="0"/></radialGradient>
+  </defs>
+  <path fill="url(#sky)" d="M0 0h960v600H0z"/>
+  <ellipse cx="521" cy="359" fill="url(#haze)" rx="380" ry="177"/>
+  <g fill="#FFF2D2"><circle cx="105" cy="89" r="2.5"/><circle cx="216" cy="137" r="2"/><circle cx="300" cy="71" r="3"/><circle cx="422" cy="115" r="2"/><circle cx="570" cy="69" r="2.5"/><circle cx="683" cy="143" r="2"/><circle cx="793" cy="72" r="2.5"/><circle cx="883" cy="166" r="2"/><circle cx="143" cy="229" r="2"/><circle cx="358" cy="203" r="2.5"/><circle cx="743" cy="229" r="2"/><circle cx="905" cy="282" r="2"/></g>
+  <path d="m0 370 106-99 99 73 124-130 114 121 127-105 99 110 124-120 93 82 74-55v353H0V370Z" fill="#263A51"/>
+  <path d="m0 427 132-77 113 82 108-70 105 69 115-89 111 91 102-64 174 102v129H0V427Z" fill="#192B3A"/>
+  <path d="M0 494c115-45 213-50 337-14 126 37 229 28 346-5 105-30 190-23 277 16v109H0V494Z" fill="#14252F"/>
+  <g fill="#FFD38B" opacity=".95"><circle cx="109" cy="453" r="4"/><circle cx="157" cy="465" r="3"/><circle cx="203" cy="443" r="4"/><circle cx="252" cy="474" r="3"/><circle cx="300" cy="453" r="4"/><circle cx="350" cy="472" r="3"/><circle cx="399" cy="445" r="4"/><circle cx="450" cy="467" r="3"/><circle cx="503" cy="439" r="4"/><circle cx="552" cy="460" r="3"/><circle cx="607" cy="437" r="4"/><circle cx="657" cy="463" r="3"/><circle cx="706" cy="441" r="4"/><circle cx="754" cy="470" r="3"/><circle cx="805" cy="447" r="4"/><circle cx="854" cy="467" r="3"/><circle cx="900" cy="442" r="4"/><circle cx="125" cy="516" r="3"/><circle cx="238" cy="523" r="4"/><circle cx="334" cy="510" r="3"/><circle cx="428" cy="535" r="4"/><circle cx="535" cy="513" r="3"/><circle cx="630" cy="532" r="4"/><circle cx="735" cy="512" r="3"/><circle cx="834" cy="531" r="4"/></g>
+  <path d="M0 567h960v33H0z" fill="#101F28"/>
+</svg>

@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import { useCartStore } from '@/store/cart'
 import type { MarketProduct, MarketLink } from './types'
 import { coverImage, toCartProduct } from './types'
+import { PRODUCT_ARTWORK, artworkFor } from '@/lib/listing-artwork'
 import { MediaThumb, MediaPlayer } from '@/components/media/MediaViewer'
 import { ChevronLeft, ChevronRight, Leaf, Loader2, X, ExternalLink, Video, Globe, MapPin, ShoppingCart, MessageSquare, Link as LinkIcon } from 'lucide-react'
 
@@ -34,7 +35,22 @@ export default function QuickView({
   const [qty, setQty] = useState(1)
   const [added, setAdded] = useState(false)
 
-  const media = product.media
+  const shirtArtwork = artworkFor(product.name, PRODUCT_ARTWORK)
+  const isCommunityShirt = !!shirtArtwork
+  const media = isCommunityShirt
+    ? [
+        {
+          id: 'community-shirt-local-image',
+          title: 'Choke Mountains Community Shirt',
+          type: 'IMAGE' as const,
+          url: shirtArtwork,
+          provider: 'LOCAL',
+          videoId: null,
+          altText: 'Grey Choke Mountains community polo shirt',
+        },
+        ...product.media.filter((item) => item.type !== 'IMAGE'),
+      ]
+    : product.media
   const main = media[index]
   const inCart = isItemInCart(product.id)
   const inCartQty = getItemQuantity(product.id)
@@ -69,7 +85,7 @@ export default function QuickView({
       >
         <div className="flex items-center justify-between px-5 py-3 border-b border-stone-100">
           <h3 className="font-bold text-lg line-clamp-1">{product.name}</h3>
-          <button onClick={onClose} className="text-stone-500 hover:text-stone-800 shrink-0">
+          <button onClick={onClose} className="text-stone-600 hover:text-stone-800 shrink-0">
             <X className="w-5 h-5" />
           </button>
         </div>
@@ -139,7 +155,7 @@ export default function QuickView({
               </div>
             </div>
 
-            <div className="text-xs text-stone-500">
+            <div className="text-xs text-stone-600">
               <span className="font-semibold text-emerald-700">{CATEGORY_LABELS[product.category] ?? product.category}</span>
               {' · '}
               {product.producerName} · {product.producerLocation}
@@ -152,7 +168,7 @@ export default function QuickView({
 
             {product.links && product.links.length > 0 && (
               <div className="space-y-2 pt-2 border-t border-stone-100">
-                <p className="text-xs font-semibold text-stone-500 uppercase tracking-wide">Links</p>
+                <p className="text-xs font-semibold text-stone-600 uppercase tracking-wide">Links</p>
                 <div className="flex flex-wrap gap-2">
                   {product.links.map((link: MarketLink) => {
                     const Icon = LINK_ICONS[link.type] || LinkIcon
@@ -175,7 +191,7 @@ export default function QuickView({
             )}
 
             {media.filter((m) => m.type === 'VIDEO').length > 0 && (
-              <p className="text-xs text-stone-500">
+              <p className="text-xs text-stone-600">
                 Includes a video so you can see exactly what you&apos;re buying.
               </p>
             )}
@@ -189,7 +205,7 @@ export default function QuickView({
                   <button
                     onClick={() => setQty((q) => Math.max(1, q - 1))}
                     disabled={qty <= 1 || cap <= 0}
-                    className="w-9 h-9 flex items-center justify-center text-lg text-stone-500 disabled:opacity-30"
+                    className="w-9 h-9 flex items-center justify-center text-lg text-stone-600 disabled:opacity-30"
                   >
                     −
                   </button>
@@ -197,7 +213,7 @@ export default function QuickView({
                   <button
                     onClick={() => setQty((q) => Math.min(cap, q + 1))}
                     disabled={qty >= cap || cap <= 0}
-                    className="w-9 h-9 flex items-center justify-center text-lg text-stone-500 disabled:opacity-30"
+                    className="w-9 h-9 flex items-center justify-center text-lg text-stone-600 disabled:opacity-30"
                   >
                     +
                   </button>
@@ -207,7 +223,7 @@ export default function QuickView({
                   disabled={cap <= 0}
                   className={`flex-1 py-2.5 rounded-full font-semibold transition-colors ${
                     cap <= 0
-                      ? 'bg-stone-200 text-stone-400 cursor-not-allowed'
+                      ? 'bg-stone-200 text-stone-500 cursor-not-allowed'
                       : added
                         ? 'bg-emerald-700 text-white'
                         : 'bg-emerald-700 hover:bg-emerald-800 text-white'
@@ -217,7 +233,7 @@ export default function QuickView({
                 </button>
               </div>
               {remaining > 0 && inCartQty > 0 && (
-                <p className="text-xs text-stone-500">You can add {remaining} more.</p>
+                <p className="text-xs text-stone-600">You can add {remaining} more.</p>
               )}
             </div>
           </div>

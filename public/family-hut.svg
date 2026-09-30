@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 720" fill="none">
+  <defs>
+    <linearGradient id="sky" x1="480" y1="0" x2="480" y2="720" gradientUnits="userSpaceOnUse"><stop stop-color="#B9DAD5"/><stop offset=".6" stop-color="#F0D3A5"/><stop offset="1" stop-color="#F8EAD2"/></linearGradient>
+    <linearGradient id="hill" x1="480" y1="230" x2="480" y2="690" gradientUnits="userSpaceOnUse"><stop stop-color="#668C75"/><stop offset="1" stop-color="#234C43"/></linearGradient>
+    <linearGradient id="stone" x1="480" y1="370" x2="480" y2="647" gradientUnits="userSpaceOnUse"><stop stop-color="#D0B58C"/><stop offset="1" stop-color="#8B6A4C"/></linearGradient>
+  </defs>
+  <path fill="url(#sky)" d="M0 0h960v720H0z"/>
+  <circle cx="747" cy="145" r="54" fill="#FFF0C6"/>
+  <path d="m0 401 136-131 99 94 142-174 123 143 94-103 138 135 89-92 139 126v321H0V401Z" fill="#89A999"/>
+  <path d="m0 482 124-85 104 83 159-145 100 120 121-87 106 88 127-116 119 115v265H0V482Z" fill="url(#hill)"/>
+  <path d="M0 606c135-50 242-36 357 2 140 46 260 12 379-29 84-29 152-30 224-4v145H0V606Z" fill="#315D4A"/>
+  <path d="M0 663c149-53 261-33 377 9 151 54 291 7 407-28 63-19 121-21 176-8v84H0v-57Z" fill="#244738"/>
+  <path d="m296 401 184-153 185 153-28 15H326l-30-15Z" fill="#44372D"/>
+  <path d="m326 408 154-123 155 123v224H326V408Z" fill="url(#stone)"/>
+  <path d="M311 400h337v23H311z" fill="#342E28"/>
+  <path d="M355 454h63v49h-63zM542 454h63v49h-63z" fill="#F1CF8B"/>
+  <path d="M382 454h7v49h-7zM569 454h7v49h-7zM355 475h63v7h-63zM542 475h63v7h-63z" fill="#68503B"/>
+  <path d="M452 473h56v159h-56z" fill="#43362D"/>
+  <path d="M460 482h40v150h-40z" fill="#997650"/>
+  <circle cx="490" cy="557" r="4" fill="#F1D494"/>
+  <path d="m271 632 28-56 28 56m-39 0 11-35 12 35m389 0 29-59 29 59m-42 0 13-38 14 38" stroke="#789A68" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M100 582v-84m0 35-26-19m26 47 28-25m616 27v-97m0 41-27-20m27 47 28-26" stroke="#345B48" stroke-width="9" stroke-linecap="round"/>
+</svg>

@@ -69,7 +69,7 @@ export default function AdminCalendarPage() {
 
   if (loading) {
     return (
-      <p className="flex items-center gap-2 text-stone-500">
+      <p className="flex items-center gap-2 text-stone-600">
         <Loader2 className="w-5 h-5 animate-spin" /> Loading…
       </p>
     )
@@ -121,7 +121,7 @@ export default function AdminCalendarPage() {
                 return (
                   <th
                     key={i}
-                    className={`px-0 py-2 text-center border-b border-stone-100 ${isToday ? 'bg-emerald-50 text-emerald-700' : 'text-stone-400'}`}
+                    className={`px-0 py-2 text-center border-b border-stone-100 ${isToday ? 'bg-emerald-50 text-emerald-700' : 'text-stone-500'}`}
                   >
                     {WEEKDAYS[d.getDay()]}
                     <div className="text-[10px] font-normal">{i + 1}</div>
@@ -169,14 +169,14 @@ export default function AdminCalendarPage() {
           Bookings in {MONTHS[monthIndex]} {year}
         </h3>
         {data.bookings.length === 0 ? (
-          <p className="text-stone-400 text-sm">No bookings this month.</p>
+          <p className="text-stone-500 text-sm">No bookings this month.</p>
         ) : (
           <div className="space-y-2">
             {data.bookings.map((b) => (
               <div key={b.id} className="flex flex-wrap items-center gap-3 text-sm border-b border-stone-100 pb-2 last:border-0">
                 <span className="font-medium">{dayKey(b.checkIn)} → {dayKey(b.checkOut)}</span>
                 <span>{data.cottages.find((c) => c.id === b.cottageId)?.name}</span>
-                <span className="text-stone-500">{b.guest}</span>
+                <span className="text-stone-600">{b.guest}</span>
                 <Badge value={b.status} />
                 <Badge value={b.paymentStatus} />
               </div>

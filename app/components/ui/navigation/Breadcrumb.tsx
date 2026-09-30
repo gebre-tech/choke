@@ -20,7 +20,7 @@ export const Breadcrumb = ({ items, separator = <ChevronRight className="w-4 h-4
     <nav className={`flex items-center gap-1.5 text-sm ${className}`} aria-label="Breadcrumb">
       <ol className="flex items-center gap-1.5">
         <li>
-          <Link href="/" className="flex items-center gap-1.5 text-stone-400 hover:text-stone-600 transition-colors">
+          <Link href="/" className="flex items-center gap-1.5 text-stone-500 hover:text-stone-600 transition-colors">
             <Home className="w-4 h-4" />
           </Link>
         </li>
@@ -29,11 +29,11 @@ export const Breadcrumb = ({ items, separator = <ChevronRight className="w-4 h-4
             {index < items.length - 1 ? (
               <>
                 {item.href ? (
-                  <Link href={item.href} className="text-stone-400 hover:text-stone-600 transition-colors">
+                  <Link href={item.href} className="text-stone-500 hover:text-stone-600 transition-colors">
                     {item.label}
                   </Link>
                 ) : (
-                  <span className="text-stone-400">{item.label}</span>
+                  <span className="text-stone-500">{item.label}</span>
                 )}
                 <span className="mx-1.5 text-stone-300" aria-hidden="true">{separator}</span>
               </>

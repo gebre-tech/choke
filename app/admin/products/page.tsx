@@ -211,7 +211,7 @@ function formatMedia(media: Product['media']) {
   return (
     <span title={media.map((m) => `${m.title} (${m.type})`).join('\n')}>
       {images.length} photo{images.length === 1 ? '' : 's'}
-      {extra > 0 && <span className="text-stone-400"> +{extra} video/audio</span>}
+      {extra > 0 && <span className="text-stone-500"> +{extra} video/audio</span>}
     </span>
   )
 }
@@ -228,7 +228,7 @@ function formatStatus(p: Product) {
       ) : (
         <Badge value="PENDING" />
       )}
-      {fromSubmission && <span className="text-[10px] text-stone-400">via submission</span>}
+      {fromSubmission && <span className="text-[10px] text-stone-500">via submission</span>}
     </div>
   )
 }
@@ -285,7 +285,7 @@ export default function AdminProductsPage() {
         )}
         <div className="min-w-0">
           <p className="font-medium truncate">{p.name}</p>
-          {p.submittedBy && <p className="text-[10px] text-stone-400">submitted by {p.submittedBy?.email}</p>}
+          {p.submittedBy && <p className="text-[10px] text-stone-500">submitted by {p.submittedBy?.email}</p>}
         </div>
       </div>
     )},
@@ -297,8 +297,8 @@ export default function AdminProductsPage() {
     }},
     { key: 'media', header: 'Media', render: (p: Product) => formatMedia(p.media) },
     { key: 'status', header: 'Status', className: 'w-40', render: (p: Product) => formatStatus(p) },
-    { key: 'producer', header: 'Producer', className: 'w-40', render: (p: Product) => <span className="text-sm text-stone-500">{p.producerName}</span> },
-    { key: 'orders', header: 'Orders', className: 'w-24 text-center', render: (p: Product) => <span className="text-stone-500">{p._count?.orderItems ?? 0}</span> },
+    { key: 'producer', header: 'Producer', className: 'w-40', render: (p: Product) => <span className="text-sm text-stone-600">{p.producerName}</span> },
+    { key: 'orders', header: 'Orders', className: 'w-24 text-center', render: (p: Product) => <span className="text-stone-600">{p._count?.orderItems ?? 0}</span> },
     { key: 'actions', header: 'Actions', className: 'w-56', render: (p: Product) => (
       <div className="flex items-center gap-2">
         <button

@@ -63,7 +63,7 @@ CardTitle.displayName = 'CardTitle'
 
 export const CardDescription = forwardRef<HTMLParagraphElement, { asChild?: boolean } & React.HTMLAttributes<HTMLParagraphElement>>(
   ({ className = '', ...props }, ref) => (
-    <p ref={ref} className={`text-sm text-stone-500 mt-1 ${className}`} {...props} />
+    <p ref={ref} className={`text-sm text-stone-600 mt-1 ${className}`} {...props} />
   )
 )
 

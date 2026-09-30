@@ -7,6 +7,7 @@ import { Loader2, Calendar, Users, Mail, Phone, MessageSquare, ArrowRight, Arrow
 import { Button } from '@/components/ui/design-system/Button'
 import { Input, Textarea } from '@/components/ui/design-system/Input'
 import { generateId } from '@/lib/a11y'
+import { useAuth } from '@/components/AuthProvider'
 
 type CottageOption = {
   id: string
@@ -70,36 +71,26 @@ export function BookingSteps({ cottages }: { cottages: CottageOption[] }) {
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [phone, setPhone] = useState('')
-  const [accountProfile, setAccountProfile] = useState<{ name: string; email: string } | null>(null)
-  const [accountLoading, setAccountLoading] = useState(true)
+  const { user, isLoading: accountLoading } = useAuth()
+  const accountProfile = user?.email
+    ? {
+        name: user.firstName.trim() || user.email.split('@')[0],
+        email: user.email,
+      }
+    : null
   const [specialRequests, setSpecialRequests] = useState('')
   const [submitting, setSubmitting] = useState<Submitting>('idle')
   const [errors, setErrors] = useState<FormErrors>({})
   const [touched, setTouched] = useState<Record<string, boolean>>({})
 
-  useEffect(() => {
-    let active = true
-    fetch('/api/auth/me')
-      .then((res) => res.json())
-      .then((data) => {
-        if (!active || !data.authenticated || typeof data.user?.email !== 'string') return
-        const profile = {
-          name: typeof data.user.firstName === 'string' && data.user.firstName.trim()
-            ? data.user.firstName.trim()
-            : data.user.email.split('@')[0],
-          email: data.user.email,
-        }
-        setAccountProfile(profile)
-        setName(profile.name)
-        setEmail(profile.email)
-        setCurrentStep((step) => step === 'details' ? 'review' : step)
-      })
-      .catch(() => {})
-      .finally(() => { if (active) setAccountLoading(false) })
-    return () => { active = false }
-  }, [])
-
   const visibleSteps = accountProfile ? STEPS.filter((step) => step.id !== 'details') : STEPS
+
+  useEffect(() => {
+    if (accountProfile && currentStep === 'details') {
+      setDirection('forward')
+      setCurrentStep('review')
+    }
+  }, [accountProfile, currentStep])
 
   const selected = cottages.find((c) => c.id === cottageId)
 
@@ -227,8 +218,8 @@ export function BookingSteps({ cottages }: { cottages: CottageOption[] }) {
           checkIn,
           checkOut,
           guestCount,
-          name,
-          email,
+          name: accountProfile?.name ?? name,
+          email: accountProfile?.email ?? email,
           phone: phone || undefined,
           specialRequests: specialRequests || undefined,
         }),
@@ -274,7 +265,7 @@ export function BookingSteps({ cottages }: { cottages: CottageOption[] }) {
         return (
           <div className="space-y-6">
             <h2 className="text-2xl font-bold mb-2">Choose Your Cottage</h2>
-            <p className="text-stone-500 mb-6">Select the perfect cottage for your stay</p>
+            <p className="text-stone-600 mb-6">Select the perfect cottage for your stay</p>
             <div className="grid md:grid-cols-2 gap-4">
               {cottages.map((c) => (
                 <button
@@ -298,7 +289,7 @@ export function BookingSteps({ cottages }: { cottages: CottageOption[] }) {
                   </div>
                   <h3 className="font-bold text-lg">{c.name}</h3>
                   <p className="text-emerald-700 font-semibold">ETB {c.pricePerNight.toLocaleString()}/night</p>
-                  <p className="text-sm text-stone-500 mt-1">Sleeps {c.capacity}</p>
+                  <p className="text-sm text-stone-600 mt-1">Sleeps {c.capacity}</p>
                   {cottageId === c.id && (
                     <div className="absolute top-3 right-3 bg-emerald-700 text-white w-6 h-6 rounded-full flex items-center justify-center">
                       <Check className="w-4 h-4" />
@@ -313,7 +304,7 @@ export function BookingSteps({ cottages }: { cottages: CottageOption[] }) {
         return (
           <div className="space-y-6">
             <h2 className="text-2xl font-bold mb-2">Select Dates</h2>
-            <p className="text-stone-500 mb-6">When would you like to stay?</p>
+            <p className="text-stone-600 mb-6">When would you like to stay?</p>
             <div className="grid sm:grid-cols-2 gap-4">
               <Input
                 id={checkInId}
@@ -353,7 +344,7 @@ export function BookingSteps({ cottages }: { cottages: CottageOption[] }) {
         return (
           <div className="space-y-6">
             <h2 className="text-2xl font-bold mb-2">Number of Guests</h2>
-            <p className="text-stone-500 mb-6">How many people will be staying?</p>
+            <p className="text-stone-600 mb-6">How many people will be staying?</p>
             <Input
               id={guestCountId}
               type="number"
@@ -369,7 +360,7 @@ export function BookingSteps({ cottages }: { cottages: CottageOption[] }) {
               leadingIcon={<Users className="w-4 h-4" />}
             />
             {selected && (
-              <p className="text-sm text-stone-500 flex flex-wrap gap-3" aria-label="Cottage amenities">
+              <p className="text-sm text-stone-600 flex flex-wrap gap-3" aria-label="Cottage amenities">
                 {selected.hasTelescope && <span className="flex items-center gap-1"><Star className="w-4 h-4" /> Telescope</span>}
                 {selected.hasPrivateDeck && <span className="flex items-center gap-1"><Home className="w-4 h-4" /> Private deck</span>}
                 {selected.hasFireplace && <span className="flex items-center gap-1"><Flame className="w-4 h-4" /> Fireplace</span>}
@@ -382,7 +373,7 @@ export function BookingSteps({ cottages }: { cottages: CottageOption[] }) {
         return (
           <div className="space-y-6">
             <h2 className="text-2xl font-bold mb-2">Your Details</h2>
-            <p className="text-stone-500 mb-6">We'll send your confirmation to this email</p>
+            <p className="text-stone-600 mb-6">We'll send your confirmation to this email</p>
             <div className="grid sm:grid-cols-2 gap-4">
               <Input
                 id={nameId}
@@ -433,7 +424,7 @@ export function BookingSteps({ cottages }: { cottages: CottageOption[] }) {
         return (
           <div className="space-y-6">
             <h2 className="text-2xl font-bold mb-2">Review Your Booking</h2>
-            <p className="text-stone-500 mb-6">Please verify all details before confirming</p>
+            <p className="text-stone-600 mb-6">Please verify all details before confirming</p>
             {accountProfile && (
               <p className="rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-900">
                 Booking as {accountProfile.name}. We’ll send the confirmation and use this account email for payment: {accountProfile.email}.
@@ -456,23 +447,23 @@ export function BookingSteps({ cottages }: { cottages: CottageOption[] }) {
                 </div>
               </div>
               <div className="grid sm:grid-cols-2 gap-4 text-sm">
-                <div><span className="text-stone-500">Check-in:</span> <span className="font-medium ml-2">{checkIn}</span></div>
-                <div><span className="text-stone-500">Check-out:</span> <span className="font-medium ml-2">{checkOut}</span></div>
-                <div><span className="text-stone-500">Nights:</span> <span className="font-medium ml-2">{nights}</span></div>
-                <div><span className="text-stone-500">Guests:</span> <span className="font-medium ml-2">{guestCount}</span></div>
-                <div><span className="text-stone-500">Name:</span> <span className="font-medium ml-2">{name}</span></div>
-                <div><span className="text-stone-500">Email:</span> <span className="font-medium ml-2">{email}</span></div>
-                {phone && <div><span className="text-stone-500">Phone:</span> <span className="font-medium ml-2">{phone}</span></div>}
+                <div><span className="text-stone-600">Check-in:</span> <span className="font-medium ml-2">{checkIn}</span></div>
+                <div><span className="text-stone-600">Check-out:</span> <span className="font-medium ml-2">{checkOut}</span></div>
+                <div><span className="text-stone-600">Nights:</span> <span className="font-medium ml-2">{nights}</span></div>
+                <div><span className="text-stone-600">Guests:</span> <span className="font-medium ml-2">{guestCount}</span></div>
+                <div><span className="text-stone-600">Name:</span> <span className="font-medium ml-2">{accountProfile?.name ?? name}</span></div>
+                <div><span className="text-stone-600">Email:</span> <span className="font-medium ml-2">{accountProfile?.email ?? email}</span></div>
+                {phone && <div><span className="text-stone-600">Phone:</span> <span className="font-medium ml-2">{phone}</span></div>}
               </div>
               {specialRequests && (
-                <div><span className="text-stone-500">Requests:</span> <span className="font-medium ml-2">{specialRequests}</span></div>
+                <div><span className="text-stone-600">Requests:</span> <span className="font-medium ml-2">{specialRequests}</span></div>
               )}
             </div>
             <div className="bg-emerald-50 border border-emerald-200 rounded-2xl p-6 text-center">
               <p className="text-3xl font-bold text-emerald-700">
                 {estimate !== null ? `ETB ${estimate.toLocaleString()}` : 'Select dates to see total'}
               </p>
-              <p className="text-stone-500 mt-1">for {nights} night{nights > 1 ? 's' : ''}</p>
+              <p className="text-stone-600 mt-1">for {nights} night{nights > 1 ? 's' : ''}</p>
             </div>
           </div>
         )
@@ -494,7 +485,7 @@ export function BookingSteps({ cottages }: { cottages: CottageOption[] }) {
                 className={`flex items-center justify-center w-10 h-10 rounded-full font-semibold transition-all ${
                   visibleSteps.findIndex(s => s.id === currentStep) >= index
                     ? 'bg-white text-emerald-700'
-                    : 'bg-white/20 text-white/60'
+                    : 'bg-white/20 text-white/85'
                 }`}
                 initial={false}
                 transition={{ type: 'spring', stiffness: 300, damping: 30 }}
@@ -540,7 +531,7 @@ export function BookingSteps({ cottages }: { cottages: CottageOption[] }) {
 
       {/* Navigation */}
       <div className="px-6 py-4 border-t border-stone-100 bg-stone-50 flex items-center justify-between">
-        <div className="flex items-center gap-2 text-sm text-stone-500">
+        <div className="flex items-center gap-2 text-sm text-stone-600">
           Step {visibleSteps.findIndex(s => s.id === currentStep) + 1} of {visibleSteps.length}
         </div>
         <div className="flex items-center gap-3">

@@ -5,10 +5,12 @@ import Link from 'next/link'
 import { useRouter, useSearchParams } from 'next/navigation'
 import toast from 'react-hot-toast'
 import { Loader2, Mountain, ShieldCheck } from 'lucide-react'
+import { useAuth } from '@/components/AuthProvider'
 
 export default function LoginForm() {
   const router = useRouter()
   const searchParams = useSearchParams()
+  const { refreshSession } = useAuth()
   const next = searchParams.get('next') ?? '/'
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -26,7 +28,8 @@ export default function LoginForm() {
       const data = await res.json()
       if (!res.ok) return toast.error(data.error || 'Login failed')
       toast.success(`Welcome back, ${data.user.firstName}!`)
-      router.push(next)
+      await refreshSession(true)
+      router.replace(next)
       router.refresh()
     } catch {
       toast.error('Something went wrong')
@@ -48,7 +51,7 @@ export default function LoginForm() {
         </div>
         <div className="p-8 text-stone-900 sm:p-12">
         <h1 className="text-2xl font-bold mb-1">Welcome back</h1>
-        <p className="text-stone-500 mb-6">Sign in to your Choke Panoramic account</p>
+        <p className="text-stone-600 mb-6">Sign in to your Choke Panoramic account</p>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label className="block text-sm font-semibold mb-1">Email</label>
@@ -79,8 +82,8 @@ export default function LoginForm() {
             Sign in
           </button>
         </form>
-        <p className="mt-5 flex items-center justify-center gap-2 text-xs text-stone-500"><ShieldCheck className="h-4 w-4 text-emerald-700" /> Your account and checkout are protected</p>
-        <p className="text-sm text-stone-500 mt-4 text-center">
+        <p className="mt-5 flex items-center justify-center gap-2 text-xs text-stone-600"><ShieldCheck className="h-4 w-4 text-emerald-700" /> Your account and checkout are protected</p>
+        <p className="text-sm text-stone-600 mt-4 text-center">
           New here?{' '}
           <Link href="/register" className="text-emerald-700 hover:underline font-semibold">
             Create an account

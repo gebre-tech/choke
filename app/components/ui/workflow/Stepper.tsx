@@ -44,7 +44,7 @@ export interface StepContentProps {
 const stepStatusStyles = {
   active: 'bg-emerald-700 text-white border-emerald-700',
   completed: 'bg-emerald-100 text-emerald-700 border-emerald-300',
-  pending: 'bg-stone-100 text-stone-400 border-stone-200',
+  pending: 'bg-stone-100 text-stone-500 border-stone-200',
   error: 'bg-red-50 text-red-600 border-red-200',
 }
 
@@ -92,7 +92,7 @@ export const Stepper = ({
       <div className="mb-6" role="navigation" aria-label="Creation progress">
         <div className="flex items-center gap-2 mb-4">
           <h2 className="text-lg font-semibold text-stone-900">Create Listing</h2>
-          <span className="text-sm text-stone-500">Step {currentStep + 1} of {steps.length}</span>
+          <span className="text-sm text-stone-600">Step {currentStep + 1} of {steps.length}</span>
         </div>
 
         <div className="relative">
@@ -130,10 +130,10 @@ export const Stepper = ({
                     />
                   )}
                   <div className="mt-2 text-center">
-                    <p className={`text-xs font-medium ${status === 'error' ? 'text-red-600' : 'text-stone-500'}`}>
+                    <p className={`text-xs font-medium ${status === 'error' ? 'text-red-600' : 'text-stone-600'}`}>
                       {step.label}
                     </p>
-                    {step.optional && <span className="text-[10px] text-stone-400">Optional</span>}
+                    {step.optional && <span className="text-[10px] text-stone-500">Optional</span>}
                     {validationErrors[step.id]?.length && (
                       <Tooltip content={validationErrors[step.id].join(', ')}>
                         <AlertCircle className="w-3 h-3 text-red-500 mx-auto mt-0.5" />
@@ -230,8 +230,8 @@ const StepContent = ({ step, isActive, isCompleted, validationErrors }: StepCont
         </div>
         <div>
           <h3 className="text-lg font-semibold text-stone-900">{step.label}</h3>
-          {step.description && <p className="text-sm text-stone-500 mt-1">{step.description}</p>}
-          {step.optional && <span className="inline-flex items-center gap-1 text-xs text-stone-400 mt-1">
+          {step.description && <p className="text-sm text-stone-600 mt-1">{step.description}</p>}
+          {step.optional && <span className="inline-flex items-center gap-1 text-xs text-stone-500 mt-1">
             <HelpCircle className="w-3 h-3" />
             Optional step
           </span>}

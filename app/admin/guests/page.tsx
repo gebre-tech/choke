@@ -34,7 +34,7 @@ export default function AdminGuestsPage() {
 
   if (loading) {
     return (
-      <p className="flex items-center gap-2 text-stone-500">
+      <p className="flex items-center gap-2 text-stone-600">
         <Loader2 className="w-5 h-5 animate-spin" /> Loading…
       </p>
     )
@@ -56,7 +56,7 @@ export default function AdminGuestsPage() {
       <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
         <h2 className="text-2xl font-bold">Guest Profiles</h2>
         <div className="relative">
-          <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-stone-400" />
+          <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-stone-500" />
           <input
             value={q}
             onChange={(e) => setQ(e.target.value)}
@@ -68,15 +68,15 @@ export default function AdminGuestsPage() {
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
         <div className="bg-white rounded-2xl shadow p-5">
-          <p className="text-sm text-stone-500">Registered guests</p>
+          <p className="text-sm text-stone-600">Registered guests</p>
           <p className="text-2xl font-bold mt-1">{data.totals.guests}</p>
         </div>
         <div className="bg-white rounded-2xl shadow p-5">
-          <p className="text-sm text-stone-500">Confirmed bookings</p>
+          <p className="text-sm text-stone-600">Confirmed bookings</p>
           <p className="text-2xl font-bold mt-1">{data.totals.confirmedBookings}</p>
         </div>
         <div className="bg-white rounded-2xl shadow p-5">
-          <p className="text-sm text-stone-500">Total confirmed value</p>
+          <p className="text-sm text-stone-600">Total confirmed value</p>
           <p className="text-2xl font-bold mt-1">ETB {Number(data.totals.totalSpend).toLocaleString()}</p>
         </div>
       </div>
@@ -84,7 +84,7 @@ export default function AdminGuestsPage() {
       <div className="bg-white rounded-2xl shadow overflow-x-auto">
         <table className="w-full text-sm border-collapse min-w-[860px]">
           <thead>
-            <tr className="bg-stone-50 text-left text-stone-500">
+            <tr className="bg-stone-50 text-left text-stone-600">
               <th className="px-4 py-2.5">Guest</th>
               <th className="px-4 py-2.5">Contact</th>
               <th className="px-4 py-2.5">Location</th>
@@ -97,7 +97,7 @@ export default function AdminGuestsPage() {
           <tbody>
             {guests.length === 0 && (
               <tr>
-                <td colSpan={7} className="px-4 py-8 text-center text-stone-400">
+                <td colSpan={7} className="px-4 py-8 text-center text-stone-500">
                   No guests match “{q}”.
                 </td>
               </tr>
@@ -106,11 +106,11 @@ export default function AdminGuestsPage() {
               <tr key={g.id} className="border-t border-stone-100 hover:bg-stone-50">
                 <td className="px-4 py-2.5">
                   <p className="font-medium">{g.firstName} {g.lastName ?? ''}</p>
-                  <p className="text-xs text-stone-400">{g.role === 'TOURIST' ? 'Guest' : g.role}</p>
+                  <p className="text-xs text-stone-500">{g.role === 'TOURIST' ? 'Guest' : g.role}</p>
                 </td>
                 <td className="px-4 py-2.5">
                   <p className="text-stone-600">{g.email}</p>
-                  {g.phone && <p className="text-xs text-stone-400">{g.phone}</p>}
+                  {g.phone && <p className="text-xs text-stone-500">{g.phone}</p>}
                 </td>
                 <td className="px-4 py-2.5 text-stone-600">
                   {[g.city, g.country].filter(Boolean).join(', ') || '—'}
@@ -122,7 +122,7 @@ export default function AdminGuestsPage() {
                 <td className="px-4 py-2.5">{g.orderCount}</td>
                 <td className="px-4 py-2.5">
                   <p className="font-semibold">ETB {Number(g.totalSpend).toLocaleString()}</p>
-                  <p className="text-xs text-stone-400">ETB {Number(g.bookingSpend).toLocaleString()} stays</p>
+                  <p className="text-xs text-stone-500">ETB {Number(g.bookingSpend).toLocaleString()} stays</p>
                 </td>
                 <td className="px-4 py-2.5 text-stone-600">
                   {g.lastCheckIn ? g.lastCheckIn.slice(0, 10) : '—'}

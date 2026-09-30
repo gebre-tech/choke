@@ -43,7 +43,7 @@ export default function PaymentSuccessPage({
           <>
             <Loader2 className="w-12 h-12 text-emerald-600 animate-spin mx-auto mb-4" />
             <h1 className="text-xl font-bold">Confirming your payment…</h1>
-            <p className="text-stone-500 mt-2">
+            <p className="text-stone-600 mt-2">
               {ref ? `Reference: ${ref}` : 'No payment reference provided'}
             </p>
           </>
@@ -53,7 +53,7 @@ export default function PaymentSuccessPage({
           <>
             <CheckCircle2 className="w-16 h-16 text-emerald-600 mx-auto mb-4" />
             <h1 className="text-2xl font-bold">Payment confirmed</h1>
-            <p className="text-stone-500 mt-2">
+            <p className="text-stone-600 mt-2">
               Your booking is confirmed.
               {ref && <span className="block text-sm mt-1">Reference: {ref}</span>}
             </p>
@@ -64,7 +64,7 @@ export default function PaymentSuccessPage({
           <>
             <XCircle className="w-16 h-16 text-red-500 mx-auto mb-4" />
             <h1 className="text-2xl font-bold">Payment not completed</h1>
-            <p className="text-stone-500 mt-2">We could not verify your payment. Please try again.</p>
+            <p className="text-stone-600 mt-2">We could not verify your payment. Please try again.</p>
           </>
         )}
 
@@ -72,7 +72,7 @@ export default function PaymentSuccessPage({
           <>
             <CheckCircle2 className="w-16 h-16 text-amber-500 mx-auto mb-4" />
             <h1 className="text-2xl font-bold">Almost there</h1>
-            <p className="text-stone-500 mt-2">
+            <p className="text-stone-600 mt-2">
               {error || 'Your payment is being processed. You will receive a confirmation email.'}
             </p>
           </>

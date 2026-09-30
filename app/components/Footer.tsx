@@ -7,7 +7,7 @@ export default function Footer({ settings }: { settings?: FooterSettings }) {
   const name = settings?.siteName ?? 'Choke Mountains Ecovillage'
 
   return (
-    <footer className="bg-stone-950 text-stone-400">
+    <footer className="bg-stone-950 text-stone-300">
       {/* Main Footer */}
       <div className="container mx-auto px-4 py-16">
         <div className="grid gap-12 md:grid-cols-4">
@@ -22,10 +22,10 @@ export default function Footer({ settings }: { settings?: FooterSettings }) {
                 Choke <span className="text-emerald-400">Mountains</span>
               </span>
             </Link>
-            <p className="text-stone-400 leading-relaxed mb-6 max-w-sm">
+            <p className="text-stone-300 leading-relaxed mb-6 max-w-sm">
               {settings?.tagline ?? 'A UN Tourism Best Tourism Village — an eco-friendly retreat in the West Gojam Zone, Ethiopia, untouched by modern transportation.'}
             </p>
-            <p className="mb-6 flex items-center gap-2 text-xs text-stone-500"><Heart className="h-3.5 w-3.5 text-emerald-400" /> Travel gently. Leave the mountain stronger.</p>
+            <p className="mb-6 flex items-center gap-2 text-xs text-stone-300"><Heart className="h-3.5 w-3.5 text-emerald-400" /> Travel gently. Leave the mountain stronger.</p>
           </div>
 
           {/* Quick Links */}
@@ -86,7 +86,7 @@ export default function Footer({ settings }: { settings?: FooterSettings }) {
 
       {/* Bottom Bar */}
       <div className="border-t border-white/5">
-        <div className="container mx-auto px-4 py-5 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-stone-400">
+        <div className="container mx-auto px-4 py-5 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-stone-300">
           <span>© {new Date().getFullYear()} {name}. All rights reserved.</span>
           <span className="flex items-center gap-1.5">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />

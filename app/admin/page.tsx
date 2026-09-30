@@ -50,7 +50,7 @@ export default function AdminDashboardPage() {
 
   if (loading) {
     return (
-      <div className="flex items-center gap-2 text-stone-500">
+      <div className="flex items-center gap-2 text-stone-600">
         <Loader2 className="w-5 h-5 animate-spin" /> Loading…
       </div>
     )
@@ -86,11 +86,11 @@ export default function AdminDashboardPage() {
       <section>
         <h2 className="text-lg font-bold mb-3">Upcoming arrivals</h2>
         {data.upcomingArrivals.length === 0 ? (
-          <p className="text-stone-500">No upcoming arrivals booked yet.</p>
+          <p className="text-stone-600">No upcoming arrivals booked yet.</p>
         ) : (
           <div className="bg-white rounded-2xl shadow overflow-hidden">
             <table className="w-full text-sm">
-              <thead className="bg-stone-50 text-left text-stone-500">
+              <thead className="bg-stone-50 text-left text-stone-600">
                 <tr>
                   <th className="px-4 py-2">Arrives</th>
                   <th className="px-4 py-2">Cottage</th>
@@ -116,11 +116,11 @@ export default function AdminDashboardPage() {
       <section>
         <h2 className="text-lg font-bold mb-3">Recent bookings</h2>
         {data.recentBookings.length === 0 ? (
-          <p className="text-stone-500">No bookings yet.</p>
+          <p className="text-stone-600">No bookings yet.</p>
         ) : (
           <div className="bg-white rounded-2xl shadow overflow-hidden">
             <table className="w-full text-sm">
-              <thead className="bg-stone-50 text-left text-stone-500">
+              <thead className="bg-stone-50 text-left text-stone-600">
                 <tr>
                   <th className="px-4 py-2">Cottage</th>
                   <th className="px-4 py-2">Guest</th>
