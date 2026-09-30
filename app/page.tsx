@@ -2,11 +2,47 @@ import Link from 'next/link'
 import { prisma } from '@/lib/prisma'
 import { SectionBackground } from '@/components/ui/MultimediaBackground'
 import MountainScene from '@/components/ui/MountainScene'
+import { artworkFor, COTTAGE_ARTWORK, EXPERIENCE_ARTWORK, PRODUCT_ARTWORK } from '@/lib/listing-artwork'
 import { ArrowDown, ArrowRight, ArrowUpRight, Bed, Coffee, Leaf, Mountain, Search, Star, Users } from 'lucide-react'
 
 export const dynamic = 'force-dynamic'
 
 export default async function Home() {
+  const fallbackCottages = [
+    {
+      id: 'featured-panoramic-hut',
+      name: 'Panoramic Hut',
+      description: 'A cozy stone-and-timber hideaway with sweeping views across the Choke mountain range.',
+      pricePerNight: 2500,
+      capacity: 2,
+      media: [] as { url: string; altText: string | null }[],
+    },
+    {
+      id: 'featured-stargazer-den',
+      name: "Stargazer's Den",
+      description: 'A quiet mountain cottage with a private deck made for clear skies and unhurried nights.',
+      pricePerNight: 3200,
+      capacity: 2,
+      media: [] as { url: string; altText: string | null }[],
+    },
+    {
+      id: 'featured-family-hut',
+      name: 'Family Hut',
+      description: 'A spacious highland lodge built for families to share mountain air, quiet evenings, and trail days.',
+      pricePerNight: 3800,
+      capacity: 4,
+      media: [] as { url: string; altText: string | null }[],
+    },
+    {
+      id: 'featured-mountain-suite',
+      name: 'Mountain Suite',
+      description: 'A bright private retreat above the valleys, with a deck for long views over the Choke ridgelines.',
+      pricePerNight: 4500,
+      capacity: 2,
+      media: [] as { url: string; altText: string | null }[],
+    },
+  ]
+  let availabilityUnavailable = false
   const [cottages, experiences, products] = await Promise.all([
     prisma.cottage.findMany({
       where: { isAvailable: true, availableUnits: { gt: 0 } },
@@ -25,6 +61,9 @@ export default async function Home() {
           select: { url: true, altText: true },
         },
       },
+    }).catch(() => {
+      availabilityUnavailable = true
+      return fallbackCottages
     }),
     prisma.experience.findMany({
       where: { isActive: true, publicationStatus: 'PUBLISHED' },
@@ -42,7 +81,7 @@ export default async function Home() {
           select: { url: true, altText: true },
         },
       },
-    }),
+    }).catch(() => []),
     prisma.product.findMany({
       where: { isActive: true, publicationStatus: 'PUBLISHED', stock: { gt: 0 } },
       orderBy: { createdAt: 'desc' },
@@ -59,8 +98,15 @@ export default async function Home() {
           select: { url: true, altText: true },
         },
       },
-    }),
+    }).catch(() => []),
   ])
+
+  const featuredCottages = [...cottages].sort((a, b) => {
+    const preferred = ['panoramic hut', 'family hut', "stargazer's den", 'mountain suite']
+    const aIndex = preferred.indexOf(a.name.toLowerCase())
+    const bIndex = preferred.indexOf(b.name.toLowerCase())
+    return (aIndex === -1 ? preferred.length : aIndex) - (bIndex === -1 ? preferred.length : bIndex)
+  })
 
   return (
     <>
@@ -94,7 +140,7 @@ export default async function Home() {
                   Shop local
                 </Link>
               </div>
-              <div className="mt-8 flex flex-col gap-3 text-sm text-white/75 sm:mt-10 sm:flex-row sm:flex-wrap sm:gap-6">
+              <div className="mt-8 flex flex-col gap-3 text-sm font-medium text-white/90 sm:mt-10 sm:flex-row sm:flex-wrap sm:gap-6">
                 <span className="flex items-center gap-2"><Mountain className="h-4 w-4 text-emerald-300" aria-hidden="true" /> Panoramic summit views</span>
                 <span className="flex items-center gap-2"><Users className="h-4 w-4 text-emerald-300" aria-hidden="true" /> Community-led stays</span>
               </div>
@@ -103,7 +149,7 @@ export default async function Home() {
               <MountainScene />
             </div>
           </div>
-          <a href="#discover" className="absolute bottom-5 left-1/2 hidden -translate-x-1/2 items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-white/70 transition hover:text-white md:flex">
+          <a href="#discover" className="absolute bottom-5 left-1/2 hidden -translate-x-1/2 items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-white/85 transition hover:text-white md:flex">
             Discover Choke <ArrowDown className="h-4 w-4 animate-bounce" aria-hidden="true" />
           </a>
         </div>
@@ -120,7 +166,7 @@ export default async function Home() {
               <span className="rounded-xl bg-emerald-400/10 p-3 text-emerald-300"><Icon className="h-5 w-5" aria-hidden="true" /></span>
               <div>
                 <p className="text-2xl font-black text-emerald-300">{value}</p>
-                <p className="mt-1 text-xs uppercase tracking-[0.12em] text-stone-400">{label}</p>
+                <p className="mt-1 text-xs font-medium uppercase tracking-[0.12em] text-stone-300">{label}</p>
               </div>
             </div>
           ))}
@@ -131,31 +177,40 @@ export default async function Home() {
         <section className="container mx-auto px-4" id="stay" aria-labelledby="stays-heading">
           <div className="mb-8 flex flex-col gap-3 sm:mb-10 sm:flex-row sm:items-end sm:justify-between">
             <div>
-              <p className="text-xs font-bold uppercase tracking-[0.2em] text-emerald-700">Rest above the everyday</p>
-              <h2 id="stays-heading" className="mt-2 text-3xl font-bold text-stone-900 sm:text-4xl">Find your mountain stay</h2>
-              <p className="mt-2 max-w-2xl text-sm leading-6 text-stone-600 sm:text-base">Explore currently available cottages and choose the right place to slow down.</p>
+              <p className="text-xs font-bold uppercase tracking-[0.2em] text-emerald-800">Rest above the everyday</p>
+              <h2 id="stays-heading" className="mt-2 text-3xl font-extrabold tracking-tight text-stone-950 sm:text-4xl">Find your mountain stay</h2>
+              <p className="mt-2 max-w-2xl text-sm leading-6 text-stone-700 sm:text-base">Explore our highland hideaways and choose the right place to slow down.</p>
             </div>
             <Link href="/book" className="inline-flex items-center gap-2 text-sm font-semibold text-emerald-700 hover:text-emerald-800">
               View all stays <ArrowRight className="h-4 w-4" aria-hidden="true" />
             </Link>
           </div>
+          {availabilityUnavailable && (
+            <p className="mb-5 rounded-xl border border-amber-300 bg-amber-50 px-4 py-3 text-sm font-medium leading-6 text-amber-950">
+              Showing our featured stays as a preview. Live availability will return when the booking database reconnects.
+            </p>
+          )}
           {cottages.length ? (
             <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
-              {cottages.map((cottage) => (
-                <article key={cottage.id} className="group overflow-hidden rounded-2xl border border-stone-200 bg-white shadow-sm transition duration-200 hover:-translate-y-1 hover:shadow-xl">
+              {featuredCottages.map((cottage) => (
+                <article key={cottage.id} className="group overflow-hidden rounded-3xl border border-stone-200/90 bg-white shadow-[0_12px_36px_-20px_rgba(28,45,33,0.42)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_22px_48px_-22px_rgba(28,45,33,0.48)]">
                   <div className="relative aspect-[4/3] overflow-hidden bg-gradient-to-br from-emerald-100 to-stone-200">
                     {cottage.media[0] ? (
                       // eslint-disable-next-line @next/next/no-img-element
                       <img src={cottage.media[0].url} alt={cottage.media[0].altText || cottage.name} loading="lazy" className="h-full w-full object-cover transition duration-500 group-hover:scale-105" />
-                    ) : <div className="flex h-full items-center justify-center text-emerald-700"><Bed className="h-12 w-12" aria-hidden="true" /></div>}
-                    <span className="absolute bottom-3 left-3 rounded-full bg-stone-950/75 px-3 py-1 text-xs font-semibold text-white backdrop-blur">Up to {cottage.capacity} guests</span>
+                    ) : artworkFor(cottage.name, COTTAGE_ARTWORK) ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img src={artworkFor(cottage.name, COTTAGE_ARTWORK)!} alt={`${cottage.name}, a highland cottage beneath the Choke Mountains`} loading="lazy" className="h-full w-full object-cover transition duration-500 group-hover:scale-105" />
+                    ) : <div className="flex h-full items-center justify-center text-emerald-800"><Bed className="h-12 w-12" aria-hidden="true" /></div>}
+                    <span className="absolute bottom-3 left-3 rounded-full border border-white/20 bg-stone-950/85 px-3 py-1.5 text-xs font-semibold text-white shadow-lg backdrop-blur">Sleeps {cottage.capacity}</span>
                   </div>
-                  <div className="p-5">
-                    <h3 className="text-lg font-bold text-stone-900">{cottage.name}</h3>
-                    <p className="mt-2 min-h-10 text-sm leading-5 text-stone-600 line-clamp-2">{cottage.description}</p>
+                  <div className="p-5 sm:p-6">
+                    <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-emerald-800">Choke highlands / private cottage</p>
+                    <h3 className="mt-1.5 text-xl font-extrabold tracking-tight text-stone-950">{cottage.name}</h3>
+                    <p className="mt-2 min-h-10 text-sm leading-6 text-stone-700 line-clamp-2">{cottage.description}</p>
                     <div className="mt-4 flex items-end justify-between gap-3">
-                      <p><span className="text-lg font-bold text-emerald-700">ETB {Number(cottage.pricePerNight).toLocaleString()}</span><span className="text-xs text-stone-500"> / night</span></p>
-                      <Link href="/book" className="inline-flex min-h-10 items-center gap-1 rounded-full bg-emerald-50 px-4 text-xs font-bold text-emerald-800 transition group-hover:bg-emerald-700 group-hover:text-white">
+                      <p><span className="text-lg font-extrabold text-emerald-800">ETB {Number(cottage.pricePerNight).toLocaleString()}</span><span className="ml-1 text-xs font-medium text-stone-600">/ night</span></p>
+                      <Link href="/book" className="inline-flex min-h-10 items-center gap-1 rounded-full bg-emerald-800 px-4 text-xs font-bold text-white transition hover:bg-emerald-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-700 focus-visible:ring-offset-2">
                         Choose <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
                       </Link>
                     </div>
@@ -165,9 +220,9 @@ export default async function Home() {
             </div>
           ) : (
             <div className="rounded-2xl border border-stone-200 bg-white p-8 text-center">
-              <Bed className="mx-auto h-8 w-8 text-stone-400" aria-hidden="true" />
+              <Bed className="mx-auto h-8 w-8 text-stone-500" aria-hidden="true" />
               <p className="mt-3 font-semibold text-stone-800">No cottages are available to book right now.</p>
-              <p className="mt-1 text-sm text-stone-500">Please check back soon for new availability.</p>
+              <p className="mt-1 text-sm text-stone-600">Please check back soon for new availability.</p>
             </div>
           )}
         </section>
@@ -178,7 +233,7 @@ export default async function Home() {
           <div className="mb-8 flex items-end justify-between gap-4 sm:mb-10">
             <div>
               <p className="text-xs font-bold uppercase tracking-[0.2em] text-emerald-400">Make the mountain yours</p>
-              <h2 id="experiences-heading" className="mt-2 text-3xl font-bold sm:text-4xl">Local experiences</h2>
+              <h2 id="experiences-heading" className="mt-2 text-3xl font-extrabold tracking-tight text-white sm:text-4xl">Local experiences</h2>
             </div>
             <Link href="/book" className="inline-flex items-center gap-1 text-sm font-semibold text-emerald-300 hover:text-white">Add to your stay <ArrowUpRight className="h-4 w-4" aria-hidden="true" /></Link>
           </div>
@@ -190,6 +245,9 @@ export default async function Home() {
                     {experience.media[0] ? (
                       // eslint-disable-next-line @next/next/no-img-element
                       <img src={experience.media[0].url} alt={experience.media[0].altText || experience.name} loading="lazy" className="h-full w-full object-cover" />
+                    ) : artworkFor(experience.name, EXPERIENCE_ARTWORK) ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img src={artworkFor(experience.name, EXPERIENCE_ARTWORK)!} alt="Town lights twinkling beneath the Choke Mountains at night" loading="lazy" className="h-full w-full object-cover" />
                     ) : <div className="flex h-full items-center justify-center text-emerald-300"><Coffee className="h-10 w-10" aria-hidden="true" /></div>}
                   </div>
                   <div className="p-5">
@@ -208,32 +266,36 @@ export default async function Home() {
         <section className="container mx-auto px-4" aria-labelledby="marketplace-heading">
           <div className="mb-8 flex flex-col gap-3 sm:mb-10 sm:flex-row sm:items-end sm:justify-between">
             <div>
-              <p className="text-xs font-bold uppercase tracking-[0.2em] text-emerald-700">Take a little Choke home</p>
-              <h2 id="marketplace-heading" className="mt-2 text-3xl font-bold text-stone-900 sm:text-4xl">Made and shared locally</h2>
+              <p className="text-xs font-bold uppercase tracking-[0.2em] text-emerald-800">Take a little Choke home</p>
+              <h2 id="marketplace-heading" className="mt-2 text-3xl font-extrabold tracking-tight text-stone-950 sm:text-4xl">Made and shared locally</h2>
+              <p className="mt-2 max-w-xl text-sm leading-6 text-stone-700 sm:text-base">Thoughtful goods from the people and places that make these mountains feel like home.</p>
             </div>
             <Link href="/marketplace" className="inline-flex items-center gap-2 text-sm font-semibold text-emerald-700 hover:text-emerald-800">Visit the marketplace <ArrowRight className="h-4 w-4" aria-hidden="true" /></Link>
           </div>
           {products.length ? (
             <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
               {products.map((product) => (
-                <Link key={product.id} href="/marketplace" className="group flex min-w-0 items-center gap-4 rounded-2xl border border-stone-200 bg-white p-3 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
+                <Link key={product.id} href="/marketplace" className="group flex min-w-0 items-center gap-4 rounded-2xl border border-stone-200 bg-white p-3 shadow-sm transition hover:-translate-y-0.5 hover:border-emerald-300 hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-700 focus-visible:ring-offset-2">
                   <div className="h-20 w-20 shrink-0 overflow-hidden rounded-xl bg-gradient-to-br from-emerald-100 to-stone-200">
-                    {product.media[0] ? (
+                    {artworkFor(product.name, PRODUCT_ARTWORK) ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img src={artworkFor(product.name, PRODUCT_ARTWORK)!} alt="Grey Choke Mountains community polo shirt" loading="lazy" className="h-full w-full object-cover" />
+                    ) : product.media[0] ? (
                       // eslint-disable-next-line @next/next/no-img-element
                       <img src={product.media[0].url} alt={product.media[0].altText || product.name} loading="lazy" className="h-full w-full object-cover" />
                     ) : <div className="flex h-full items-center justify-center text-emerald-700"><Leaf className="h-7 w-7" aria-hidden="true" /></div>}
                   </div>
                   <div className="min-w-0">
                     <h3 className="truncate font-semibold text-stone-900">{product.name}</h3>
-                    <p className="mt-1 truncate text-xs text-stone-500">From {product.producerName}</p>
-                    <p className="mt-2 text-sm font-bold text-emerald-700">ETB {Number(product.price).toLocaleString()}</p>
+                    <p className="mt-1 truncate text-xs font-medium text-stone-700">From {product.producerName}</p>
+                    <p className="mt-2 text-sm font-extrabold text-emerald-800">ETB {Number(product.price).toLocaleString()}</p>
                   </div>
                 </Link>
               ))}
             </div>
           ) : (
             <div className="rounded-2xl border border-stone-200 bg-white p-8 text-center">
-              <Search className="mx-auto h-8 w-8 text-stone-400" aria-hidden="true" />
+              <Search className="mx-auto h-8 w-8 text-stone-500" aria-hidden="true" />
               <p className="mt-3 font-semibold text-stone-800">The community marketplace is growing.</p>
               <Link href="/marketplace" className="mt-3 inline-flex items-center gap-1 text-sm font-semibold text-emerald-700">Explore listings <ArrowRight className="h-4 w-4" aria-hidden="true" /></Link>
             </div>

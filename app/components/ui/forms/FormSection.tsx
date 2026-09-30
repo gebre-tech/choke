@@ -28,11 +28,11 @@ export const FormSection = forwardRef<HTMLDivElement, FormSectionProps>(
           >
             <div>
               {title && <h3 className="text-base font-semibold text-stone-900">{title}</h3>}
-              {description && <p className="text-sm text-stone-500 mt-0.5">{description}</p>}
+              {description && <p className="text-sm text-stone-600 mt-0.5">{description}</p>}
             </div>
             {collapsible && (
               <svg
-                className={`w-5 h-5 text-stone-400 transition-transform ${open ? 'rotate-180' : ''}`}
+                className={`w-5 h-5 text-stone-500 transition-transform ${open ? 'rotate-180' : ''}`}
                 viewBox="0 0 20 20"
                 fill="currentColor"
                 aria-hidden="true"
@@ -74,7 +74,7 @@ export const FormField = ({
     </label>
     {children}
     {error && <p className="mt-1.5 text-sm text-red-600 flex items-center gap-1" role="alert">{error}</p>}
-    {hint && !error && <p className="mt-1.5 text-sm text-stone-500">{hint}</p>}
+    {hint && !error && <p className="mt-1.5 text-sm text-stone-600">{hint}</p>}
   </div>
 )
 

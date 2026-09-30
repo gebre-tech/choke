@@ -159,7 +159,7 @@ export default function AdminMediaPage() {
       </div>
 
       {loading && (
-        <p className="flex items-center gap-2 text-stone-500">
+        <p className="flex items-center gap-2 text-stone-600">
           <Loader2 className="w-5 h-5 animate-spin" /> Loading…
         </p>
       )}
@@ -193,7 +193,7 @@ export default function AdminMediaPage() {
                   </div>
                   <div className="p-3">
                     <p className="text-sm font-semibold line-clamp-1">{m.title}</p>
-                    <p className="text-xs text-stone-400">
+                    <p className="text-xs text-stone-500">
                       {mediaLabel(m.scope)}
                       {attached ? ` · ${attached}` : ''} · {formatBytes(m.sizeBytes)}
                     </p>
@@ -215,7 +215,7 @@ export default function AdminMediaPage() {
                         className={`text-xs px-2.5 py-1.5 rounded-lg border ${
                           m.isActive
                             ? 'border-emerald-200 text-emerald-700 hover:bg-emerald-50'
-                            : 'border-stone-200 text-stone-400 hover:bg-stone-50'
+                            : 'border-stone-200 text-stone-500 hover:bg-stone-50'
                         }`}
                         title={m.isActive ? 'Visible on the gallery page' : 'Hidden from public'}
                       >
@@ -230,7 +230,7 @@ export default function AdminMediaPage() {
           </div>
 
           {list.length === 0 && (
-            <p className="text-stone-400 bg-white rounded-2xl shadow p-10 text-center">
+            <p className="text-stone-500 bg-white rounded-2xl shadow p-10 text-center">
               No media yet — upload photos, videos or audio, or add a YouTube/Vimeo link.
             </p>
           )}

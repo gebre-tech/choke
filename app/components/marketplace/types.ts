@@ -1,4 +1,5 @@
 import type { GalleryMedia } from '@/lib/media-shared'
+import { artworkFor, PRODUCT_ARTWORK } from '@/lib/listing-artwork'
 
 export type MarketLink = {
   id: string
@@ -27,6 +28,8 @@ export type MarketProduct = {
 }
 
 export function coverImage(p: MarketProduct): string | undefined {
+  const artwork = artworkFor(p.name, PRODUCT_ARTWORK)
+  if (artwork) return artwork
   return p.media.find((m) => m.type === 'IMAGE' && /\.(jpe?g|png|webp|gif|svg|avif)(\?|$)/i.test(m.url))?.url
 }
 

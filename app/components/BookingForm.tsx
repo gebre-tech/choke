@@ -1,11 +1,12 @@
 'use client'
 
-import { useState, useId, useEffect } from 'react'
+import { useState, useId } from 'react'
 import toast from 'react-hot-toast'
 import { Loader2, Calendar, Users, Mail, Phone, MessageSquare, Star, Home, Flame, User } from 'lucide-react'
 import { Button } from '@/components/ui/design-system/Button'
 import { Input, Textarea } from '@/components/ui/design-system/Input'
 import { generateId } from '@/lib/a11y'
+import { useAuth } from '@/components/AuthProvider'
 
 type CottageOption = {
   id: string
@@ -75,35 +76,19 @@ export default function BookingForm({
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [phone, setPhone] = useState('')
-  const [accountProfile, setAccountProfile] = useState<{ name: string; email: string } | null>(null)
-  const [accountLoading, setAccountLoading] = useState(true)
+  const { user, isLoading: accountLoading } = useAuth()
+  const accountProfile = user?.email
+    ? {
+        name: user.firstName.trim() || user.email.split('@')[0],
+        email: user.email,
+      }
+    : null
   const [specialRequests, setSpecialRequests] = useState('')
   const [submitting, setSubmitting] = useState<Submitting>('idle')
   const [errors, setErrors] = useState<FormErrors>({})
   const [touched, setTouched] = useState<Record<string, boolean>>({})
 
   const selected = cottages.find((c) => c.id === cottageId)
-
-  useEffect(() => {
-    let active = true
-    fetch('/api/auth/me')
-      .then((res) => res.json())
-      .then((data) => {
-        if (!active || !data.authenticated || typeof data.user?.email !== 'string') return
-        const profile = {
-          name: typeof data.user.firstName === 'string' && data.user.firstName.trim()
-            ? data.user.firstName.trim()
-            : data.user.email.split('@')[0],
-          email: data.user.email,
-        }
-        setAccountProfile(profile)
-        setName(profile.name)
-        setEmail(profile.email)
-      })
-      .catch(() => {})
-      .finally(() => { if (active) setAccountLoading(false) })
-    return () => { active = false }
-  }, [])
 
   const nights = (() => {
     if (!checkIn || !checkOut) return 0
@@ -206,8 +191,8 @@ export default function BookingForm({
           checkIn,
           checkOut,
           guestCount,
-          name,
-          email,
+          name: accountProfile?.name ?? name,
+          email: accountProfile?.email ?? email,
           phone: phone || undefined,
           specialRequests: specialRequests || undefined,
         }),
@@ -304,7 +289,7 @@ export default function BookingForm({
                 </div>
               </div>
             )}
-            <p className="text-sm text-stone-500 flex flex-wrap gap-3" aria-label="Cottage amenities">
+            <p className="text-sm text-stone-600 flex flex-wrap gap-3" aria-label="Cottage amenities">
               {selected.hasTelescope && (
                 <span className="flex items-center gap-1"><Star className="w-4 h-4" aria-hidden="true" /> Telescope</span>
               )}
@@ -326,7 +311,7 @@ export default function BookingForm({
           <p className="text-sm text-emerald-800 mt-1">Confirmation and payment details will use {accountProfile.email}.</p>
         </div>
       ) : accountLoading ? (
-        <div className="rounded-2xl border border-stone-200 bg-stone-50 p-4 text-sm text-stone-500">Checking your account…</div>
+        <div className="rounded-2xl border border-stone-200 bg-stone-50 p-4 text-sm text-stone-600">Checking your account…</div>
       ) : null}
       <div className="grid sm:grid-cols-2 gap-4">
         <div>
@@ -440,10 +425,10 @@ export default function BookingForm({
           {estimate !== null ? (
             <>
               <span className="font-bold text-emerald-700">ETB {estimate.toLocaleString()}</span>{' '}
-              <span className="text-stone-500 text-sm">for {nights} night{nights > 1 ? 's' : ''}</span>
+              <span className="text-stone-600 text-sm">for {nights} night{nights > 1 ? 's' : ''}</span>
             </>
           ) : (
-            <span className="text-stone-500">Select dates to see the total</span>
+            <span className="text-stone-600">Select dates to see the total</span>
           )}
         </p>
         <Button

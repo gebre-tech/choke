@@ -52,7 +52,7 @@ export const Tabs = ({ tabs, activeTab, onChange, variant = 'default', className
                 : variant === 'underline'
                 ? activeTab === tab.id
                   ? 'border-b-2 border-emerald-600 text-emerald-600'
-                  : 'text-stone-500 hover:text-stone-900'
+                  : 'text-stone-600 hover:text-stone-900'
                 : activeTab === tab.id
                 ? 'bg-emerald-50 text-emerald-700'
                 : 'text-stone-600 hover:text-stone-900 hover:bg-stone-50'

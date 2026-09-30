@@ -9,7 +9,7 @@ export default function Gallery({ media }: { media: GalleryMedia[] }) {
 
   if (media.length === 0) {
     return (
-      <p className="text-stone-500">
+      <p className="text-stone-600">
         Media coming soon — stay tuned for photos, videos and sounds from the mountain.
       </p>
     )
@@ -29,7 +29,7 @@ export default function Gallery({ media }: { media: GalleryMedia[] }) {
             </div>
             <div className="p-3">
               <p className="text-sm font-semibold line-clamp-1">{m.title}</p>
-              {m.caption && <p className="text-xs text-stone-400 line-clamp-1">{m.caption}</p>}
+              {m.caption && <p className="text-xs text-stone-500 line-clamp-1">{m.caption}</p>}
             </div>
           </button>
         ))}

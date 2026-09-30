@@ -19,7 +19,7 @@ export default async function AdminLayout({
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <div>
             <h1 className="text-xl font-bold">Choke Panoramic — Admin</h1>
-            <p className="text-sm text-stone-400">Signed in as {session.email}</p>
+            <p className="text-sm text-stone-500">Signed in as {session.email}</p>
           </div>
           <AdminNav />
         </div>

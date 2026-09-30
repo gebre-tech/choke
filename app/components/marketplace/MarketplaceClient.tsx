@@ -3,6 +3,7 @@
 import { useMemo, useState } from 'react'
 import Link from 'next/link'
 import type { MarketProduct, MarketLink } from './types'
+import { artworkFor, EXPERIENCE_ARTWORK } from '@/lib/listing-artwork'
 import ProductCard from './ProductCard'
 import QuickView from './QuickView'
 import { Search, X, PlusCircle, Mountain, CalendarDays, Globe, MapPin, Video, MessageSquare, Link as LinkIcon, SlidersHorizontal, ShoppingBag, Leaf } from 'lucide-react'
@@ -124,7 +125,7 @@ export default function MarketplaceClient({
         >
           <PlusCircle className="w-4 h-4" /> Sell from the community
         </Link>
-        <p className="text-xs text-stone-500">
+        <p className="text-xs text-stone-600">
           Showcasing goods &amp; activities from {cottages.length ? `${cottages.length} scenic cottages` : 'the Choke Mountain community'}.
         </p>
       </div>
@@ -136,7 +137,7 @@ export default function MarketplaceClient({
           </h2>
           <div className="grid md:grid-cols-3 gap-6">
             {experiences.map((e) => {
-              const cover = coverImage(e.media)
+              const cover = coverImage(e.media) ?? artworkFor(e.name, EXPERIENCE_ARTWORK)
               return (
                 <div key={e.id} className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-shadow p-4 flex flex-col gap-3">
                   <div className="relative aspect-[16/9] rounded-xl overflow-hidden bg-gradient-to-br from-emerald-100 to-teal-200">
@@ -153,7 +154,7 @@ export default function MarketplaceClient({
                     <h3 className="font-semibold line-clamp-1">{e.name}</h3>
                     <p className="text-emerald-700 font-bold whitespace-nowrap">ETB {e.price.toLocaleString()}</p>
                   </div>
-                  <p className="text-xs text-stone-500 uppercase tracking-wide">{e.type.replace('_', ' ')}</p>
+                  <p className="text-xs text-stone-600 uppercase tracking-wide">{e.type.replace('_', ' ')}</p>
                   <p className="text-sm text-gray-600 line-clamp-2">{e.description}</p>
                   {e.links && e.links.length > 0 && (
                     <div className="flex flex-wrap gap-1.5 mb-2">
@@ -191,20 +192,20 @@ export default function MarketplaceClient({
       <div className="mb-6 rounded-2xl border border-stone-200 bg-white p-3 shadow-sm">
         <div className="flex flex-col gap-3 lg:flex-row lg:items-center">
         <div className="relative flex-1">
-          <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-stone-400" />
+          <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-stone-500" />
           <input
             value={q}
             onChange={(e) => setQ(e.target.value)}
             placeholder="Search products, hosts, foods, clothing…"
             aria-label="Search marketplace listings"
-            className="w-full rounded-xl border border-stone-200 bg-stone-50 py-3 pl-9 pr-9 text-sm placeholder:text-stone-500 focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/20"
+            className="w-full rounded-xl border border-stone-200 bg-stone-50 py-3 pl-9 pr-9 text-sm placeholder:text-stone-600 focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/20"
           />
           {q && (
             <button
               type="button"
               onClick={() => setQ('')}
               aria-label="Clear search"
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-stone-400 hover:text-stone-700"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-stone-500 hover:text-stone-700"
             >
               <X className="w-4 h-4" />
             </button>
@@ -270,7 +271,7 @@ export default function MarketplaceClient({
                 value={maxPrice}
                 onChange={(event) => setMaxPrice(event.target.value)}
                 placeholder="Any price"
-                className="mt-1 block w-36 rounded-lg border border-stone-200 px-3 py-2 text-sm font-normal placeholder:text-stone-500 focus:border-emerald-500 focus:outline-none"
+                className="mt-1 block w-36 rounded-lg border border-stone-200 px-3 py-2 text-sm font-normal placeholder:text-stone-600 focus:border-emerald-500 focus:outline-none"
               />
             </label>
             <label className="inline-flex items-center gap-2 rounded-lg border border-stone-200 px-3 py-2 text-xs font-semibold text-stone-600">
@@ -287,7 +288,7 @@ export default function MarketplaceClient({
       </div>
 
       <div className="mb-4 flex items-center justify-between gap-3">
-      <p className="flex items-center gap-2 text-sm text-stone-500" aria-live="polite">
+      <p className="flex items-center gap-2 text-sm text-stone-600" aria-live="polite">
         <ShoppingBag className="h-4 w-4" />
         {filtered.length} product{filtered.length === 1 ? '' : 's'}
         {q && <> matching “{q}”</>}

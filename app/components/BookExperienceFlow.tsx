@@ -53,7 +53,7 @@ export default function BookExperienceFlow({
       <div className="mb-6">
         <p className="text-sm font-semibold uppercase tracking-[0.18em] text-emerald-800">Step 1 of 2</p>
         <h2 className="mt-2 text-2xl font-bold text-slate-900">Choose an experience or activity</h2>
-        <p className="mt-2 text-sm leading-6 text-stone-500">
+        <p className="mt-2 text-sm leading-6 text-stone-600">
           Pick something to add to your stay. You can also continue with the cottage only.
         </p>
       </div>
@@ -87,8 +87,8 @@ export default function BookExperienceFlow({
               <div className="p-4">
                 <p className="text-xs font-semibold uppercase tracking-wider text-emerald-700">{item.type.replaceAll('_', ' ')}</p>
                 <h3 className="mt-1 font-bold text-slate-900">{item.name}</h3>
-                <p className="mt-2 line-clamp-2 text-sm leading-5 text-stone-500">{item.description}</p>
-                <div className="mt-3 flex flex-wrap gap-3 text-xs text-stone-500">
+                <p className="mt-2 line-clamp-2 text-sm leading-5 text-stone-600">{item.description}</p>
+                <div className="mt-3 flex flex-wrap gap-3 text-xs text-stone-600">
                   <span className="font-semibold text-emerald-700">ETB {item.price.toFixed(2)} / guest</span>
                   {item.duration && <span className="inline-flex items-center gap-1"><Clock3 className="h-3.5 w-3.5" /> {item.duration} min</span>}
                   <span className="inline-flex items-center gap-1"><Users className="h-3.5 w-3.5" /> Up to {item.capacity}</span>

@@ -5,16 +5,18 @@ import { useCartStore } from '@/store/cart'
 import { useEffect, useState } from 'react'
 import { useRouter, usePathname } from 'next/navigation'
 import CartDrawer from './CartDrawer'
+import toast from 'react-hot-toast'
+import { useAuth } from '@/components/AuthProvider'
 
-type SessionUser = { id: string; email: string; role: string; firstName: string }
 type HeaderSettings = { siteName?: string; logoUrl?: string; tagline?: string }
 
 export default function Header({ settings }: { settings?: HeaderSettings }) {
   const [cartOpen, setCartOpen] = useState(false)
-  const [session, setSession] = useState<SessionUser | null>(null)
   const [site, setSite] = useState<HeaderSettings>(settings ?? {})
   const [scrolled, setScrolled] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
+  const [loggingOut, setLoggingOut] = useState(false)
+  const { user: session, isLoading: sessionLoading, clearSession } = useAuth()
   const router = useRouter()
   const pathname = usePathname()
   const items = useCartStore((s) => s.items)
@@ -22,10 +24,6 @@ export default function Header({ settings }: { settings?: HeaderSettings }) {
   const isHome = pathname === '/'
 
   useEffect(() => {
-    fetch('/api/auth/me')
-      .then((r) => r.json())
-      .then((d) => { if (d?.authenticated) setSession(d.user) })
-      .catch(() => {})
     fetch('/api/site')
       .then((r) => r.json())
       .then((d) => d?.settings && setSite(d.settings))
@@ -39,10 +37,19 @@ export default function Header({ settings }: { settings?: HeaderSettings }) {
   }, [])
 
   const handleLogout = async () => {
-    await fetch('/api/auth/logout', { method: 'POST' })
-    setSession(null)
-    setMobileOpen(false)
-    router.refresh()
+    if (loggingOut) return
+    setLoggingOut(true)
+    try {
+      const response = await fetch('/api/auth/logout', { method: 'POST' })
+      if (!response.ok) throw new Error('Could not sign out')
+      clearSession()
+      setMobileOpen(false)
+      router.refresh()
+    } catch {
+      toast.error('Could not sign out. Please try again.')
+    } finally {
+      setLoggingOut(false)
+    }
   }
 
   const navLinks = [
@@ -114,7 +121,9 @@ export default function Header({ settings }: { settings?: HeaderSettings }) {
 
           {/* Actions */}
           <div className="flex items-center gap-2">
-            {session ? (
+            {sessionLoading ? (
+              <div className="hidden h-9 w-28 animate-pulse rounded-full bg-stone-100 md:block" aria-label="Checking account" />
+            ) : session ? (
               <div className="hidden md:flex items-center gap-2">
                 <span className={`flex items-center gap-1.5 text-sm font-medium ${isTransparent ? 'text-white/80' : 'text-stone-600'}`}>
                   <User className="w-4 h-4" aria-hidden="true" />
@@ -122,13 +131,14 @@ export default function Header({ settings }: { settings?: HeaderSettings }) {
                 </span>
                 <button
                   onClick={handleLogout}
+                  disabled={loggingOut}
                   className={`text-sm px-3 py-1.5 rounded-full transition-all ${
                     isTransparent
-                      ? 'text-white/60 hover:text-white hover:bg-white/10'
+                      ? 'text-white/85 hover:text-white hover:bg-white/10'
                       : 'text-stone-600 hover:text-red-700 hover:bg-red-50'
                   }`}
                 >
-                  Log out
+                  {loggingOut ? 'Signing out…' : 'Log out'}
                 </button>
               </div>
             ) : (
@@ -210,13 +220,15 @@ export default function Header({ settings }: { settings?: HeaderSettings }) {
                 </Link>
               ))}
               <div className="pt-3 border-t border-stone-100 flex gap-2">
-                {session ? (
+                {sessionLoading ? (
+                  <span className="flex items-center gap-2 px-3 py-2 text-sm text-stone-600"><span className="h-4 w-4 animate-spin rounded-full border-2 border-stone-300 border-t-emerald-700" /> Checking account…</span>
+                ) : session ? (
                   <>
-                    <span className="flex items-center gap-1.5 text-sm text-stone-500 flex-1">
+                    <span className="flex items-center gap-1.5 text-sm text-stone-600 flex-1">
                       <User className="w-4 h-4" /> {session.firstName}
                     </span>
-                    <button onClick={handleLogout} className="text-sm text-red-500 hover:text-red-700 font-medium">
-                      Log out
+                    <button onClick={handleLogout} disabled={loggingOut} className="text-sm text-red-500 hover:text-red-700 font-medium disabled:opacity-60">
+                      {loggingOut ? 'Signing out…' : 'Log out'}
                     </button>
                   </>
                 ) : (

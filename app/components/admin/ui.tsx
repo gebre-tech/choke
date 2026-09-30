@@ -81,7 +81,7 @@ export function Modal({
           <h2 className="text-xl font-bold text-stone-900">{title}</h2>
           <button
             onClick={onClose}
-            className="p-1.5 text-stone-400 hover:text-stone-600 rounded-lg hover:bg-stone-100 transition-colors"
+            className="p-1.5 text-stone-500 hover:text-stone-600 rounded-lg hover:bg-stone-100 transition-colors"
             aria-label="Close"
           >
             <X className="w-5 h-5" />
@@ -109,7 +109,7 @@ export function Field({
       <label className="label">{label}</label>
       {children}
       {error && <span className="text-xs text-red-600 flex items-center gap-1">{error}</span>}
-      {hint && !error && <span className="text-xs text-stone-400">{hint}</span>}
+      {hint && !error && <span className="text-xs text-stone-500">{hint}</span>}
     </div>
   )
 }
@@ -166,9 +166,9 @@ export function StatCard({
     <div className="stat-card">
       <div className="flex items-start justify-between">
         <div>
-          <p className="text-sm text-stone-500">{label}</p>
+          <p className="text-sm text-stone-600">{label}</p>
           <p className="text-2xl font-bold mt-1 text-stone-900">{value}</p>
-          {sub && <p className="text-xs text-stone-400 mt-1">{sub}</p>}
+          {sub && <p className="text-xs text-stone-500 mt-1">{sub}</p>}
           {trend && (
             <span className={`inline-flex items-center gap-1 text-xs font-medium mt-2 ${trend.positive ? 'text-emerald-600' : 'text-red-600'}`}>
               {trend.positive ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
@@ -399,7 +399,7 @@ export function SearchInput({ value, onChange, placeholder = 'Search…', classN
 }) {
   return (
     <div className="relative max-w-sm ${className}">
-      <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-stone-400" />
+      <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-stone-500" />
       <input
         type="text"
         value={value}
@@ -410,7 +410,7 @@ export function SearchInput({ value, onChange, placeholder = 'Search…', classN
       {value && (
         <button
           onClick={() => onChange('')}
-          className="absolute right-3 top-1/2 -translate-y-1/2 text-stone-400 hover:text-stone-600"
+          className="absolute right-3 top-1/2 -translate-y-1/2 text-stone-500 hover:text-stone-600"
         >
           <X className="w-4 h-4" />
         </button>
@@ -477,7 +477,7 @@ export function LoadingState({ message = 'Loading…', size = 'md' }: { message?
     lg: 'w-8 h-8',
   }
   return (
-    <div className="flex items-center justify-center gap-2 text-stone-500 py-8">
+    <div className="flex items-center justify-center gap-2 text-stone-600 py-8">
       <Loader2 className={`${sizeClasses[size]} animate-spin`} />
       <span>{message}</span>
     </div>

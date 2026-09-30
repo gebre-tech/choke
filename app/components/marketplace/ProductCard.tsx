@@ -88,7 +88,7 @@ export default function ProductCard({
           <h3 className="font-semibold line-clamp-1">{product.name}</h3>
           <p className="text-emerald-700 font-bold whitespace-nowrap" aria-label={`Price: ${product.price.toLocaleString()} ETB`}>ETB {product.price.toLocaleString()}</p>
         </div>
-        <p className="text-xs text-stone-500 mt-0.5 line-clamp-1">
+        <p className="text-xs text-stone-600 mt-0.5 line-clamp-1">
           <span className="font-medium text-emerald-700">{CATEGORY_LABELS[product.category] ?? product.category}</span>
           {' · '}{product.producerName} · {product.producerLocation}
           {product.weight ? ` · ${product.weight} kg` : ''}
@@ -116,7 +116,7 @@ export default function ProductCard({
               )
             })}
             {product.links.length > 3 && (
-              <span className="text-[10px] text-stone-500 px-2" aria-label={`${product.links.length - 3} more links`}>+{product.links.length - 3} more</span>
+              <span className="text-[10px] text-stone-600 px-2" aria-label={`${product.links.length - 3} more links`}>+{product.links.length - 3} more</span>
             )}
           </div>
         )}

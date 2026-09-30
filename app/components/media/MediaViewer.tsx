@@ -77,9 +77,9 @@ export function MediaViewer({ media, onClose }: { media: GalleryMedia | null; on
         <div className="flex items-start justify-between mb-3">
           <div>
             <h3 className="text-lg font-bold">{media.title}</h3>
-            {media.caption && <p className="text-sm text-stone-500">{media.caption}</p>}
+            {media.caption && <p className="text-sm text-stone-600">{media.caption}</p>}
           </div>
-          <button onClick={onClose} className="text-stone-500 hover:text-stone-800 shrink-0">
+          <button onClick={onClose} className="text-stone-600 hover:text-stone-800 shrink-0">
             <X className="w-5 h-5" />
           </button>
         </div>

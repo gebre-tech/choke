@@ -8,6 +8,7 @@ import { ArrowDown, ArrowUpRight, Leaf, ShoppingBag } from 'lucide-react'
 export const dynamic = 'force-dynamic'
 
 export default async function MarketplacePage() {
+  let listingsUnavailable = false
   const [products, experiences, cottages] = await Promise.all([
     prisma.product.findMany({
       where: { isActive: true, publicationStatus: 'PUBLISHED', stock: { gt: 0 } },
@@ -40,6 +41,9 @@ export default async function MarketplacePage() {
           },
         },
       },
+    }).catch(() => {
+      listingsUnavailable = true
+      return []
     }),
     prisma.experience.findMany({
       where: { isActive: true, publicationStatus: 'PUBLISHED' },
@@ -72,11 +76,17 @@ export default async function MarketplacePage() {
           },
         },
       },
+    }).catch(() => {
+      listingsUnavailable = true
+      return []
     }),
     prisma.cottage.findMany({
       where: { isAvailable: true },
       select: { id: true, name: true },
       orderBy: { name: 'asc' },
+    }).catch(() => {
+      listingsUnavailable = true
+      return []
     }),
   ])
 
@@ -140,6 +150,11 @@ export default async function MarketplacePage() {
       <SectionBackground page="marketplace" section="products" className="bg-stone-50 py-12" overlay={false}>
         <div className="container mx-auto px-4">
           <div id="products" className="scroll-mt-24" />
+          {listingsUnavailable && (
+            <p className="mb-6 rounded-xl border border-amber-300 bg-amber-50 px-4 py-3 text-sm font-medium leading-6 text-amber-950">
+              Community listings are temporarily unavailable while the database reconnects. Please check back shortly.
+            </p>
+          )}
           <div className="mb-8">
             <h2 className="text-3xl font-bold mb-2 animate-fade-in">Browse the community collection</h2>
             <p className="text-stone-600 animate-slide-up" style={{ animationDelay: '100ms' }}>
@@ -154,7 +169,7 @@ export default async function MarketplacePage() {
           />
 
           {mapped.length === 0 && (
-            <p className="text-gray-500 animate-fade-in">Coming soon — new community products are on their way.</p>
+            <p className="text-gray-600 animate-fade-in">Coming soon — new community products are on their way.</p>
           )}
         </div>
       </SectionBackground>

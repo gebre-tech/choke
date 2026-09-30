@@ -596,21 +596,21 @@ const ReviewStep = ({ type, data }: { type: ListingType; data: ListingData }) =>
         <div className="space-y-2">
           <h4 className="font-medium text-stone-900">Basic Information</h4>
           <dl className="space-y-2 text-sm">
-            <div className="flex justify-between"><dt className="text-stone-500">Name</dt><dd className="font-medium">{data.name}</dd></div>
-            <div className="flex justify-between"><dt className="text-stone-500">Type</dt><dd className="font-medium capitalize">{type}</dd></div>
-            <div className="flex justify-between"><dt className="text-stone-500">Price</dt><dd className="font-medium">ETB {data.price.toLocaleString()}</dd></div>
-            {type === 'product' && <div className="flex justify-between"><dt className="text-stone-500">Stock</dt><dd className="font-medium">{data.stock}</dd></div>}
-            {type === 'cottage' && <div className="flex justify-between"><dt className="text-stone-500">Capacity</dt><dd className="font-medium">{data.capacity} guests</dd></div>}
-            {type === 'experience' && <div className="flex justify-between"><dt className="text-stone-500">Duration</dt><dd className="font-medium">{data.duration} min</dd></div>}
+            <div className="flex justify-between"><dt className="text-stone-600">Name</dt><dd className="font-medium">{data.name}</dd></div>
+            <div className="flex justify-between"><dt className="text-stone-600">Type</dt><dd className="font-medium capitalize">{type}</dd></div>
+            <div className="flex justify-between"><dt className="text-stone-600">Price</dt><dd className="font-medium">ETB {data.price.toLocaleString()}</dd></div>
+            {type === 'product' && <div className="flex justify-between"><dt className="text-stone-600">Stock</dt><dd className="font-medium">{data.stock}</dd></div>}
+            {type === 'cottage' && <div className="flex justify-between"><dt className="text-stone-600">Capacity</dt><dd className="font-medium">{data.capacity} guests</dd></div>}
+            {type === 'experience' && <div className="flex justify-between"><dt className="text-stone-600">Duration</dt><dd className="font-medium">{data.duration} min</dd></div>}
           </dl>
         </div>
 
         <div className="space-y-2">
           <h4 className="font-medium text-stone-900">Media</h4>
           <dl className="space-y-2 text-sm">
-            <div className="flex justify-between"><dt className="text-stone-500">Images</dt><dd className="font-medium">{images.length}</dd></div>
-            <div className="flex justify-between"><dt className="text-stone-500">Videos</dt><dd className="font-medium">{videos.length}</dd></div>
-            <div className="flex justify-between"><dt className="text-stone-500">Cover Set</dt><dd className="font-medium">{data.media.some(m => m.isCover) ? 'Yes' : 'No'}</dd></div>
+            <div className="flex justify-between"><dt className="text-stone-600">Images</dt><dd className="font-medium">{images.length}</dd></div>
+            <div className="flex justify-between"><dt className="text-stone-600">Videos</dt><dd className="font-medium">{videos.length}</dd></div>
+            <div className="flex justify-between"><dt className="text-stone-600">Cover Set</dt><dd className="font-medium">{data.media.some(m => m.isCover) ? 'Yes' : 'No'}</dd></div>
           </dl>
         </div>
 
@@ -618,11 +618,11 @@ const ReviewStep = ({ type, data }: { type: ListingType; data: ListingData }) =>
           <h4 className="font-medium text-stone-900">Links</h4>
           <dl className="space-y-2 text-sm">
             {data.links.length === 0 ? (
-              <dd className="text-stone-500">No links added</dd>
+              <dd className="text-stone-600">No links added</dd>
             ) : (
               data.links.map((link, i) => (
                 <div key={i} className="flex justify-between">
-                  <dt className="text-stone-500 capitalize">{link.type.toLowerCase()}</dt>
+                  <dt className="text-stone-600 capitalize">{link.type.toLowerCase()}</dt>
                   <dd className="font-medium truncate max-w-[200px]">{link.title}</dd>
                 </div>
               ))
@@ -633,8 +633,8 @@ const ReviewStep = ({ type, data }: { type: ListingType; data: ListingData }) =>
         <div className="space-y-2">
           <h4 className="font-medium text-stone-900">Status</h4>
           <dl className="space-y-2 text-sm">
-            <div className="flex justify-between"><dt className="text-stone-500">Active</dt><dd className="font-medium">{data.isActive ? 'Yes' : 'No'}</dd></div>
-            <div className="flex justify-between"><dt className="text-stone-500">Publication</dt><dd className="font-medium capitalize">{data.publicationStatus}</dd></div>
+            <div className="flex justify-between"><dt className="text-stone-600">Active</dt><dd className="font-medium">{data.isActive ? 'Yes' : 'No'}</dd></div>
+            <div className="flex justify-between"><dt className="text-stone-600">Publication</dt><dd className="font-medium capitalize">{data.publicationStatus}</dd></div>
           </dl>
         </div>
       </div>

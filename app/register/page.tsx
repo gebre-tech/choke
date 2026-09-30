@@ -5,9 +5,11 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import toast from 'react-hot-toast'
 import { Loader2, Mountain, Sparkles } from 'lucide-react'
+import { useAuth } from '@/components/AuthProvider'
 
 export default function RegisterPage() {
   const router = useRouter()
+  const { refreshSession } = useAuth()
   const [firstName, setFirstName] = useState('')
   const [lastName, setLastName] = useState('')
   const [email, setEmail] = useState('')
@@ -26,7 +28,8 @@ export default function RegisterPage() {
       const data = await res.json()
       if (!res.ok) return toast.error(data.error || 'Registration failed')
       toast.success(`Account created — welcome, ${data.user.firstName}!`)
-      router.push('/marketplace')
+      await refreshSession(true)
+      router.replace('/marketplace')
       router.refresh()
     } catch {
       toast.error('Something went wrong')
@@ -48,7 +51,7 @@ export default function RegisterPage() {
         </div>
         <div className="p-8 text-stone-900 sm:p-12">
         <h1 className="text-2xl font-bold mb-1">Create your account</h1>
-        <p className="text-stone-500 mb-6">Book cottages, join experiences and shop local goods</p>
+        <p className="text-stone-600 mb-6">Book cottages, join experiences and shop local goods</p>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="grid grid-cols-2 gap-4">
             <div>
@@ -91,7 +94,7 @@ export default function RegisterPage() {
               minLength={8}
               className="w-full border border-stone-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-emerald-500"
             />
-            <p className="text-xs text-stone-500 mt-1">At least 8 characters</p>
+            <p className="text-xs text-stone-600 mt-1">At least 8 characters</p>
           </div>
           <button
             type="submit"
@@ -102,7 +105,7 @@ export default function RegisterPage() {
             Create account
           </button>
         </form>
-        <p className="text-sm text-stone-500 mt-4 text-center">
+        <p className="text-sm text-stone-600 mt-4 text-center">
           Already have an account?{' '}
           <Link href="/login" className="text-emerald-700 hover:underline font-semibold">
             Sign in

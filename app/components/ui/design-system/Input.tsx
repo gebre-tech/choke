@@ -28,7 +28,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
         )}
         <div className="relative">
           {leadingIcon && (
-            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-stone-400">
+            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-stone-500">
               {leadingIcon}
             </div>
           )}
@@ -40,10 +40,10 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
             className={`
               w-full
               bg-white border rounded-xl
-              px-3.5 py-2.5 text-sm text-stone-900 placeholder:text-stone-500
+              px-3.5 py-2.5 text-sm text-stone-900 placeholder:text-stone-600
               transition-all duration-200 ease-out
               focus:outline-none focus:ring-2 focus:ring-offset-0
-              disabled:bg-stone-50 disabled:text-stone-500 disabled:cursor-not-allowed
+              disabled:bg-stone-50 disabled:text-stone-600 disabled:cursor-not-allowed
               ${leadingIcon ? 'pl-10' : ''} ${trailingIcon ? 'pr-10' : ''}
               ${error
                 ? 'border-red-300 focus:border-red-500 focus:ring-red-500/20'
@@ -54,7 +54,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
             {...props}
           />
           {trailingIcon && (
-            <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none text-stone-400">
+            <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none text-stone-500">
               {trailingIcon}
             </div>
           )}
@@ -68,7 +68,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
           </p>
         )}
         {hint && !error && (
-          <p id={hintId} className="mt-1.5 text-sm text-stone-500">{hint}</p>
+          <p id={hintId} className="mt-1.5 text-sm text-stone-600">{hint}</p>
         )}
       </div>
     )
@@ -110,10 +110,10 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
           style={maxRows ? { maxHeight: `calc(${maxRows} * 1.5rem + 0.75rem)` } : undefined}
           className={`
             w-full bg-white border rounded-xl
-            px-3.5 py-2.5 text-sm text-stone-900 placeholder:text-stone-500
+            px-3.5 py-2.5 text-sm text-stone-900 placeholder:text-stone-600
             transition-all duration-200 ease-out resize-y
             focus:outline-none focus:ring-2 focus:ring-offset-0
-            disabled:bg-stone-50 disabled:text-stone-500 disabled:cursor-not-allowed
+            disabled:bg-stone-50 disabled:text-stone-600 disabled:cursor-not-allowed
             ${error
               ? 'border-red-300 focus:border-red-500 focus:ring-red-500/20'
               : 'border-stone-200 hover:border-stone-300 focus:border-emerald-500 focus:ring-emerald-500/20'
@@ -130,7 +130,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
             {error}
           </p>
         )}
-        {hint && !error && <p id={hintId} className="mt-1.5 text-sm text-stone-500">{hint}</p>}
+        {hint && !error && <p id={hintId} className="mt-1.5 text-sm text-stone-600">{hint}</p>}
       </div>
     )
   }
@@ -179,7 +179,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
               px-3.5 py-2.5 text-sm text-stone-900
               transition-all duration-200 ease-out
               focus:outline-none focus:ring-2 focus:ring-offset-0
-              disabled:bg-stone-50 disabled:text-stone-500 disabled:cursor-not-allowed
+              disabled:bg-stone-50 disabled:text-stone-600 disabled:cursor-not-allowed
               ${error
                 ? 'border-red-300 focus:border-red-500 focus:ring-red-500/20'
                 : 'border-stone-200 hover:border-stone-300 focus:border-emerald-500 focus:ring-emerald-500/20'
@@ -197,7 +197,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
               </option>
             ))}
           </select>
-          <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-stone-400">
+          <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-stone-500">
             <svg className="w-4 h-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
               <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
             </svg>
@@ -211,7 +211,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
             {error}
           </p>
         )}
-        {hint && !error && <p id={hintId} className="mt-1.5 text-sm text-stone-500">{hint}</p>}
+        {hint && !error && <p id={hintId} className="mt-1.5 text-sm text-stone-600">{hint}</p>}
       </div>
     )
   }
@@ -251,7 +251,7 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
         {label && (
           <div className="text-sm leading-relaxed">
             <span className="font-medium text-stone-900">{label}</span>
-            {description && <p className="text-stone-500 mt-0.5">{description}</p>}
+            {description && <p className="text-stone-600 mt-0.5">{description}</p>}
           </div>
         )}
       </label>
@@ -311,13 +311,13 @@ export const RadioGroup = ({ label, name, value, onChange, options, orientation 
             />
             <div className="text-sm leading-relaxed">
               <span className="font-medium text-stone-900">{opt.label}</span>
-              {opt.description && <p className="text-stone-500">{opt.description}</p>}
+              {opt.description && <p className="text-stone-600">{opt.description}</p>}
             </div>
           </label>
         ))}
       </div>
       {error && <p className="mt-1.5 text-sm text-red-600 flex items-center gap-1" role="alert"><svg className="w-3.5 h-3.5" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd"/></svg> Please select an option</p>}
-      {hint && !error && <p id={`${groupId}-hint`} className="mt-1.5 text-sm text-stone-500">{hint}</p>}
+      {hint && !error && <p id={`${groupId}-hint`} className="mt-1.5 text-sm text-stone-600">{hint}</p>}
     </div>
   )
 }

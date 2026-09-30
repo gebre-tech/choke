@@ -114,7 +114,7 @@ export const HelpTooltip = ({ title, content, children, position = 'top' }: Help
         ref={triggerRef}
         type="button"
         onClick={() => setOpen(!open)}
-        className="ml-1.5 p-1 rounded-full text-stone-400 hover:text-stone-600 hover:bg-stone-100 transition-colors"
+        className="ml-1.5 p-1 rounded-full text-stone-500 hover:text-stone-600 hover:bg-stone-100 transition-colors"
         aria-label="Show help"
         aria-expanded={open}
       >

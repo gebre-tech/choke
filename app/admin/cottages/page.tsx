@@ -262,16 +262,16 @@ export default function AdminCottagesPage() {
         </div>
         <div className="min-w-0">
           <p className="font-medium truncate">{c.name}</p>
-          <p className="text-xs text-stone-400">{c.bedrooms} bed · {c.bathrooms} bath · sleeps {c.capacity}</p>
+          <p className="text-xs text-stone-500">{c.bedrooms} bed · {c.bathrooms} bath · sleeps {c.capacity}</p>
         </div>
       </div>
     )},
     { key: 'price', header: 'Price/night', className: 'w-36', render: (c: Cottage) => <span className="font-medium">ETB {c.pricePerNight.toLocaleString()}</span> },
     { key: 'capacity', header: 'Capacity', className: 'w-24', render: (c: Cottage) => <span className="text-stone-600">{c.capacity} guests</span> },
     { key: 'units', header: 'Units', className: 'w-28', render: (c: Cottage) => <span className="text-stone-600">{c.availableUnits}/{c.totalUnits} available</span> },
-    { key: 'features', header: 'Features', render: (c: Cottage) => <span className="text-xs text-stone-500">{formatFeatures(c)}</span> },
+    { key: 'features', header: 'Features', render: (c: Cottage) => <span className="text-xs text-stone-600">{formatFeatures(c)}</span> },
     { key: 'status', header: 'Status', className: 'w-32', render: (c: Cottage) => <Badge value={c.isAvailable ? 'ACTIVE' : 'INACTIVE'} /> },
-    { key: 'bookings', header: 'Bookings', className: 'w-24 text-center', render: (c: Cottage) => <span className="text-stone-500">{c._count?.bookings ?? 0}</span> },
+    { key: 'bookings', header: 'Bookings', className: 'w-24 text-center', render: (c: Cottage) => <span className="text-stone-600">{c._count?.bookings ?? 0}</span> },
     { key: 'actions', header: 'Actions', className: 'w-48', render: (c: Cottage) => (
       <div className="flex items-center gap-2">
         <button onClick={() => setModal({ open: true, cottage: c })} className="btn btn-secondary px-3 py-1.5 text-xs">Edit</button>

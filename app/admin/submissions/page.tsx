@@ -58,7 +58,7 @@ function ItemCard({
           {cover ? (
             cover.type === 'VIDEO' ? (
               <div className="w-full h-full flex items-center justify-center bg-stone-100">
-                <span className="text-sm font-medium text-stone-500">▶ {cover.provider || 'Video'}</span>
+                <span className="text-sm font-medium text-stone-600">▶ {cover.provider || 'Video'}</span>
               </div>
             ) : (
               <img src={cover.url} alt={cover.title} className="w-full h-full object-cover" />
@@ -79,8 +79,8 @@ function ItemCard({
               {item.category ?? item.type}
             </span>
           ) : null}
-          <p className="text-sm text-stone-500 line-clamp-2 mb-2">{item.description}</p>
-          <div className="flex flex-wrap items-center gap-3 text-[11px] text-stone-400">
+          <p className="text-sm text-stone-600 line-clamp-2 mb-2">{item.description}</p>
+          <div className="flex flex-wrap items-center gap-3 text-[11px] text-stone-500">
             <span>ETB {item.price.toLocaleString()}</span>
             {item.cottage && <span>at {item.cottage}</span>}
             <span>{item.media.length} media</span>

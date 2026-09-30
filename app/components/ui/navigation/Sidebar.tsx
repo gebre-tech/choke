@@ -136,7 +136,7 @@ export function Sidebar({
                     className={`flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-colors ${
                       isActive(child.href)
                         ? 'bg-emerald-50 text-emerald-700'
-                        : 'text-stone-500 hover:bg-stone-100 hover:text-stone-900'
+                        : 'text-stone-600 hover:bg-stone-100 hover:text-stone-900'
                     }`}
                   >
                     {child.icon}
@@ -205,7 +205,7 @@ return (
             )}
             <button
               onClick={onToggleCollapse}
-              className="p-1.5 rounded-lg text-stone-400 hover:text-stone-600 hover:bg-stone-100"
+              className="p-1.5 rounded-lg text-stone-500 hover:text-stone-600 hover:bg-stone-100"
               aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
             >
               {collapsed ? <ChevronRight className="w-5 h-5" /> : <ChevronLeft className="w-5 h-5" />}
@@ -229,7 +229,7 @@ return (
                   </div>
                   <div className="flex-1 min-w-0">
                     <p className="text-sm font-medium truncate">{user.name}</p>
-                    <p className="text-xs text-stone-500 truncate">{user.email}</p>
+                    <p className="text-xs text-stone-600 truncate">{user.email}</p>
                   </div>
                 </Link>
                 <div className="flex gap-2">
@@ -246,10 +246,10 @@ return (
             )}
             {collapsed && (
               <div className="flex flex-col gap-2">
-                <button className="p-2 rounded-lg text-stone-400 hover:text-stone-600 hover:bg-stone-100" aria-label="Help">
+                <button className="p-2 rounded-lg text-stone-500 hover:text-stone-600 hover:bg-stone-100" aria-label="Help">
                   <HelpCircle className="w-5 h-5" />
                 </button>
-                <button className="p-2 rounded-lg text-stone-400 hover:text-stone-600 hover:bg-stone-100" aria-label="Logout" onClick={onLogout}>
+                <button className="p-2 rounded-lg text-stone-500 hover:text-stone-600 hover:bg-stone-100" aria-label="Logout" onClick={onLogout}>
                   <LogOut className="w-5 h-5" />
                 </button>
               </div>
@@ -302,7 +302,7 @@ export function TopNav({ user, onHelp, onLogout, children }: {
             <span className="hidden sm:block font-medium">{user.name}</span>
           </button>
         </div>
-        <button onClick={onHelp} className="p-2 rounded-lg text-stone-500 hover:bg-stone-100 hover:text-stone-700" aria-label="Help">
+        <button onClick={onHelp} className="p-2 rounded-lg text-stone-600 hover:bg-stone-100 hover:text-stone-700" aria-label="Help">
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
