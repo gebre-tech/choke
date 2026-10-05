@@ -177,10 +177,10 @@ export default function MarketplaceClient({
                     </div>
                   )}
                   <Link
-                    href="/book"
+                    href={`/book?experience=${encodeURIComponent(e.id)}`}
                     className="mt-auto flex items-center justify-center gap-2 bg-emerald-50 hover:bg-emerald-700 hover:text-white text-emerald-800 text-sm font-semibold py-2 rounded-full border border-emerald-200 hover:border-emerald-700 transition-colors"
                   >
-                    <CalendarDays className="w-4 h-4" /> Book a stay
+                    <CalendarDays className="w-4 h-4" /> Book this experience
                   </Link>
                 </div>
               )
