@@ -176,12 +176,12 @@ export default async function Home() {
       <SectionBackground page="home" section="cottages" className="py-14 sm:py-20" overlay={false}>
         <section className="container mx-auto px-4" id="stay" aria-labelledby="stays-heading">
           <div className="mb-8 flex flex-col gap-3 sm:mb-10 sm:flex-row sm:items-end sm:justify-between">
-            <div>
-              <p className="text-xs font-bold uppercase tracking-[0.2em] text-emerald-800">Rest above the everyday</p>
-              <h2 id="stays-heading" className="mt-2 text-3xl font-extrabold tracking-tight text-stone-950 sm:text-4xl">Find your mountain stay</h2>
-              <p className="mt-2 max-w-2xl text-sm leading-6 text-stone-700 sm:text-base">Explore our highland hideaways and choose the right place to slow down.</p>
+            <div className="w-fit max-w-full rounded-2xl border border-white/15 bg-stone-950/80 p-4 shadow-xl backdrop-blur-md sm:p-5">
+              <p className="text-xs font-bold uppercase tracking-[0.2em] text-emerald-200">Rest above the everyday</p>
+              <h2 id="stays-heading" className="mt-2 text-3xl font-extrabold tracking-tight text-white sm:text-4xl">Find your mountain stay</h2>
+              <p className="mt-2 max-w-2xl text-sm leading-6 text-white sm:text-base">Explore our highland hideaways and choose the right place to slow down.</p>
             </div>
-            <Link href="/book" className="inline-flex items-center gap-2 text-sm font-semibold text-emerald-700 hover:text-emerald-800">
+            <Link href="/book" className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-stone-950/75 px-4 py-2 text-sm font-semibold text-white shadow-lg backdrop-blur transition hover:bg-stone-950 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-300 focus-visible:ring-offset-2 focus-visible:ring-offset-stone-900">
               View all stays <ArrowRight className="h-4 w-4" aria-hidden="true" />
             </Link>
           </div>
@@ -200,7 +200,7 @@ export default async function Home() {
                       <img src={cottage.media[0].url} alt={cottage.media[0].altText || cottage.name} loading="lazy" className="h-full w-full object-cover transition duration-500 group-hover:scale-105" />
                     ) : artworkFor(cottage.name, COTTAGE_ARTWORK) ? (
                       // eslint-disable-next-line @next/next/no-img-element
-                      <img src={artworkFor(cottage.name, COTTAGE_ARTWORK)!} alt={`${cottage.name}, a highland cottage beneath the Choke Mountains`} loading="lazy" className="h-full w-full object-cover transition duration-500 group-hover:scale-105" />
+                      <img src={artworkFor(cottage.name, COTTAGE_ARTWORK)!} alt={`Illustrative reference photo for ${cottage.name}`} loading="lazy" className="h-full w-full object-cover transition duration-500 group-hover:scale-105" />
                     ) : <div className="flex h-full items-center justify-center text-emerald-800"><Bed className="h-12 w-12" aria-hidden="true" /></div>}
                     <span className="absolute bottom-3 left-3 rounded-full border border-white/20 bg-stone-950/85 px-3 py-1.5 text-xs font-semibold text-white shadow-lg backdrop-blur">Sleeps {cottage.capacity}</span>
                   </div>
@@ -210,8 +210,8 @@ export default async function Home() {
                     <p className="mt-2 min-h-10 text-sm leading-6 text-stone-700 line-clamp-2">{cottage.description}</p>
                     <div className="mt-4 flex items-end justify-between gap-3">
                       <p><span className="text-lg font-extrabold text-emerald-800">ETB {Number(cottage.pricePerNight).toLocaleString()}</span><span className="ml-1 text-xs font-medium text-stone-600">/ night</span></p>
-                      <Link href="/book" className="inline-flex min-h-10 items-center gap-1 rounded-full bg-emerald-800 px-4 text-xs font-bold text-white transition hover:bg-emerald-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-700 focus-visible:ring-offset-2">
-                        Choose <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
+                      <Link href={`/book?cottage=${encodeURIComponent(cottage.id)}`} className="inline-flex min-h-10 items-center gap-1 rounded-full bg-emerald-800 px-4 text-xs font-bold text-white transition hover:bg-emerald-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-700 focus-visible:ring-offset-2">
+                        Choose stay <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
                       </Link>
                     </div>
                   </div>
@@ -254,6 +254,9 @@ export default async function Home() {
                     <h3 className="font-bold">{experience.name}</h3>
                     <p className="mt-2 min-h-10 text-sm leading-5 text-stone-300 line-clamp-2">{experience.description}</p>
                     <p className="mt-4 font-semibold text-emerald-300">From ETB {Number(experience.price).toLocaleString()}</p>
+                    <Link href={`/book?experience=${encodeURIComponent(experience.id)}`} className="mt-4 inline-flex min-h-10 items-center justify-center gap-2 rounded-full bg-emerald-400 px-4 text-sm font-bold text-stone-950 transition hover:bg-emerald-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-200 focus-visible:ring-offset-2 focus-visible:ring-offset-stone-950">
+                      Book this experience <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
+                    </Link>
                   </div>
                 </article>
               ))}
@@ -265,12 +268,12 @@ export default async function Home() {
       <SectionBackground page="home" section="marketplace-preview" className="py-14 sm:py-20" overlay={false}>
         <section className="container mx-auto px-4" aria-labelledby="marketplace-heading">
           <div className="mb-8 flex flex-col gap-3 sm:mb-10 sm:flex-row sm:items-end sm:justify-between">
-            <div>
-              <p className="text-xs font-bold uppercase tracking-[0.2em] text-emerald-800">Take a little Choke home</p>
-              <h2 id="marketplace-heading" className="mt-2 text-3xl font-extrabold tracking-tight text-stone-950 sm:text-4xl">Made and shared locally</h2>
-              <p className="mt-2 max-w-xl text-sm leading-6 text-stone-700 sm:text-base">Thoughtful goods from the people and places that make these mountains feel like home.</p>
+            <div className="w-fit max-w-full rounded-2xl border border-white/15 bg-stone-950/80 p-4 shadow-xl backdrop-blur-md sm:p-5">
+              <p className="text-xs font-bold uppercase tracking-[0.2em] text-emerald-200">Take a little Choke home</p>
+              <h2 id="marketplace-heading" className="mt-2 text-3xl font-extrabold tracking-tight text-white sm:text-4xl">Made and shared locally</h2>
+              <p className="mt-2 max-w-xl text-sm leading-6 text-white sm:text-base">Thoughtful goods from the people and places that make these mountains feel like home.</p>
             </div>
-            <Link href="/marketplace" className="inline-flex items-center gap-2 text-sm font-semibold text-emerald-700 hover:text-emerald-800">Visit the marketplace <ArrowRight className="h-4 w-4" aria-hidden="true" /></Link>
+            <Link href="/marketplace" className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-stone-950/75 px-4 py-2 text-sm font-semibold text-white shadow-lg backdrop-blur transition hover:bg-stone-950 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-300 focus-visible:ring-offset-2 focus-visible:ring-offset-stone-900">Visit the marketplace <ArrowRight className="h-4 w-4" aria-hidden="true" /></Link>
           </div>
           {products.length ? (
             <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-4">

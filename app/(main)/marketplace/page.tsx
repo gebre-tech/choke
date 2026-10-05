@@ -155,9 +155,9 @@ export default async function MarketplacePage() {
               Community listings are temporarily unavailable while the database reconnects. Please check back shortly.
             </p>
           )}
-          <div className="mb-8">
-            <h2 className="text-3xl font-bold mb-2 animate-fade-in">Browse the community collection</h2>
-            <p className="text-stone-600 animate-slide-up" style={{ animationDelay: '100ms' }}>
+          <div className="mb-8 w-fit max-w-full rounded-2xl border border-white/15 bg-stone-950/80 p-4 text-white shadow-xl backdrop-blur-md sm:p-5">
+            <h2 className="mb-2 text-3xl font-bold animate-fade-in">Browse the community collection</h2>
+            <p className="text-white animate-slide-up" style={{ animationDelay: '100ms' }}>
               Filter by category, price, or organic products. Open any listing for details and add it to your cart.
             </p>
           </div>

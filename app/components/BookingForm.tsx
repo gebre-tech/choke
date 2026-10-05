@@ -65,11 +65,17 @@ interface FormErrors {
 export default function BookingForm({
   cottages,
   experience,
+  initialCottageId,
 }: {
   cottages: CottageOption[]
   experience?: ExperienceOption
+  initialCottageId?: string
 }) {
-  const [cottageId, setCottageId] = useState(cottages[0]?.id ?? '')
+  const [cottageId, setCottageId] = useState(
+    initialCottageId && cottages.some((cottage) => cottage.id === initialCottageId)
+      ? initialCottageId
+      : cottages[0]?.id ?? '',
+  )
   const [checkIn, setCheckIn] = useState('')
   const [checkOut, setCheckOut] = useState('')
   const [guestCount, setGuestCount] = useState(2)
@@ -89,6 +95,7 @@ export default function BookingForm({
   const [touched, setTouched] = useState<Record<string, boolean>>({})
 
   const selected = cottages.find((c) => c.id === cottageId)
+  const guestLimit = Math.min(selected?.capacity ?? 6, experience?.capacity ?? 6)
 
   const nights = (() => {
     if (!checkIn || !checkOut) return 0
@@ -121,6 +128,7 @@ export default function BookingForm({
         const numValue = Number(value)
         if (numValue < 1) error = 'At least 1 guest required'
         else if (selected && numValue > selected.capacity) error = `This cottage sleeps up to ${selected.capacity} guests`
+        else if (experience && numValue > experience.capacity) error = `${experience.name} allows up to ${experience.capacity} guests`
         break
       case 'name':
         if (!strValue.trim()) error = 'Full name is required'
@@ -166,6 +174,7 @@ export default function BookingForm({
     else if (checkOut <= checkIn) { newErrors.checkOut = 'Check-out must be after check-in'; hasError = true }
     if (guestCount < 1) { newErrors.guestCount = 'At least 1 guest required'; hasError = true }
     else if (selected && guestCount > selected.capacity) { newErrors.guestCount = `This cottage sleeps up to ${selected.capacity} guests`; hasError = true }
+    else if (experience && guestCount > experience.capacity) { newErrors.guestCount = `${experience.name} allows up to ${experience.capacity} guests`; hasError = true }
     if (!accountProfile && !name.trim()) { newErrors.name = 'Full name is required'; hasError = true }
     if (!accountProfile && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { newErrors.email = 'Enter a valid email'; hasError = true }
     if (phone && !/^[\d\s\-\+\(\)]{7,}$/.test(phone)) { newErrors.phone = 'Enter a valid phone number'; hasError = true }
@@ -251,11 +260,37 @@ export default function BookingForm({
         )}
         {selected && (
           <div className="mt-4 space-y-4">
-            {selected.media.length > 0 && (
+            {(() => {
+              const cover = selected.media.find((media) => media.type === 'IMAGE')
+              return (
+                <section className="overflow-hidden rounded-2xl border border-stone-200 bg-stone-50" aria-label={`${selected.name} selected cottage`}>
+                  <div className="relative aspect-[16/9] max-h-[26rem] overflow-hidden bg-gradient-to-br from-emerald-100 via-stone-100 to-amber-100">
+                    {cover ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img src={cover.url} alt={cover.altText || `${selected.name} cottage`} className="h-full w-full object-cover" />
+                    ) : (
+                      <div className="flex h-full items-center justify-center text-emerald-800"><Home className="h-14 w-14" aria-hidden="true" /></div>
+                    )}
+                    <span className="absolute bottom-3 left-3 rounded-full bg-stone-950/85 px-3 py-1.5 text-xs font-semibold text-white shadow-lg">Representative photo</span>
+                  </div>
+                  <div className="p-4 sm:p-5">
+                    <div className="flex flex-wrap items-start justify-between gap-3">
+                      <div>
+                        <h3 className="text-xl font-bold text-stone-950">{selected.name}</h3>
+                        <p className="mt-2 max-w-2xl text-sm leading-6 text-stone-700">{selected.description}</p>
+                        {cover?.caption && <p className="mt-2 text-xs leading-5 text-stone-500">{cover.caption}</p>}
+                      </div>
+                      <p className="shrink-0 rounded-xl bg-emerald-50 px-3 py-2 text-sm font-bold text-emerald-900">ETB {selected.pricePerNight.toLocaleString()} <span className="font-medium text-emerald-800">/ night</span></p>
+                    </div>
+                  </div>
+                </section>
+              )
+            })()}
+            {selected.media.some((media) => media.type === 'VIDEO' || media.id !== selected.media.find((item) => item.type === 'IMAGE')?.id) && (
               <div>
-                <p className="font-semibold mb-2">Photos & Videos</p>
+                <p className="mb-2 font-semibold text-stone-800">More photos & videos</p>
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2" role="list" aria-label="Cottage media">
-                  {selected.media.map((m) => (
+                  {selected.media.filter((m) => m.type === 'VIDEO' || m.id !== selected.media.find((item) => item.type === 'IMAGE')?.id).map((m) => (
                     <div key={m.id} className="aspect-video rounded-xl overflow-hidden bg-stone-100 relative" role="listitem">
                       {m.type === 'VIDEO' ? (
                         <div className="absolute inset-0 flex items-center justify-center text-emerald-700" aria-label={`Video: ${m.provider || 'Video'}`}>
@@ -355,10 +390,10 @@ export default function BookingForm({
           onChange={(e) => handleChange('guestCount', Number(e.target.value))}
           onBlur={(e) => handleBlur('guestCount', Number(e.target.value))}
           min={1}
-          max={selected?.capacity ?? 6}
+          max={guestLimit}
           required
           error={touched.guestCount ? errors.guestCount : undefined}
-          hint={`Maximum ${selected?.capacity ?? 6} guests`}
+          hint={`Maximum ${guestLimit} guests`}
           leadingIcon={<Users className="w-4 h-4" aria-hidden="true" />}
         />
       </div>
