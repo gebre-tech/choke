@@ -23,7 +23,7 @@ export default function Footer({ settings }: { settings?: FooterSettings }) {
               </span>
             </Link>
             <p className="text-stone-300 leading-relaxed mb-6 max-w-sm">
-              {settings?.tagline ?? 'A UN Tourism Best Tourism Village — an eco-friendly retreat in the West Gojam Zone, Ethiopia, untouched by modern transportation.'}
+              {settings?.tagline ?? 'A UN Tourism Best Tourism Village — an eco-friendly retreat in Gojam, Ethiopia, untouched by modern transportation.'}
             </p>
             <p className="mb-6 flex items-center gap-2 text-xs text-stone-300"><Heart className="h-3.5 w-3.5 text-emerald-400" /> Travel gently. Leave the mountain stronger.</p>
           </div>
@@ -57,7 +57,7 @@ export default function Footer({ settings }: { settings?: FooterSettings }) {
             <ul className="space-y-4 text-sm">
               <li className="flex items-start gap-3">
                 <MapPin className="w-4 h-4 text-emerald-400 mt-0.5 shrink-0" />
-                <span>Choke Mountains Ecovillage,<br />West Gojam Zone,<br />Amhara Region, Ethiopia</span>
+                <span>Choke,<br />Gojjam,<br />Amhara, Ethiopia</span>
               </li>
               <li className="flex items-center gap-3">
                 <MapPin className="w-4 h-4 text-emerald-400 shrink-0" />
@@ -90,7 +90,7 @@ export default function Footer({ settings }: { settings?: FooterSettings }) {
           <span>© {new Date().getFullYear()} {name}. All rights reserved.</span>
           <span className="flex items-center gap-1.5">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-            West Gojam Zone · Amhara Region · Ethiopia
+            Gojjam · Amhara · Ethiopia
           </span>
         </div>
       </div>
